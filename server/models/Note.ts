@@ -7,6 +7,7 @@ export interface INote extends Document {
     user: string,
     created: Date,
     lastUpdated: Date,
+    published: boolean,
     content: string[],
     forkedFrom?: ObjectId,
     changes?: IChange[],
@@ -35,6 +36,11 @@ export const NoteSchema: Schema = new Schema({
     lastUpdated: {
         type: Date,
         default: Date.now,
+    },
+    published: {
+        type: Boolean,
+        required: true,
+        default: false,
     },
     content: {
         type: [String],
