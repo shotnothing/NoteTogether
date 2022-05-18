@@ -1,11 +1,11 @@
-import { model, Document, Model, Schema } from 'mongoose';
-import { NoteSchema, INote } from './note'
+import { model, Document, Model, ObjectId, Schema } from 'mongoose';
+// import { NoteSchema, INote } from './note'
 
 export interface IUser extends Document {
     username: string,
     password: string,
     credits: number,
-    notes: INote[],
+    notes: ObjectId[],
 }
 
 export const UserSchema: Schema = new Schema({
@@ -26,7 +26,8 @@ export const UserSchema: Schema = new Schema({
         min: 0,
     },
     notes: {
-        type: [NoteSchema],
+        type: [Schema.Types.ObjectId],
+        ref: 'Note',
         select: false,
     },
 })
