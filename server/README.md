@@ -1,4 +1,14 @@
 # NoteTogether Server
+## Requirements
+Install nodemon (if you have not)
+```
+npm install -g nodemon
+```
+
+Install packages
+```
+npm i express mongoose bcrypt jsonwebtoken nodemon morgan body-parser cors --save
+```
 
 ## Setup
 1. Create file \server\config\db.js
