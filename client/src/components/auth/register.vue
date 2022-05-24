@@ -9,10 +9,10 @@
         >
           <input
             type="text"
-            id="name"
+            id="username"
             class="form-control mb-5"
-            placeholder="Name"
-            v-model="register.name"
+            placeholder="Username"
+            v-model="register.username"
             required
             minlength=3
             maxlength=16
@@ -60,7 +60,7 @@ export default {
   data() {
     return {
       register: {
-        name: "",
+        username: "",
         email: "",
         password: ""
       }

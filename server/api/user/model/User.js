@@ -2,17 +2,17 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userSchema = mongoose.Schema({
-  name: {
+  username: {
     type: String,
-    required: [true, "Please Include your name"]
+    required: [true, "Please include your username!"]
   },
   email: {
     type: String,
-    required: [true, "Please Include your email"]
+    required: [true, "Please include your email!"]
   },
   password: {
     type: String,
-    required: [true, "Please Include your password"]
+    required: [true, "Please include your password!"]
   },
   tokens: [
     {
@@ -37,7 +37,7 @@ userSchema.pre("save", async function(next) {
 userSchema.methods.generateAuthToken = async function() {
   const user = this;
   const token = jwt.sign(
-    { _id: user._id, name: user.name, email: user.email },
+    { _id: user._id, username: user.username, email: user.email },
     "secret"
   );
   user.tokens = user.tokens.concat({ token });
@@ -50,11 +50,11 @@ userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
   console.log(user);
   if (!user) {
-    throw new Error({ error: "Invalid login details" });
+    throw new Error({ error: "Invalid login details!" });
   }
   const isPasswordMatch = await bcrypt.compare(password, user.password);
   if (!isPasswordMatch) {
-    throw new Error({ error: "Invalid login details" });
+    throw new Error({ error: "Invalid login details!" });
   }
   return user;
 };

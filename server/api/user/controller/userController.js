@@ -2,15 +2,26 @@ const User = require("../model/User");
 
 exports.registerNewUser = async (req, res) => {
   try {
-    let isUser = await User.find({ email: req.body.email });
-    console.log(isUser);
+    let isUser = await User.find({
+        email: req.body.email, 
+    });
     if (isUser.length >= 1) {
       return res.status(409).json({
-        message: "email already in use"
+        message: "Email is already in use!"
       });
     }
+
+    isUser = await User.find({
+        username: req.body.username, 
+    });
+    if (isUser.length >= 1) {
+      return res.status(409).json({
+        message: "Username is already in use!"
+      });
+    }
+
     const user = new User({
-      name: req.body.name,
+      username: req.body.username,
       email: req.body.email,
       password: req.body.password
     });
@@ -29,7 +40,7 @@ exports.loginUser = async (req, res) => {
     if (!user) {
       return res
         .status(401)
-        .json({ error: "Login failed! Check authentication credentials" });
+        .json({ error: "Login failed! Check your authentication credentials." });
     }
     const token = await user.generateAuthToken();
     res.status(201).json({ user, token });

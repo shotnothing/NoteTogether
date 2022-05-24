@@ -30,7 +30,7 @@ app.use(morgan("dev")); // configire morgan
 
 // define first route
 app.get("/", (req, res) => {
-  console.log("Hello MEVN Soldier");
+  console.log("TEST");
 });
 
 const userRoutes = require("./api/user/route/user"); //bring in our user routes
