@@ -14,6 +14,11 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, "Please include your password!"]
   },
+  notes: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Note',
+    default: []
+  },
   tokens: [
     {
       token: {
@@ -51,7 +56,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
   console.log(user);
   if (!user) {
-    throw new Error({ error: "No such email  was found!" });
+    throw new Error({ error: "No such email was found!" });
   }
   const isPasswordMatch = await bcrypt.compare(password, user.password);
   if (!isPasswordMatch) {
