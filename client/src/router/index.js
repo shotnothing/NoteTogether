@@ -21,7 +21,15 @@ const routes = [
     path: "/register",
     name: "register",
     component: () => import("../views/register.vue")
-  }
+  },
+  {
+    path: "/dev",
+    name: "dev",
+    component: () => import("../views/dev.vue"),
+    meta: {
+      requiresAuth: true
+    }
+  },
 ];
 
 const router = new VueRouter({

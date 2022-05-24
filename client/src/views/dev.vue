@@ -36,20 +36,35 @@
       <div class="container mt-5">
         <div class="row">
           <div class="col-md-12">
-            <h2> Welcome back, {{ user.username }}! </h2>
+            <ul class="list-group">
+              <li class="list-group-item">Username : {{ user.username }}</li>
+              <li class="list-group-item">Email : {{ user.email }}</li>
+            </ul>
+
+            <br><h3> Debug Tool: Document Upload </h3>
+            <vue-simplemde v-model="content" ref="documentUploadMDE" />
+
           </div>
         </div>
       </div>
     </section>
   </div>
 </template>
+
+
+
 <script>
+import VueSimplemde from 'vue-simplemde'
 import VueJwtDecode from "vue-jwt-decode";
+
 export default {
   data() {
     return {
       user: {}
     };
+  },
+  components: {
+    VueSimplemde
   },
   methods: {
     getUserDetails() {
@@ -69,4 +84,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+  @import '~simplemde/dist/simplemde.min.css';
+</style>

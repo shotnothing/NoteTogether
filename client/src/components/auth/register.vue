@@ -54,7 +54,7 @@
             <!-- Sign in button -->
             <center>
               <button class="btn btn-primary btn-block w-75 my-4" type="submit">
-                Sign in
+                Sign Up
               </button>
             </center>
           </p>

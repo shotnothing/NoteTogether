@@ -34,7 +34,7 @@
           <!-- Sign in button -->
           <center>
             <button class="btn btn-primary btn-block w-75 my-4" type="submit">
-              Sign in
+              Login
             </button>
           </center>
         </form>
@@ -61,7 +61,7 @@ export default {
         let token = response.data.token;
         localStorage.setItem("jwt", token);
         if (token) {
-          swal("Success", "Login Successful", "Error");
+          swal("Success", "Login Successful", "success");
           this.$router.push("/home");
         }
       } catch (err) {
