@@ -5,17 +5,17 @@
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compile for development
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Compile for production
 ```
 npm run build
 ```
 
-### Run your tests
+### Run tests
 ```
 npm run test
 ```

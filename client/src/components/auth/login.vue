@@ -27,8 +27,8 @@
           />
 
           <p>
-            Dont have an account??<router-link to="/register"
-              >click here</router-link
+            New here? <router-link to="/register"
+              >Sign up</router-link
             >
           </p>
 
@@ -66,7 +66,7 @@ export default {
           this.$router.push("/home");
         }
       } catch (err) {
-        swal("Error", "Something Went Wrong", "error");
+        swal("Error", "Invalid Credentials", "error");
         console.log(err.response);
       }
     }

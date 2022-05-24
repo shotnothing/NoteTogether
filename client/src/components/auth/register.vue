@@ -14,6 +14,8 @@
             placeholder="Name"
             v-model="register.name"
             required
+            minlength=3
+            maxlength=16
           />
           <input
             type="email"
@@ -22,19 +24,21 @@
             placeholder="Email"
             v-model="register.email"
             required
+            maxlength=254
           />
 
-          <!-- Password -->
           <input
             type="password"
             id="password"
             class="form-control mb-5"
             placeholder="Password"
             v-model="register.password"
+            minlength=6
+            maxlength=20
           />
           <p>
-            Already have an account??<router-link to="/"
-              >click here</router-link
+            Already have an account? <router-link to="/"
+              >Login</router-link
             >
 
             <!-- Sign in button -->
@@ -73,7 +77,7 @@ export default {
           this.$router.push("/");
           swal("Success", "Registration Was successful", "success");
         } else {
-          swal("Error", "Something Went Wrong", "Error");
+          swal("Error", "Oops, Something Went Wrong", "Error");
         }
       } catch (err) {
         let error = err.response;
