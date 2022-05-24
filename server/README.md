@@ -12,11 +12,12 @@ npm i express mongoose bcrypt jsonwebtoken nodemon morgan body-parser cors --sav
 
 ## Setup
 1. Create file \server\config\db.js
-2. Add these lines
+2. Add these lines to the newly created `db.js`
+Replace <Addr of your DB> with yours.
 
 ```
 module.exports = {
-	database: "addr of your mongo db",
+	database: "<Addr of your DB>",
 	secret: "password"
 };
 ```
