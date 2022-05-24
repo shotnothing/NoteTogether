@@ -1,4 +1,4 @@
 module.exports = {
-  database: "mongodb://localhost:27017/authapp",
+  database: "my secret db",
   secret: "password"
 };
