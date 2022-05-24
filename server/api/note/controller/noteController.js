@@ -28,7 +28,9 @@ exports.readNote = async (req, res) => {
     const noteId = req.body.noteId;
     let note = await Note.findById(noteId);
     const userId = note.userId;
-    let username = await User.findById(userId).username;
+    let user = await User.findById(userId);
+    const username = user.username;
+    console.log(username);
 
     res.status(200).json({
       title: note.title,
