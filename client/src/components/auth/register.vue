@@ -36,6 +36,16 @@
             minlength=6
             maxlength=20
           />
+
+          <input
+            type="password"
+            id="confirmPassword"
+            class="form-control mb-5"
+            placeholder="Confirm Password"
+            minlength=6
+            maxlength=20
+          />
+
           <p>
             Already have an account? <router-link to="/"
               >Login</router-link
@@ -69,15 +79,19 @@ export default {
   methods: {
     async registerUser() {
       try {
-        let response = await this.$http.post("/user/register", this.register);
-        console.log(response);
-        let token = response.data.token;
-        if (token) {
-          localStorage.setItem("jwt", token);
-          this.$router.push("/");
-          swal("Success", "Registration Was successful", "success");
+        if (document.getElementById("password").value !== 
+          document.getElementById("confirmPassword").value) {
+          swal("Error", "Password fields do not match", "error");
         } else {
-          swal("Error", "Oops, Something Went Wrong", "Error");
+          let response = await this.$http.post("/user/register", this.register);
+          let token = response.data.token;
+          if (token) {
+            localStorage.setItem("jwt", token);
+            this.$router.push("/");
+            swal("Success", "Registration Was successful", "success");
+          } else {
+            swal("Error", "Oops, Something Went Wrong", "error");
+          }
         }
       } catch (err) {
         let error = err.response;

@@ -16,7 +16,6 @@
             required
           />
 
-          <!-- Password -->
           <input
             type="password"
             id="password"
