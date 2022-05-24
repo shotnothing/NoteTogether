@@ -38,7 +38,8 @@ userSchema.methods.generateAuthToken = async function() {
   const user = this;
   const token = jwt.sign(
     { _id: user._id, username: user.username, email: user.email },
-    "secret"
+    "secret",
+    expiresIn: 180 //3 mins
   );
   user.tokens = user.tokens.concat({ token });
   await user.save();
@@ -50,11 +51,11 @@ userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
   console.log(user);
   if (!user) {
-    throw new Error({ error: "Invalid login details!" });
+    throw new Error({ error: "No such email  was found!" });
   }
   const isPasswordMatch = await bcrypt.compare(password, user.password);
   if (!isPasswordMatch) {
-    throw new Error({ error: "Invalid login details!" });
+    throw new Error({ error: "Wrong password!" });
   }
   return user;
 };
