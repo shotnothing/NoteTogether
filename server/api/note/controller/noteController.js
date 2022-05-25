@@ -187,7 +187,7 @@ exports.searchNote = async (req, res) => {
   try {
     const notes = await Note
       .find({
-        title: { $regex: req.body.searchTerm },
+        title: { $regex: new RegExp(req.body.searchTerm, "i") },
         isPublished: true,
         isDeleted: false
       })
