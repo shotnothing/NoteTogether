@@ -194,15 +194,10 @@ exports.searchNote = async (req, res) => {
       .sort({ datePublished: -1 })
       .skip(PER_PAGE*(req.body.page-1))
       .limit(PER_PAGE)
-      .populate("searchResults", "title userId datePublished");
+      .populate("userId", "username")
+      .select("title userId datePublished username");
 
-    notes.forEach(async json => {
-      json.username = User.findById(json.userId);
-      delete json.userId;
-      return json;
-    });
-    
-    res.status(200).json(notes);
+    res.status(200).json({ searchResults: notes });
   } catch (err) {
     res.status(400).json({ err: err });
   }
