@@ -19,6 +19,10 @@ const noteSchema = mongoose.Schema({
   },
   datePublished: {
     type: Date,
+  },
+  dateLastUpdated: {
+    type: Date,
+    required: true,
     default: Date.now,
   },
   isPublished: {
