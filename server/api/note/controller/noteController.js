@@ -1,7 +1,7 @@
 const Note = require("../model/Note");
 const User = require("../../user/model/User");
 
-const PER_PAGE = 10;
+const PER_PAGE = 2;
 
 exports.createNote = async (req, res) => {
   try {
@@ -98,6 +98,7 @@ exports.updateNote = async (req, res) => {
     note.content = req.body.content;
     note.dateLastUpdated = Date.now();
     await note.save();
+
     res.status(200).json({ note: note });
   } catch (err) {
     res.status(400).json({ err: err });
