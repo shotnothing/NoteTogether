@@ -36,6 +36,9 @@ app.get("/", (req, res) => {
 const userRoutes = require("./api/user/route/user"); //bring in our user routes
 app.use("/user", userRoutes);
 
+const noteRoutes = require("./api/note/route/note"); //bring in our note routes
+app.use("/note", noteRoutes);
+
 app.listen(PORT, () => {
   console.log(`App is running on ${PORT}`);
 });
