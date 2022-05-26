@@ -27,11 +27,11 @@ export default {
   methods: {
     async uploadNote() {
       let token = localStorage.getItem("jwt");
-      var authHeader = { header: token };
+      console.log(this.mde);
       let response = await this.$http.post(
         "/note/create",
         this.mde,
-        { headers: {'Authorization': token} }
+        { headers: { 'Authorization': token } }
         );
       console.log(response);
     },
