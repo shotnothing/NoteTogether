@@ -1,5 +1,10 @@
 # NoteTogether Client
 
+## Requirements
+```
+npm i vue-jwt-decode axios bootstrap sweetalert vuetify
+```
+
 ## Setup
 ```
 npm install
