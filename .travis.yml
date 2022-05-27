@@ -1,0 +1,17 @@
+language: generic
+
+jobs:
+  include:
+    - name: Server
+    language: node_js
+    node_js: 16
+    cache: npm
+    env: TARGET=server
+  # TODO: CI/CD FOR CLIENT
+  # - name: Client
+  #   language: ruby
+  #   rvm: 2.6
+  #   cache: bundler
+  #   env: TARGET=client
+
+script: if .travis/build.sh $TRAVIS_COMMIT_RANGE $TARGET; then echo "Building '$TARGET' ..." && cd $TARGET && scripts/ci.sh; else echo "No changes detected in '$TARGET'; skipping build."; fi
