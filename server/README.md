@@ -26,5 +26,7 @@ module.exports = {
 ```
 nodemon
 ```
-
+	
+## API Reference
+Please refer to [this](https://github.com/shotnothing/NoteTogether/tree/dev/server/api).
 
