@@ -4,6 +4,7 @@ _Discover, craft and upload amazing notes and spend less time studying, more tim
 
 # NoteTogether
 Client: ![dev](https://github.com/shotnothing/NoteTogether/actions/workflows/client-dev.yaml/badge.svg)
+
 Server: ![dev](https://github.com/shotnothing/NoteTogether/actions/workflows/server-dev.yaml/badge.svg)
 
 A responsive and lightweight web application that aims to allow users to:
