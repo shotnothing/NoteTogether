@@ -1,4 +1,4 @@
-name: client-dev
+name: dev
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    
+
     client-test:
     
       runs-on: windows-latest
