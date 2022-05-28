@@ -7,7 +7,7 @@ const routes = [
   {
     path: "/home",
     name: "home",
-    component: () => import("../views/home.vue"),
+    component: () => import("../views/Home.vue"),
     meta: {
       requiresAuth: true
     }
@@ -15,17 +15,17 @@ const routes = [
   {
     path: "/",
     name: "login",
-    component: () => import("../views/login.vue")
+    component: () => import("../views/Login.vue")
   },
   {
     path: "/register",
     name: "register",
-    component: () => import("../views/register.vue")
+    component: () => import("../views/Register.vue")
   },
   {
     path: "/dev",
     name: "dev",
-    component: () => import("../views/dev.vue"),
+    component: () => import("../views/Dev.vue"),
     meta: {
       requiresAuth: true
     }

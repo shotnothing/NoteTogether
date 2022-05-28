@@ -21,7 +21,7 @@ export default {
     };
   },
   components: {
-    NavBar: () => import('../components/navbar.vue')
+    NavBar: () => import('../components/Navbar.vue')
   },
   methods: {
     getUserDetails() {
