@@ -1,4 +1,4 @@
-name: server-dev
+name: dev
 
 on:
   push:
@@ -9,19 +9,17 @@ on:
 jobs:
   build:
 
-    server-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
 
-      runs-on: windows-latest
-      steps:
-        - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '12.x'
 
-        - name: Use Node.js
-          uses: actions/setup-node@v3
-          with:
-            node-version: '12.x'
+      - run: npm ci
+        working-directory: ./server/
 
-        - run: npm ci
-          working-directory: ./server/
-
-        - run: npm run build --if-present
-          working-directory: ./server/
+      - run: npm run build --if-present
+        working-directory: ./server/
