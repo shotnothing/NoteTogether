@@ -2,7 +2,7 @@
 
 _Discover, craft and upload amazing notes and spend less time studying, more time learning._
 
-# NoteTogether ![Build Status](https://travis-ci.org/shotnothing/NoteTogether.svg?branch=develop)
+# NoteTogether ![dev](https://github.com/shotnothing/NoteTogether/actions/workflows/dev.yaml/badge.svg)
 A responsive and lightweight web application that aims to allow users to:
 - Search for and discover notes, guides and materials uploaded by others
 - Review and rate the notes
@@ -13,7 +13,6 @@ A responsive and lightweight web application that aims to allow users to:
 ## Getting Started
 The client and server apps are in seperate folders, look in the respective folders for information on building and deploying.
 
-## Todo
-- Travis-CI integration
+## Todos
 - Finish dev page
 - Refresh + Login tokens (currently just Login, 1 hour)
