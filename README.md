@@ -2,12 +2,9 @@
 
 _Discover, craft and upload amazing notes and spend less time studying, more time learning._
 
-# NoteTogether !
-Client: [client-dev](https://github.com/shotnothing/NoteTogether/actions/workflows/client-dev.yaml/badge.svg)
-[client-release](https://github.com/shotnothing/NoteTogether/actions/workflows/client-release.yaml/badge.svg)
-
-Server: [server-dev](https://github.com/shotnothing/NoteTogether/actions/workflows/server-dev.yaml/badge.svg)
-[server-release](https://github.com/shotnothing/NoteTogether/actions/workflows/server-release.yaml/badge.svg)
+# NoteTogether
+Client: ![dev](https://github.com/shotnothing/NoteTogether/actions/workflows/client-dev.yaml/badge.svg)
+Server: ![dev](https://github.com/shotnothing/NoteTogether/actions/workflows/server-dev.yaml/badge.svg)
 
 A responsive and lightweight web application that aims to allow users to:
 - Search for and discover notes, guides and materials uploaded by others
