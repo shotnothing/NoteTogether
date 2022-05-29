@@ -26,7 +26,7 @@
           />
 
           <p>
-            New here? <router-link to="/register"
+            New here? <router-link to="/Register"
               >Sign up</router-link
             >
           </p>
