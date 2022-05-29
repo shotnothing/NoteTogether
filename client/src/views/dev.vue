@@ -10,10 +10,13 @@
               <li class="list-group-item">Email : {{ user.email }}</li>
             </ul>
 
-            <br><h3> Debug Tool: Document Upload </h3>
+            <br><h3> Debug Tool: Document Editor and Upload </h3>
+            <br>
             <MarkdownEditor></MarkdownEditor>
 
-            
+            <br><h3> Debug Tool: Document List View </h3>
+            <br>
+            <NotesList></NotesList>
             
           </div>
         </div>
@@ -36,8 +39,9 @@ export default {
     };
   },
   components: {
-    MarkdownEditor: () => import('../components/markdownEditor.vue'),
-    NavBar: () => import('../components/navbar.vue'),
+    MarkdownEditor: () => import('../components/MarkdownEditor.vue'),
+    NavBar: () => import('../components/Navbar.vue'),
+    NotesList: () => import('../components/NotesList.vue'),
   },
   methods: {
     getUserDetails() {

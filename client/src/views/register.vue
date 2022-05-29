@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import register from "@/components/auth/register";
+import register from "@/components/auth/Register";
 export default {
   components: {
     register
