@@ -61,6 +61,9 @@
     @click.native="viewNote()"
     >View</v-btn>
 
+    <br><br>
+    <div v-html="selectedBody"></div>
+
     </v-list-item-group>
 
   </v-list>
@@ -73,7 +76,7 @@ import { marked } from 'marked';
 export default {
   data() {
     return {
-      searchTerm: "STAR",
+      searchTerm: "",
       selected: [ ],
       items: [ ],
       selectedBody: "",
@@ -90,6 +93,7 @@ export default {
         { searchTerm: this.searchTerm },
         { headers: { 'Authorization': token } }
         );
+      console.log(response);
       this.items = response.data.searchResults;
     },
 
@@ -100,12 +104,9 @@ export default {
         { noteId: this.items[this.selected]._id },
         { headers: { 'Authorization': token } }
         );
-      this.selectedBody = response.data.searchResults;
-      console.log(this.items[this.selected]._id)
-      console.log(response);
-      console.log(this.selectedBody);
-
-      //return marked(this.selectedBody);
+      this.selectedBody = response.data.content;
+      console.log(marked(this.selectedBody)); // TODO: PREVENT XSS IMPORTANT!!!
+      return marked(this.selectedBody);
     }
   }
 };
