@@ -87,7 +87,7 @@ export default {
       let token = localStorage.getItem("jwt");
       let response = await this.$http.get(
         "/note/search",
-        { body: {searchTerm: this.searchTerm},
+        { body: {'searchTerm': this.searchTerm},
           headers: { 'Authorization': token } }
         );
       this.items = response.data.searchResults;
