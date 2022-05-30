@@ -85,20 +85,20 @@ export default {
   methods: {
     async refreshNotesList() {
       let token = localStorage.getItem("jwt");
-      let response = await this.$http.get(
+      let response = await this.$http.post(
         "/note/search",
-        { body: {'searchTerm': this.searchTerm},
-          headers: { 'Authorization': token } }
+        { searchTerm: this.searchTerm },
+        { headers: { 'Authorization': token } }
         );
       this.items = response.data.searchResults;
     },
 
     async viewNote(){
       let token = localStorage.getItem("jwt");
-      let response = await this.$http.get(
+      let response = await this.$http.post(
         "/note/read",
-        { body: { 'noteId': this.items[this.selected]._id },
-          headers: { 'Authorization': token } }
+        { noteId: this.items[this.selected]._id },
+        { headers: { 'Authorization': token } }
         );
       this.selectedBody = response.data.searchResults;
       console.log(this.items[this.selected]._id)
