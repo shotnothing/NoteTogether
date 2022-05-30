@@ -3,7 +3,7 @@
   <v-list two-line>
 
     <v-text-field
-      label="Search Field (regex for now)"
+      label="Search Field"
       hide-details="auto"
       v-model="searchTerm" 
     ></v-text-field>
@@ -45,6 +45,7 @@
               >
                 mdi-star
               </v-icon>
+              
             </v-list-item-action>
           </template>
         </v-list-item>
@@ -73,11 +74,12 @@
 <script>
 import VueSimplemde from 'vue-simplemde';
 import { marked } from 'marked';
+import swal from "sweetalert";
 export default {
   data() {
     return {
       searchTerm: "",
-      selected: [ ],
+      selected: undefined,
       items: [ ],
       selectedBody: "",
     };
@@ -98,15 +100,20 @@ export default {
     },
 
     async viewNote(){
-      let token = localStorage.getItem("jwt");
-      let response = await this.$http.post(
-        "/note/read",
-        { noteId: this.items[this.selected]._id },
-        { headers: { 'Authorization': token } }
-        );
-      this.selectedBody = response.data.content;
-      console.log(marked(this.selectedBody)); // TODO: PREVENT XSS IMPORTANT!!!
-      return marked(this.selectedBody);
+      console.log(this.selected);
+      if (this.selected != undefined) {
+        let token = localStorage.getItem("jwt");
+        let response = await this.$http.post(
+          "/note/read",
+          { noteId: this.items[this.selected]._id },
+          { headers: { 'Authorization': token } }
+          );
+        this.selectedBody = marked(response.data.content);
+        console.log(marked(this.selectedBody)); // TODO: PREVENT XSS IMPORTANT!!!        
+      }
+      else {
+        swal("Error", "Please make a selection before clicking 'VIEW'!", "error");
+      }
     }
   }
 };
