@@ -17,6 +17,3 @@ A responsive and lightweight web application that aims to allow users to:
 ## Getting Started
 The client and server apps are in seperate folders, look in the respective folders for information on building and deploying.
 
-## Todo
-- Finish dev page
-- Refresh + Login tokens (currently just Login, 1 hour)
