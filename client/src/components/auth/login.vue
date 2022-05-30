@@ -55,6 +55,7 @@ export default {
     };
   },
   methods: {
+
     async loginUser() {
       try {
         let response = await this.$http.post("/user/login", this.login);

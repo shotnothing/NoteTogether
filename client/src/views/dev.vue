@@ -12,12 +12,13 @@
 
             <br><h3> Debug Tool: Document Editor and Upload </h3>
             <br>
-            <MarkdownEditor></MarkdownEditor>
+            <MarkdownEditor
+            ></MarkdownEditor>
 
             <br><h3> Debug Tool: Document List View </h3>
             <br>
             <NotesList></NotesList>
-            
+
           </div>
         </div>
       </div>
@@ -25,9 +26,6 @@
 
   </div>
 </template>
-
-
-
 
 <script>
 import VueJwtDecode from "vue-jwt-decode";

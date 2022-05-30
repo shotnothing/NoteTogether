@@ -1,7 +1,7 @@
 const Note = require("../model/Note");
 const User = require("../../user/model/User");
 
-const PER_PAGE = 2;
+const PER_PAGE = 5;
 
 exports.createNote = async (req, res) => {
   try {

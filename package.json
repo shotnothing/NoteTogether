@@ -1,5 +1,5 @@
-{
-  "scripts": {
-    "start": "cd server && npm start"
-  }
+"scripts": {
+ "postinstall": "if [ $CLIENT_ENV ]; then npm run postinstall-client; elif [ $SERVER_ENV ]; then npm run postinstall-server; else echo no environment detected, please set CLIENT_ENV or SERVER_ENV; fi",
+ "postinstall-client": "cd packages/client && npm install && npm run build",
+ "postinstall-server": "cd packages/server && npm install"
 }

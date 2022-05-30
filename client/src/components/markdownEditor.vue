@@ -1,35 +1,44 @@
 <template>
   <div>
-
     <vue-simplemde 
       v-model="mde.content" 
       ref="noteUploadMDE"
     />
     <v-text-field
       label="Document Title"
-      :rules="rules"
       hide-details="auto"
       v-model="mde.title" 
     ></v-text-field>
     <br>
+
     <v-btn
       @click.native="uploadNote()"
-    >
-      Upload
-    </v-btn>
+    > Upload </v-btn>
+
+    <v-btn
+      @click.native="renderNote()"
+    > Render </v-btn>
+
+    <br><br>
+    <div 
+      v-html="renderedContent"
+    ></div>
 
   </div>
 </template>
 
 <script>
 import VueSimplemde from 'vue-simplemde'
+import { marked } from 'marked';
+import swal from "sweetalert";
 export default {
   data() {
     return {
       mde: {
         title: "Untitled Document",
-        content: "## Welcome to NoteTogther! \n**Lorem ipsum** dolor _sit amet_, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \n\n>  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \n\n`Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`\n\nExcepteur sint [occaecat](https://somelink) \n*  cupidatat non proident, \n*  sunt in culpa qui officia deserunt \n*  mollit anim id est laborum.\n\n![Poster](https://drive.google.com/drive/u/2/folders/1l86i2zFTW22skrEASi6uezud8QOXTRjO)"
-      }
+        content: "## Welcome to NoteTogther! \n**Lorem ipsum** dolor _sit amet_, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \n\n>  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \n\n`Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`\n\nExcepteur sint [occaecat](https://somelink) \n*  cupidatat non proident, \n*  sunt in culpa qui officia deserunt \n*  mollit anim id est laborum.\n\n![Poster](https://drive.google.com/drive/u/2/folders/1l86i2zFTW22skrEASi6uezud8QOXTRjO) <= embed links will be blocked to prevent cross-site scripting, will whitelist stuff on our servers in the future"
+      },
+      renderedContent: "",
     };
   },
   components: {
@@ -37,14 +46,32 @@ export default {
   },
   methods: {
     async uploadNote() {
-      let token = localStorage.getItem("jwt");
-      console.log(this.mde);
-      let response = await this.$http.post(
-        "/note/create",
-        this.mde,
-        { headers: { 'Authorization': token } }
-        );
-      console.log(response);
+      try {
+        let token = localStorage.getItem("jwt");
+        console.log(this.mde);
+        let response = await this.$http.post(
+          "/note/create",
+          this.mde,
+          { headers: { 'Authorization': token } }
+          );
+        swal("Success", "Upload Successful (But Not Published)", "success");
+        console.log(response);
+      } catch (err) {
+        switch(err.request.status) {
+          case 409:
+            swal("Error", "You already have a document with the same name!", "error");
+            break;
+          case 401:
+            swal("Error", "Unauthorized or your session has expired! Please relog.", "error");
+            break;
+          default:
+            swal("Error", 'Uhh, error {{err.request.status}}', "error");
+        }
+        
+      }
+    },
+    async renderNote() {
+      this.renderedContent = marked(this.mde.content);
     },
   }
 };
