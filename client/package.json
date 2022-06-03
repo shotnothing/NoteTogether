@@ -20,15 +20,6 @@
     "vue-simplemde": "^2.0.1",
     "vuetify": "^2.6.0"
   },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^5.0.4",
-    "@vue/cli-service": "^5.0.4",
-    "sass": "~1.32.0",
-    "sass-loader": "^10.0.0",
-    "vue-cli-plugin-vuetify": "~2.5.0",
-    "vue-template-compiler": "^2.6.10",
-    "vuetify-loader": "^1.7.0"
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions"
