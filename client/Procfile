@@ -1,0 +1,1 @@
+﻿web: cd client; npm install -g @vue/cli-service; npm run serve
