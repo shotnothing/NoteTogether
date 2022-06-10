@@ -5,7 +5,7 @@ const noteSchema = mongoose.Schema({
     required: [true, "Please include a title for the note!"]
   },
   content: {
-    type: String
+    type: [String]
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -35,6 +35,10 @@ const noteSchema = mongoose.Schema({
     required: true,
     default: false,
   },
+  forkOf: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: false
+  }
 });
 
 const Note = mongoose.model("Note", noteSchema);

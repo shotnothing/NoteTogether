@@ -15,12 +15,6 @@ exports.createNote = async (req, res) => {
       isDeleted: false
     });
 
-    const note = new Note({
-      title: req.body.title,
-      content: req.body.content,
-      userId: userId
-    });
-
     // User is not allowed to create two notes of the same name
     if (noteSearch.length >= 1) {
       return res.status(409).json({
@@ -28,6 +22,39 @@ exports.createNote = async (req, res) => {
         err: "You have already created a note with this name!"
       });
     }
+
+    // Create note (assume first that its not a fork)
+    var note = new Note({
+      title: req.body.title,
+      content: req.body.content.split('\n'),
+      userId: userId
+    });
+
+    // If it's a fork, do fork stuff
+    if (!!req.body.forkOf) { // !! is trick for defined and not null
+
+      // Find parent note
+      let noteSearch = await Note.findById(req.body.forkOf);
+      if (!noteSearch) {
+        console.log("wahaodsaDSAad")
+        return res.status(409).json({
+          userId: userId,
+          err: "Can't fork, no such parent note exists!"
+        });        
+      }
+
+      // Todo: git diff here! work on it tmrw.
+
+      note = new Note({
+        title: req.body.title,
+        content: req.body.content.split('\n'), // change me!
+        userId: userId,
+        forkOf: req.body.forkOf
+      });
+    }
+
+
+
 
     // Adds new note to user's collection
     let savedNote = await note.save();

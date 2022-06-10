@@ -22,7 +22,7 @@ mongoose
 //registering cors
 app.use(cors());
 //configure body parser
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 //configure body-parser ends here
 
