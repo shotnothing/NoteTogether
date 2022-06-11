@@ -1,3 +1,7 @@
+// TODO BOARD
+// - enforce cannot fork unpublished notes
+// - should not store unchanged diffs
+
 const Note = require("../model/Note");
 const User = require("../../user/model/User");
 
@@ -26,35 +30,39 @@ exports.createNote = async (req, res) => {
     // Create note (assume first that its not a fork)
     var note = new Note({
       title: req.body.title,
-      content: req.body.content.split('\n'),
+      content: req.body.content.split('\n').map(x => "+" + x),
       userId: userId
     });
 
-    // If it's a fork, do fork stuff
-    if (!!req.body.forkOf) { // !! is trick for defined and not null
+    if (!!req.body.forkOf) {
 
       // Find parent note
-      let noteSearch = await Note.findById(req.body.forkOf);
-      if (!noteSearch) {
-        console.log("wahaodsaDSAad")
+      let noteParent = await Note.findById(req.body.forkOf);
+      if (!noteParent) {
         return res.status(409).json({
           userId: userId,
           err: "Can't fork, no such parent note exists!"
         });        
       }
 
-      // Todo: git diff here! work on it tmrw.
+      let noteParentContent = await resolveFork(req.body.forkOf);
+
+      console.log("======================")
+      console.log(typeof req.body.content.split('\n'))
+      console.log(typeof noteParentContent)
+      var out = diffArray(
+        req.body.content.split('\n'),
+        noteParentContent)
+      console.log(out)
+      console.log("======================")
 
       note = new Note({
         title: req.body.title,
-        content: req.body.content.split('\n'), // change me!
+        content: out, // change me!
         userId: userId,
         forkOf: req.body.forkOf
       });
     }
-
-
-
 
     // Adds new note to user's collection
     let savedNote = await note.save();
@@ -229,4 +237,98 @@ exports.searchNote = async (req, res) => {
   } catch (err) {
     res.status(400).json({ err: err });
   }
+}
+
+function myers( o, n ) {
+  var ns = new Object();
+  var os = new Object();
+  
+  for ( var i = 0; i < n.length; i++ ) {
+    if ( ns[ n[i] ] == null )
+      ns[ n[i] ] = { rows: new Array(), o: null };
+    ns[ n[i] ].rows.push( i );
+  }
+  
+  for ( var i = 0; i < o.length; i++ ) {
+    if ( os[ o[i] ] == null )
+      os[ o[i] ] = { rows: new Array(), n: null };
+    os[ o[i] ].rows.push( i );
+  }
+  
+  for ( var i in ns ) {
+    if ( ns[i].rows.length == 1 && typeof(os[i]) != "undefined" && os[i].rows.length == 1 ) {
+      n[ ns[i].rows[0] ] = { text: n[ ns[i].rows[0] ], row: os[i].rows[0] };
+      o[ os[i].rows[0] ] = { text: o[ os[i].rows[0] ], row: ns[i].rows[0] };
+    }
+  }
+  
+  for ( var i = 0; i < n.length - 1; i++ ) {
+    if ( n[i].text != null && n[i+1].text == null && n[i].row + 1 < o.length && o[ n[i].row + 1 ].text == null && 
+         n[i+1] == o[ n[i].row + 1 ] ) {
+      n[i+1] = { text: n[i+1], row: n[i].row + 1 };
+      o[n[i].row+1] = { text: o[n[i].row+1], row: i + 1 };
+    }
+  }
+  
+  for ( var i = n.length - 1; i > 0; i-- ) {
+    if ( n[i].text != null && n[i-1].text == null && n[i].row > 0 && o[ n[i].row - 1 ].text == null && 
+         n[i-1] == o[ n[i].row - 1 ] ) {
+      n[i-1] = { text: n[i-1], row: n[i].row - 1 };
+      o[n[i].row-1] = { text: o[n[i].row-1], row: i - 1 };
+    }
+  }
+  
+  return {o: o, n: n};
+}
+
+function diffArray(o, n) {
+
+  var out = myers(o, n);
+      
+  var ret = [];
+  var str = "";
+
+  if (out.n.length == 0) {
+      for (var i = 0; i < out.o.length; i++) {
+        ret.push("-" + escape(out.o[i]))
+      }
+  } else {
+    if (out.n[0].text == null) {
+      for (n = 0; n < out.o.length && out.o[n].text == null; n++) {
+        ret.push("-" + escape(out.o[n]))
+      }
+    }
+
+    for ( var i = 0; i < out.n.length; i++ ) {
+      if (out.n[i].text == null) {
+        ret.push("+" + escape(out.n[i]))
+      } else {
+        var pre = [];
+        for (n = out.n[i].row + 1; n < out.o.length && out.o[n].text == null; n++ ) {
+          pre.push('-' + escape(out.o[n]))
+        }
+        ret.push(" " + out.n[i].text)
+        ret.push(...pre)
+      }
+    }
+  }
+  
+  return ret;
+}
+
+async function resolveFork(cur) {
+  let note = await Note.findById(cur);
+
+  console.log("WEEEEEEEEEEEEEEEEEEEE");
+  console.log(note);
+  console.log("WOOOOOOOOOOOOOOOOOOOO");
+
+  if (!!note.forkOf) {
+    console.log("SHUMP");
+    return resolveFork(note.forkOf).push(...[note.content]);
+  }
+
+  console.log("SHOOP");
+  console.log([note.content]);
+  return [note.content];
 }

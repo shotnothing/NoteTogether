@@ -19,6 +19,11 @@ const userSchema = mongoose.Schema({
     ref: 'Note',
     default: []
   },
+  credits: {
+    type: Number,
+    required: false,
+    default: 0
+  },
   tokens: [
     {
       token: {
