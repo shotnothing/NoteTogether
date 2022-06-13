@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.css";
+import "./styles/_custom.scss";
 import vuetify from './plugins/vuetify'
 
 const base = axios.create({

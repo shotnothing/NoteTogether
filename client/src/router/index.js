@@ -1,34 +1,27 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+import collateRoute from "../modules/collate";
+import discoverRoute from "../modules/discover";
+import editRoute from "../modules/edit";
+import studyRoute from "../modules/study";
+import userRoute from "../modules/user";
+
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/home",
-    name: "Home",
-    component: () => import("../views/Home.vue"),
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/",
-    name: "Login",
-    component: () => import("../views/Login.vue")
-  },
-  {
-    path: "/register",
-    name: "Register",
-    component: () => import("../views/Register.vue")
-  },
-  {
-    path: "/dev",
-    name: "Dev",
-    component: () => import("../views/Dev.vue"),
-    meta: {
-      requiresAuth: true
-    }
+    path: "",
+    name: "HomeTemplate",
+    component: () => import("../views/HomeTemplate.vue"),
+    children: [
+      {
+        path: "/",
+        name: "Home",
+        component: () => import("../views/Home.vue")
+      },
+      userRoute,
+    ]
   },
 ];
 

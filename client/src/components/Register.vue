@@ -47,7 +47,7 @@
           />
 
           <p>
-            Already have an account? <router-link to="/"
+            Already have an account? <router-link to="/user/login"
               >Login</router-link
             >
 
@@ -67,6 +67,7 @@
 <script>
 import swal from "sweetalert";
 export default {
+  name: "RegisterComponent",
   data() {
     return {
       register: {

@@ -26,7 +26,7 @@
           />
 
           <p>
-            New here? <router-link to="/Register"
+            New here? <router-link to="/user/register"
               >Sign up</router-link
             >
           </p>
@@ -46,6 +46,7 @@
 <script>
 import swal from "sweetalert";
 export default {
+  name: "LoginComponent",
   data() {
     return {
       login: {
@@ -55,7 +56,6 @@ export default {
     };
   },
   methods: {
-
     async loginUser() {
       try {
         let response = await this.$http.post("/user/login", this.login);
@@ -63,7 +63,7 @@ export default {
         localStorage.setItem("jwt", token);
         if (token) {
           swal("Success", "Login Successful", "success");
-          this.$router.push("/home");
+          this.$router.push("/");
         }
       } catch (err) {
         swal("Error", "Invalid Credentials", "error");
