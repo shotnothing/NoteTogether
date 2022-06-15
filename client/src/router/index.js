@@ -21,6 +21,10 @@ const routes = [
         component: () => import("../views/Home.vue")
       },
       userRoute,
+      discoverRoute,
+      studyRoute,
+      editRoute,
+      collateRoute
     ]
   },
 ];

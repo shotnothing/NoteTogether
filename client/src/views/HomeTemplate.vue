@@ -1,16 +1,32 @@
 <template>
   <div class="bg-primary text-dark h-100">
-    <Navbar></Navbar>
-    <router-view></router-view>
+    <Navbar :id="user._id"></Navbar>
+    <router-view :user="user"></router-view>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar.vue"
+import VueJwtDecode from "vue-jwt-decode";
+
 export default {
   name: "HomeTemplate",
+  data() {
+    return {
+      user: {},
+    };
+  },
   components: {
     Navbar,
-  }
+  },
+  methods: {
+    getUserDetails() {
+      let token = localStorage.getItem("jwt");
+      this.user = VueJwtDecode.decode(token);
+    }
+  },
+  created() {
+    this.getUserDetails();
+  },
 };
 </script>

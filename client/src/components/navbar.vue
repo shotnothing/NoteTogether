@@ -1,7 +1,7 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-md sticky-top navbar-primary bg-primary rounded-0 p-0 shadow">
-      <div class="container-fluid align-items-center align-items-stretch">
+    <nav class="navbar navbar-expand-md navbar-primary bg-primary rounded-0 p-0 shadow">
+      <div class="container-fluid">
         <a class="navbar-left" href="/"><img style="max-width:150px;" class="m-0" src="../assets/Logo.png" alt="NoteTogether Logo"></a>
 
         <button
@@ -16,33 +16,32 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav d-flex ml-20 mr-20 w-100 h-100 justify-content-around align-items-center">
-            <li class="nav-item">
-              <a class="nav-link text-dark" href="/discover">Discover</a>
+          <ul class="navbar-nav w-100 me-auto">
+            <li class="nav-item col">
+              <a class="nav-link text-dark btn bg-primary w-100" href="/discover">Discover</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" href="/study">Study</a>
+            <li class="nav-item col">
+              <a class="nav-link text-dark btn bg-primary w-100" href="/study">Study</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" href="/edit">Edit</a>
+            <li class="nav-item col">
+              <a class="nav-link text-dark btn bg-primary w-100" href="/edit">Edit</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" href="/collate">Collate</a>
+            <li class="nav-item col">
+              <a class="nav-link text-dark btn bg-primary w-100" href="/collate">Collate</a>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown col">
               <a
-                class="nav-link dropdown-toggle text-dark"
+                class="nav-link text-dark dropdown-toggle btn bg-primary"
                 href="/"
                 id="accountDropdown"
-                role="button"
                 data-toggle="dropdown"
                 aria-expanded="false"
               >
                 Account
               </a>
-              <ul class="dropdown-menu bg-primary pl-0 shadow-none" v-if="user._id" aria-labelledby="accountDropdown">
+              <ul class="dropdown-menu dropdown-menu-right bg-primary pl-0 shadow-none" v-if="id" aria-labelledby="accountDropdown">
                 <li>
-                  <a class="dropdown-item" v-bind:href="'/user/'+user._id+'/profile'">Profile</a>
+                  <a class="dropdown-item" v-bind:href="'/user/'+id+'/profile'">Profile</a>
                 </li>
                 <li>
                   <a class="dropdown-item" @click="logUserOut">Logout</a>
@@ -65,29 +64,19 @@
 </template>
 
 <script>
-import VueJwtDecode from "vue-jwt-decode";
-
 export default {
-  data() {
-    return {
-      user: {}
-    };
+  name: "Navbar",
+  props: {
+    id: String
   },
   methods: {
-    getUserDetails() {
-      let token = localStorage.getItem("jwt");
-      let decoded = VueJwtDecode.decode(token);
-      this.user = decoded;
-    },
     logUserOut() {
       localStorage.removeItem("jwt");
       this.$router.push("/");
       window.location.reload();
     },
-  },
-
-  created() {
-    this.getUserDetails();
   }
 };
 </script>
+
+<style scoped></style>
