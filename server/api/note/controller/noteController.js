@@ -30,7 +30,7 @@ exports.createNote = async (req, res) => {
     // Create note (assume first that its not a fork)
     var note = new Note({
       title: req.body.title,
-      content: req.body.content.split('\n').map(x => "+" + x),
+      content: req.body.content.split('\n'),
       userId: userId
     });
 
@@ -45,20 +45,15 @@ exports.createNote = async (req, res) => {
         });        
       }
 
-      let noteParentContent = await resolveFork(req.body.forkOf);
+      let noteParentContent = await resolveFork(noteParent);
 
-      console.log("======================")
-      console.log(typeof req.body.content.split('\n'))
-      console.log(typeof noteParentContent)
-      var out = diffArray(
-        req.body.content.split('\n'),
-        noteParentContent)
-      console.log(out)
-      console.log("======================")
+      var out = myers(
+        noteParentContent,
+        req.body.content.split('\n'))
 
       note = new Note({
         title: req.body.title,
-        content: out, // change me!
+        content: out,
         userId: userId,
         forkOf: req.body.forkOf
       });
@@ -98,9 +93,11 @@ exports.readNote = async (req, res) => {
     res.status(200).json({
       title: note.title,
       content: note.content,
+      resolved_content: await resolveFork(note),
       username: username
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ err: err });
   }
 }
@@ -243,92 +240,87 @@ function myers( o, n ) {
   var ns = new Object();
   var os = new Object();
   
-  for ( var i = 0; i < n.length; i++ ) {
-    if ( ns[ n[i] ] == null )
+  //deep copies
+  o = o.slice(); 
+  n = n.slice();
+  
+  var diff = [];
+  
+  for (var i = 0; i < n.length; i++) {
+    if (ns[ n[i] ] == null)
       ns[ n[i] ] = { rows: new Array(), o: null };
-    ns[ n[i] ].rows.push( i );
+    ns[ n[i] ].rows.push([i]);
   }
   
-  for ( var i = 0; i < o.length; i++ ) {
-    if ( os[ o[i] ] == null )
+  for (var i = 0; i < o.length; i++) {
+    if (os[ o[i] ] == null)
       os[ o[i] ] = { rows: new Array(), n: null };
-    os[ o[i] ].rows.push( i );
+    os[ o[i] ].rows.push([i]);
   }
   
-  for ( var i in ns ) {
-    if ( ns[i].rows.length == 1 && typeof(os[i]) != "undefined" && os[i].rows.length == 1 ) {
-      n[ ns[i].rows[0] ] = { text: n[ ns[i].rows[0] ], row: os[i].rows[0] };
-      o[ os[i].rows[0] ] = { text: o[ os[i].rows[0] ], row: ns[i].rows[0] };
+  for (var i in ns) {
+    if (ns[i].rows.length == 1 && typeof(os[i]) != "undefined" && os[i].rows.length == 1) {
+      n[ ns[i].rows[0] ] = os[i].rows[0];
+      o[ os[i].rows[0] ] = ns[i].rows[0];
     }
   }
   
-  for ( var i = 0; i < n.length - 1; i++ ) {
-    if ( n[i].text != null && n[i+1].text == null && n[i].row + 1 < o.length && o[ n[i].row + 1 ].text == null && 
-         n[i+1] == o[ n[i].row + 1 ] ) {
-      n[i+1] = { text: n[i+1], row: n[i].row + 1 };
-      o[n[i].row+1] = { text: o[n[i].row+1], row: i + 1 };
+  for (var i = 0; i < n.length - 1; i++) {
+    if (n[i].text != null && n[i+1].text == null && n[i].row + 1 < o.length && o[ n[i].row + 1 ].text == null && 
+         n[i+1] == o[ n[i].row + 1 ]) {
+      n[i+1] = n[i].row + 1 ;
+      o[n[i].row+1] =  i + 1 ;
     }
   }
   
-  for ( var i = n.length - 1; i > 0; i-- ) {
-    if ( n[i].text != null && n[i-1].text == null && n[i].row > 0 && o[ n[i].row - 1 ].text == null && 
+  for (var i = n.length - 1; i > 0; i--) {
+    if (n[i].text != null && n[i-1].text == null && n[i].row > 0 && o[ n[i].row - 1 ].text == null && 
          n[i-1] == o[ n[i].row - 1 ] ) {
-      n[i-1] = { text: n[i-1], row: n[i].row - 1 };
-      o[n[i].row-1] = { text: o[n[i].row-1], row: i - 1 };
+      n[i-1] =  n[i].row - 1 ;
+      o[n[i].row-1] = i - 1 ;
     }
   }
   
-  return {o: o, n: n};
+  for (var i in o) {
+      if (!Array.isArray(o[i])) {
+          diff.push('-' + i)
+          diff.push('')
+      }
+  }
+  
+  for (var i in n) {
+      if (!Array.isArray(n[i])) {
+          diff.push('+' + i)
+          diff.push(n[i])
+      }
+  }
+  
+  return diff;
 }
 
-function diffArray(o, n) {
-
-  var out = myers(o, n);
-      
-  var ret = [];
-  var str = "";
-
-  if (out.n.length == 0) {
-      for (var i = 0; i < out.o.length; i++) {
-        ret.push("-" + escape(out.o[i]))
-      }
-  } else {
-    if (out.n[0].text == null) {
-      for (n = 0; n < out.o.length && out.o[n].text == null; n++) {
-        ret.push("-" + escape(out.o[n]))
-      }
-    }
-
-    for ( var i = 0; i < out.n.length; i++ ) {
-      if (out.n[i].text == null) {
-        ret.push("+" + escape(out.n[i]))
-      } else {
-        var pre = [];
-        for (n = out.n[i].row + 1; n < out.o.length && out.o[n].text == null; n++ ) {
-          pre.push('-' + escape(out.o[n]))
+function unmyers( n, diff ) {
+    var o = n.slice(); //deep copy
+  
+    var shift = 0;
+    for (i = 0; i < diff.length; i+=2) {
+        var op = diff[i][0];
+        var addr = parseInt(diff[i].slice(1));
+        
+        if (op == '-') {
+            o.splice(addr + shift, 1)
+            shift -= 1;
+        } else if (op == '+') {
+            o.splice(addr, 0, diff[i + 1])
         }
-        ret.push(" " + out.n[i].text)
-        ret.push(...pre)
-      }
     }
-  }
-  
-  return ret;
+    
+    return o;
 }
 
-async function resolveFork(cur) {
-  let note = await Note.findById(cur);
-
-  console.log("WEEEEEEEEEEEEEEEEEEEE");
-  console.log(note);
-  console.log("WOOOOOOOOOOOOOOOOOOOO");
-
+async function resolveFork(note) {
   if (!!note.forkOf) {
-    console.log("SHUMP");
-    return resolveFork(note.forkOf).push(...[note.content]);
+    var parent = await Note.findById(note.forkOf);
+    return unmyers(await resolveFork(parent), note.content)
   }
-
-  console.log("SHOOP");
-  console.log([note.content]);
-  return [note.content];
+  return note.content;
 }
