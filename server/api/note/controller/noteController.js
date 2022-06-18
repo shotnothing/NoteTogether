@@ -1,7 +1,3 @@
-// TODO BOARD
-// - enforce cannot fork unpublished notes
-// - should not store unchanged diffs
-
 const Note = require("../model/Note");
 const User = require("../../user/model/User");
 

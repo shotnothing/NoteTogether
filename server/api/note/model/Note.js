@@ -38,7 +38,12 @@ const noteSchema = mongoose.Schema({
   forkOf: {
     type: mongoose.Schema.Types.ObjectId,
     required: false
-  }
+  },
+  votes: {
+    type: Number,
+    required: true,
+    default: 0
+  },
 });
 
 const Note = mongoose.model("Note", noteSchema);

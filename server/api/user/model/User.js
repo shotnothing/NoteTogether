@@ -24,6 +24,15 @@ const userSchema = mongoose.Schema({
     required: false,
     default: 0
   },
+  voted: {
+    type: [
+      {
+        id: mongoose.Schema.Types.ObjectId,
+        isUpvote: Boolean
+      }
+    ],
+    default: []
+  },
   tokens: [
     {
       token: {
@@ -31,7 +40,7 @@ const userSchema = mongoose.Schema({
         required: true
       }
     }
-  ]
+  ],
 });
 
 userSchema.pre("save", async function(next) {
