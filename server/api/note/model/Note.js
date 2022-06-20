@@ -44,6 +44,11 @@ const noteSchema = mongoose.Schema({
     required: true,
     default: 0
   },
+  reviews: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Review',
+    default: []
+  },
 });
 
 const Note = mongoose.model("Note", noteSchema);

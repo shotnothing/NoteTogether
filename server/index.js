@@ -39,6 +39,9 @@ app.use("/user", userRoutes);
 const noteRoutes = require("./api/note/route/note"); //bring in our note routes
 app.use("/note", noteRoutes);
 
+const reviewRoutes = require("./api/review/route/review"); //bring in our note routes
+app.use("/review", reviewRoutes);
+
 app.listen(PORT, () => {
   console.log(`App is running on ${PORT}`);
 });

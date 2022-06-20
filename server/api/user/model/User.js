@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Note',
     default: []
-  },
+  },  
   credits: {
     type: Number,
     required: false,

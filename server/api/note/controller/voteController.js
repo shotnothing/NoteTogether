@@ -13,7 +13,7 @@ exports.voteNote = async (req, res) => {
       case "upvote":
         if (isVoted(noteId, user)) {
           if (isUpvote(noteId, user)) {
-            res.status(401).json({ err: "Note already upvoted" });
+            return res.status(401).json({ err: "Note already upvoted" });
           } else {
             // clear downvote
             await clearVote(noteId, userId);
@@ -21,13 +21,13 @@ exports.voteNote = async (req, res) => {
             // do upvote
             const status = await upvote(noteId, userId);
 
-            res.status(200).json({ status: status});
+            return res.status(200).json({ status: "Note changed to upvoted"});
           }
         } else {
           // do upvote
           const status = upvote(noteId, userId);
 
-          res.status(200).json({ status: status});
+          return res.status(200).json({ status: "Note upvoted"});
         }
 
 
@@ -36,20 +36,20 @@ exports.voteNote = async (req, res) => {
       case "downvote":
         if (isVoted(noteId, user)) {
           if (!isUpvote(noteId, user)) {
-            res.status(401).json({ err: "Note already downvoted" });
+            return res.status(401).json({ err: "Note already downvoted" });
           } else {
             // clear upvote
             await clearVote(noteId, userId);
 
             // do downvote
             const status = await downvote(noteId, userId);
-            res.status(200).json({ status: status});
+            return res.status(200).json({ status: "Note changed to downvoted"});
           }
         } else {
           // do downvote
           const status = downvote(noteId, userId);
 
-          res.status(200).json({ status: status});
+          return res.status(200).json({ status: "Note downvoted"});
         }
         break;
 
@@ -58,14 +58,14 @@ exports.voteNote = async (req, res) => {
           // clear vote
           const status = await clearVote(noteId, userId)
 
-          res.status(200).json({ status: status});
+          return res.status(200).json({ status: status});
         } else {
-          res.status(401).json({ err: "Note has no vote by this user" });
+          return res.status(401).json({ err: "Note has no vote by this user" });
         }
         break;
 
       default:
-        res.status(401).json({ err: "Voting action in vote API is not defined" });
+        return res.status(401).json({ err: "Voting action in vote API is not defined" });
     }
 
   } catch (err) {
