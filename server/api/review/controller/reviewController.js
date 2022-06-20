@@ -31,31 +31,32 @@ exports.createReview = async (req, res) => {
   }
 }
 
-// exports.readReview = async (req, res) => {
-//   try {
-//     // Review to be read
-//     const ReviewId = req.body.ReviewId;
-//     let Review = await Review.findById(ReviewId);
+exports.readReview = async (req, res) => {
+  try {
+    // Review to be read
+    const reviewId = req.body.reviewId;
+    let review = await Review.findById(reviewId);
 
-//     // Id of the requestor
-//     const userId = Review.userId;
+    console.log("TEST")
+    console.log(review)
+    console.log(review.userId)
 
-//     // Id of the creator of the Review
-//     const ReviewCreatorId = Review.userId;
-//     let user = await User.findById(userId);
-//     const username = user.username;
+    // Id of the requestor
+    const userId = review.userId;
 
-//     res.status(200).json({
-//       title: Review.title,
-//       content: await resolveFork(Review),
-//       raw_content: Review.content,
-//       username: username
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     res.status(400).json({ err: err });
-//   }
-// }
+    // Id of the creator of the Review
+    let author = await User.findById(review.userId);
+
+    res.status(200).json({
+      title: review.title,
+      content: review.content,
+      author: author.username
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: err });
+  }
+}
 
 // exports.updateReview = async (req, res) => {
 //   try {
