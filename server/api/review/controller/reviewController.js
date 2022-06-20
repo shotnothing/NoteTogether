@@ -37,10 +37,6 @@ exports.readReview = async (req, res) => {
     const reviewId = req.body.reviewId;
     let review = await Review.findById(reviewId);
 
-    console.log("TEST")
-    console.log(review)
-    console.log(review.userId)
-
     // Id of the requestor
     const userId = review.userId;
 
@@ -58,78 +54,74 @@ exports.readReview = async (req, res) => {
   }
 }
 
-// exports.updateReview = async (req, res) => {
-//   try {
-//     // Review to be saved
-//     const ReviewId = req.body.ReviewId;
-//     let Review = await Review.findById(ReviewId);
+exports.updateReview = async (req, res) => {
+  try {
+    // Review to be updated
+    const reviewId = req.body.reviewId;
+    let review = await Review.findById(reviewId);
 
-//     // Id of the requestor
-//     const userId = req.userData._id;
-//     // Id of the Review creator
-//     const ReviewCreatorId = Review.userId;
+    // Id of the requestor
+    const userId = req.userData._id;
+    // Id of the Review creator
+    const authorId = review.userId;
 
-//     // Cannot update a Review that does not belong to you
-//     if (ReviewCreatorId != userId) {
-//       return res.status(401).json({ err: "Not authorised!" });
-//     }
+    // Cannot update a Review that does not belong to you
+    if (authorId != userId) {
+      return res.status(401).json({ err: "Not authorised!" });
+    }
 
-//     // Replaces the content
-//     Review.content = req.body.content;
-//     Review.dateLastUpdated = Date.now();
-//     await Review.save();
+    // Cannot update a deleted review
+    if (review.isDeleted) {
+      return res.status(405).json({
+        review: review,
+        err: "Cannot update a deleted review!"
+      });
+    }
 
-//     res.status(200).json({ Review: Review });
-//   } catch (err) {
-//     res.status(400).json({ err: err });
-//   }
-// }
+    // Replaces the content
+    review.content = req.body.content;
+    review.title = req.body.title;
+    review.dateLastUpdated = Date.now();
+    await review.save();
 
-// exports.deleteReview = async (req, res) => {
-//   try {
-//     // Review to be deleted
-//     const ReviewId = req.body.ReviewId;
-//     let Review = await Review.findById(ReviewId);
+    res.status(200).json({ Review: review });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: err });
+  }
+}
 
-//     // Cannot delete a deleted Review
-//     if (Review.isDeleted) {
-//       return res.status(405).json({
-//         Review: Review,
-//         err: "Review has already been deleted!"
-//       });
-//     }
+exports.deleteReview = async (req, res) => {
+  try {
+    // Review to be deleted
+    const reviewId = req.body.reviewId;
+    let review = await Review.findById(reviewId);
 
-//     // Updates the flags for the Review
-//     Review.isDeleted = true;
-//     const savedReview = await Review.save();
+    // Cannot update a Review that does not belong to you
+    if (review.userId != req.userData._id) {
+      return res.status(401).json({ err: "Not authorised!" });
+    }
 
-//     // Delete Review from the user's perspective
-//     const userId = req.userData._id;
-//     let user = await User.findById(userId);
-//     user.Reviews.splice(user.Reviews.indexOf(ReviewId), 1);
-//     await user.save();
+    // Cannot delete a deleted Review
+    if (review.isDeleted) {
+      return res.status(405).json({
+        Review: review,
+        err: "Review has already been deleted!"
+      });
+    }
 
-//     res.status(200).json({ Review: savedReview });
-//   } catch (err) {
-//     res.status(400).json({ err: err });
-//   }
-// }
+    // Updates the flags for the Review
+    review.isDeleted = true;
+    const savedReview = await review.save();
 
-// exports.searchReview = async (req, res) => {
-//   try {
-//     const Reviews = await Review
-//       .find({
-//         title: { $regex: new RegExp(req.body.searchTerm, "i") },
-//         isDeleted: false
-//       })
-//       .sort({ dateLastUpdated: -1 })
-//       .skip(PER_PAGE*(req.body.page-1))
-//       .limit(PER_PAGE)
-//       .populate("userId", "username")
-//       .select("title userId datePublished username");
+    // Delete Review from the note's perspective
+    let note = await User.findById(review.noteId);
+    note.reviews.splice(note.reviews.indexOf(reviewId), 1);
+    await note.save();
 
-//     res.status(200).json({ searchResults: Reviews });
-//   } catch (err) {
-//     res.status(400).json({ err: err });
-//   }
-// }
+    res.status(200).json({ Review: savedReview });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: err });
+  }
+}

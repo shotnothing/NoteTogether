@@ -108,7 +108,6 @@ exports.updateNote = async (req, res) => {
     const userId = req.userData._id;
     // Id of the note creator
     const noteCreatorId = note.userId;
-
     // Cannot update a note that does not belong to you
     if (noteCreatorId != userId) {
       return res.status(401).json({ err: "Not authorised!" });
@@ -138,6 +137,11 @@ exports.deleteNote = async (req, res) => {
     // Note to be deleted
     const noteId = req.body.noteId;
     let note = await Note.findById(noteId);
+
+    // Cannot update a note that does not belong to you
+    if (note.userId != req.userData._id) {
+      return res.status(401).json({ err: "Not authorised!" });
+    }
 
     // Cannot delete a deleted note
     if (note.isDeleted) {
