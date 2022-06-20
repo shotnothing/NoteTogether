@@ -12,6 +12,6 @@ router.post('/publish', auth, noteController.publishNote);
 router.post('/search', auth, noteController.searchNote);
 
 router.post('/vote', auth, voteController.voteNote);
-router.post('/isVoted', auth, voteController.isNoteVoted);
+router.post('/checkVoted', auth, voteController.checkVoted);
 
 module.exports = router;

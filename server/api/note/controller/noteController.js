@@ -88,8 +88,8 @@ exports.readNote = async (req, res) => {
 
     res.status(200).json({
       title: note.title,
-      content: note.content,
-      resolved_content: await resolveFork(note),
+      content: await resolveFork(note),
+      raw_content: note.content,
       username: username
     });
   } catch (err) {
