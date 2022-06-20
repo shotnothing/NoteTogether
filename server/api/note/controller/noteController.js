@@ -83,15 +83,15 @@ exports.readNote = async (req, res) => {
 
     // Can access the note if you created it, or if it's published
     if (!note.isPublished && noteCreatorId != userId) {
-      res.status(401).json({ err: "Not authorised" });
+      return res.status(401).json({ err: "Not authorised" });
     }
 
     // Must purchase note if
-    if (/*stump for ifCostCredits*/ true // it costs credits
-      && noteCreatorId != userId         // you dont own the note
+    if (/*STUMP*/ true                    // it costs credits
+      && noteCreatorId != userId          // you dont own the note
       && !user.purchased.includes(noteId) // you have not purchased it before
     ) {
-      res.status(402).json({ err: "Need to purchase" });
+      return res.status(402).json({ err: "Need to purchase" });
     }
 
     res.status(200).json({
