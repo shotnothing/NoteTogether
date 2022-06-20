@@ -15,21 +15,22 @@ exports.voteNote = async (req, res) => {
           if (isUpvote(noteId, user)) {
             res.status(401).json({ err: "Note already upvoted" });
           } else {
-            // change downvote to upvote
-            res.status(200).json({ status: 'WIP down2up'});
+            // clear downvote
+            await clearVote(noteId, userId);
+
+            // do upvote
+            const status = await upvote(noteId, userId);
+
+            res.status(200).json({ status: status});
           }
         } else {
           // do upvote
-          res.status(200).json({ status: 'WIP up'});
+          const status = upvote(noteId, userId);
+
+          res.status(200).json({ status: status});
         }
 
-        // await User.updateOne(
-        //   { _id: userId },
-        //   {
-        //     $push: {
-        //       'voted': { id: noteId, isUpvote: true }, 
-        //     } 
-        //   });
+
         break;
 
       case "downvote":
@@ -37,22 +38,26 @@ exports.voteNote = async (req, res) => {
           if (!isUpvote(noteId, user)) {
             res.status(401).json({ err: "Note already downvoted" });
           } else {
-            // change upvote to downvote
-            res.status(200).json({ status: 'WIP up2down'});
+            // clear upvote
+            await clearVote(noteId, userId);
+
+            // do downvote
+            const status = await downvote(noteId, userId);
+            res.status(200).json({ status: status});
           }
         } else {
           // do downvote
-          res.status(200).json({ status: 'WIP down'});
+          const status = downvote(noteId, userId);
+
+          res.status(200).json({ status: status});
         }
         break;
 
       case "clear":
         if (isVoted(noteId, user)) {
-          const status = await User.findByIdAndUpdate(userId, {
-                $pull: {
-                  voted: { id: noteId },
-              },
-          })
+          // clear vote
+          const status = await clearVote(noteId, userId)
+
           res.status(200).json({ status: status});
         } else {
           res.status(401).json({ err: "Note has no vote by this user" });
@@ -76,7 +81,6 @@ exports.checkVoted = async (req, res) => {
     let user = await User.findById(userId);
 
     const noteId = req.body.noteId;
-    
     let voted = isVoted(noteId, user);
 
     res.status(200).json({ res: voted });
@@ -103,4 +107,31 @@ function isUpvote(noteId, user) {
     }
     throw 'Cannot find note!';
     return
+}
+
+async function upvote(noteId, userId) {
+  const status = await User.findByIdAndUpdate(userId, {
+      $push: {
+        voted: { id: noteId, isUpvote: true }, 
+      } 
+  });
+  return status;
+}
+
+async function downvote(noteId, userId) {
+  const status = await User.findByIdAndUpdate(userId, {
+      $push: {
+        voted: { id: noteId, isUpvote: false }, 
+      } 
+  });
+  return status;
+}
+
+async function clearVote(noteId, userId) {
+  const status = await User.findByIdAndUpdate(userId, {
+        $pull: {
+          voted: { id: noteId },
+      },
+  })
+  return status;
 }
