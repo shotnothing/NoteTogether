@@ -122,12 +122,19 @@ exports.updateNote = async (req, res) => {
     }
 
     // Replaces the content
-    note.content = req.body.content;
+    if (!!note.forkOf) {
+      note.content = myers(
+        await resolveFork(note), 
+        req.body.content.split('\n'));
+    } else {
+      note.content = req.body.content;
+    }
     note.dateLastUpdated = Date.now();
     await note.save();
 
     res.status(200).json({ note: note });
   } catch (err) {
+    console.log(err)
     res.status(400).json({ err: err });
   }
 }
