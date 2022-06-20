@@ -86,6 +86,14 @@ exports.readNote = async (req, res) => {
       res.status(401).json({ err: "Not authorised" });
     }
 
+    // Must purchase note if
+    if (/*stump for ifCostCredits*/ true // it costs credits
+      && noteCreatorId != userId         // you dont own the note
+      && !user.purchased.includes(noteId) // you have not purchased it before
+    ) {
+      res.status(402).json({ err: "Need to purchase" });
+    }
+
     res.status(200).json({
       title: note.title,
       content: await resolveFork(note),
