@@ -1,7 +1,7 @@
 <template>
   <div class="bg-primary text-dark h-100">
     <Navbar :id="user._id"></Navbar>
-    <router-view :user="user"></router-view>
+    <router-view :user="user" style="padding-top:80px"></router-view>
   </div>
 </template>
 

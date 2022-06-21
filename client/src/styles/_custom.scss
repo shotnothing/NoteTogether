@@ -1,7 +1,24 @@
 $primary: #EFEAD8;
 $secondary: #CE9999;
+$tertiary: #668C85;
 $dark: #000000;
 $link-primary: #000000;
+
+.color-gold {
+  color: #EBAA02
+}
+
+.color-silver {
+  color: #9DADB2
+}
+
+.color-bronze {
+  color: #B08D57
+}
+
+.flex-fixed-width-item {
+  flex: 0 0 50px;
+}
 
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~bootstrap-vue/dist/bootstrap-vue.css";

@@ -1,9 +1,17 @@
 <template>
-    <div>
-        <router-view />
-    </div>
+  <div>
+    <router-view :user="user"></router-view>
+  </div>
 </template>
 
 <script>
-export default {};
+export default {
+  name: "DiscoverTemplate",
+  props: ["user"],
+  data() {
+    return {
+      user: {}
+    }
+  }
+};
 </script>

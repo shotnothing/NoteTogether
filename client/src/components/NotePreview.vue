@@ -1,7 +1,7 @@
 <template>
-  <div class="text-center">
+  <div class="">
     <img src="@/assets/SampleThumbnail.png">
-    <div class="text-center">
+    <div class="">
       <p>
         {{ note.name }}
         <br/>

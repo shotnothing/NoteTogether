@@ -26,22 +26,22 @@ export default {
   data() {
     return {
       publishedNotes: [
-        {name:'BK Generics', username: 'Boon Keng'},
-        {name:'BK Never Gonna Give You Up', username: 'Boon Keng'},
-        {name:'BK All Star', username: 'Boon Keng'},
+        {name:'BK Generics', username: 'Boon Keng', votes: 40},
+        {name:'BK Never Gonna Give You Up', username: 'Boon Keng', votes: 41},
+        {name:'BK All Star', username: 'Boon Keng', votes: 30},
       ],
       ownedNotes: [
-        {name:'Type Erasure', username: 'Boon Keng'},
-        {name:'Type Inference', username: 'Boon Keng'},
-        {name:'Generic Types', username: 'Boon Keng'},
+        {name:'Type Erasure', username: 'Boon Keng', votes: 43},
+        {name:'Type Inference', username: 'Boon Keng', votes: 44},
+        {name:'Generic Types', username: 'Boon Keng', votes: 45},
       ],
       savedNotes: [
-        {name:'AL Generics', username: 'Aljunied'},
-        {name:'HS Never Gonna Give You Up', username: 'Hong Shan'},
-        {name:'BS All Star', username: 'Bi Shan'},
-        {name:'AL Generics', username: 'Aljunied'},
-        {name:'HS Never Gonna Give You Up', username: 'Hong Shan'},
-        {name:'BS All Star', username: 'Bi Shan'},
+        {name:'AL Generics', username: 'Aljunied', votes: 46},
+        {name:'HS Never Gonna Give You Up', username: 'Hong Shan', votes: 47},
+        {name:'BS All Star', username: 'Bi Shan', votes: 48},
+        {name:'AL Generics', username: 'Aljunied', votes: 49},
+        {name:'HS Never Gonna Give You Up', username: 'Hong Shan', votes: 50},
+        {name:'BS All Star', username: 'Bi Shan', votes: -10},
       ],
     };
   },
@@ -53,7 +53,7 @@ export default {
         { searchTerm: "gen" },
         { headers: { 'Authorization': token } }
         );
-      this.publishedNotes = response.data.searchResults;
+      return response.data.searchResults;
     },
     async getOwnedNotes() {
       let token = localStorage.getItem("jwt");
