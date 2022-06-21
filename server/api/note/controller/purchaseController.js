@@ -17,7 +17,7 @@ exports.purchaseNote = async (req, res) => {
     }
 
     // Check if user owns note
-    if (note.uerId == userId) {
+    if (note.userId == userId) {
       return res.status(401).json({ err: "No need to purchase your own note" });
     }
 

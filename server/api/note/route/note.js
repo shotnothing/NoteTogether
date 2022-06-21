@@ -21,5 +21,6 @@ router.post('/purchase', auth, purchaseController.purchaseNote);
 router.post('/checkPurchase', auth, purchaseController.checkPurchase);
 
 router.post('/favourite', auth, favouriteController.favourite);
+router.post('/checkFavourited', auth, favouriteController.checkFavourited);
 
 module.exports = router;
