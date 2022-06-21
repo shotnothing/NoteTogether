@@ -2,6 +2,7 @@ const Note = require("../model/Note");
 const User = require("../../user/model/User");
 
 const PER_PAGE = 5;
+const PREVIEW_LEN = 5;
 
 exports.createNote = async (req, res) => {
   try {
@@ -91,7 +92,10 @@ exports.readNote = async (req, res) => {
       && noteCreatorId != userId          // you dont own the note
       && !user.purchased.includes(noteId) // you have not purchased it before
     ) {
-      return res.status(402).json({ err: "Need to purchase" });
+      return res.status(402).json({ 
+        err: "Need to purchase",
+        preview: note.content[:PREVIEW_LEN]
+      });
     }
 
     res.status(200).json({

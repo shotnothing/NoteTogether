@@ -2,8 +2,6 @@ const Review = require("../model/Review");
 const User = require("../../user/model/User");
 const Note = require("../../note/model/Note");
 
-const PER_PAGE = 5;
-
 exports.createReview = async (req, res) => {
   try {
     // Id of requestor
