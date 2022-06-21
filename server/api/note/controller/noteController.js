@@ -75,26 +75,29 @@ exports.readNote = async (req, res) => {
     let note = await Note.findById(noteId);
 
     // Id of the requestor
-    const userId = note.userId;
+    const userId = req.userData._id;
 
     // Id of the creator of the note
-    const noteCreatorId = note.userId;
+    const authorId = note.userId;
     let user = await User.findById(userId);
     const username = user.username;
 
     // Can access the note if you created it, or if it's published
-    if (!note.isPublished && noteCreatorId != userId) {
-      return res.status(401).json({ err: "Not authorised" });
+    if (!note.isPublished && authorId != userId) {
+      return res.status(401).json({ err: "Not authorised/published" });
     }
 
+    let content = await resolveFork(note)
+
     // Must purchase note if
-    if (/*STUMP*/ true                    // it costs credits
-      && noteCreatorId != userId          // you dont own the note
+    if (true                              // it costs credits (STUMP)
+      && authorId != userId               // you dont own the note
       && !user.purchased.includes(noteId) // you have not purchased it before
+      && content.length > PREVIEW_LEN     // no need to pay for short notes
     ) {
       return res.status(402).json({ 
         err: "Need to purchase",
-        preview: note.content[:PREVIEW_LEN]
+        preview: content.slice(0, PREVIEW_LEN)
       });
     }
 

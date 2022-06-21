@@ -4,6 +4,7 @@ const auth = require("../../../config/auth");
 const noteController = require("../controller/noteController");
 const voteController = require("../controller/voteController");
 const purchaseController = require("../controller/purchaseController");
+const favouriteController = require("../controller/favouriteController");
 
 router.post('/create', auth, noteController.createNote);
 router.post('/read', auth, noteController.readNote);
@@ -18,5 +19,7 @@ router.post('/getVotes', auth, voteController.getVotes);
 
 router.post('/purchase', auth, purchaseController.purchaseNote);
 router.post('/checkPurchase', auth, purchaseController.checkPurchase);
+
+router.post('/favourite', auth, favouriteController.favourite);
 
 module.exports = router;

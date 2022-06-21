@@ -24,6 +24,11 @@ const userSchema = mongoose.Schema({
     ref: 'Purchased',
     default: []
   },  
+  favourited: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Favourited',
+    default: []
+  },  
   credits: {
     type: Number,
     required: false,
