@@ -198,9 +198,8 @@ async function changeNumVote(change, noteId) {
 }
 
 async function addCredited(note, user, credits = 0) {
-  
-  if (!(checkCredited(note, user._id))  // not credited before
-      ) {        // not your own note && user._id != note._id
+  if (!(checkCredited(note, user))  // not credited before
+      && user._id != note._id) {        // not your own note
     note.credited = [user._id, ...note.credited];
     await changeCredits(user, credits);
   }
@@ -213,7 +212,7 @@ async function removeCredited(note, user) {
   return await note.save();
 }
 
-async function checkCredited(note, user) {
+function checkCredited(note, user) {
   return note.credited.includes(user._id);
 }
 
