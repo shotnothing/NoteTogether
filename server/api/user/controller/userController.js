@@ -1,5 +1,10 @@
 const User = require("../model/User");
 
+const MAX_USERNAME_LENGTH = 16;
+const MIN_USERNAME_LENGTH = 3;
+const MAX_PASSWORD_LENGTH = 16;
+const MIN_PASSWORD_LENGTH = 3;
+
 exports.registerNewUser = async (req, res) => {
   try {
     let isUser = await User.find({
@@ -18,6 +23,20 @@ exports.registerNewUser = async (req, res) => {
       return res.status(409).json({
         message: "Username is already in use!"
       });
+    }
+
+    // check username length
+    if (req.body.username.length > MAX_USERNAME_LENGTH) {
+      return res.status(401).json({ err: "Username is too long" });
+    } else if (req.body.username.length < MIN_USERNAME_LENGTH) {
+      return res.status(401).json({ err: "Username is too short" });
+    }
+
+    // check password length
+    if (req.body.password.length > MAX_PASSWORD_LENGTH) {
+      return res.status(401).json({ err: "Password is too long" });
+    } else if (req.body.password.length < MIN_PASSWORD_LENGTH) {
+      return res.status(401).json({ err: "Password is too short" });
     }
 
     const user = new User({

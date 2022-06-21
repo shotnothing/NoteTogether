@@ -3,6 +3,7 @@ const User = require("../../user/model/User");
 
 const PER_PAGE = 5;
 const PREVIEW_LEN = 5;
+const MAX_TITLE_LENGTH = 32;
 
 exports.createNote = async (req, res) => {
   try {
@@ -22,6 +23,11 @@ exports.createNote = async (req, res) => {
         note: noteSearch[0],
         err: "You have already created a note with this name!"
       });
+    }
+
+    // check title length
+    if (req.body.title.length > MAX_TITLE_LENGTH) {
+      return res.status(401).json({ err: "Title is too long" });
     }
 
     // Create note (assume first that its not a fork)
