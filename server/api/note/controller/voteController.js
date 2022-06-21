@@ -93,6 +93,18 @@ exports.checkVoted = async (req, res) => {
   }
 }
 
+exports.getVotes = async (req, res) => {
+  try {
+    const noteId = req.body.noteId;
+    let note = await Note.findById(noteId);
+
+    res.status(200).json({ votes: note.votes });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: err });
+  }
+}
+
 function isVoted(noteId, user) {
     for (i in user.voted) {
       if (noteId == user.voted[i].id) {

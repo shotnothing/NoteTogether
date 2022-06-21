@@ -14,6 +14,7 @@ router.post('/search', auth, noteController.searchNote);
 
 router.post('/vote', auth, voteController.voteNote);
 router.post('/checkVoted', auth, voteController.checkVoted);
+router.post('/getVotes', auth, voteController.getVotes);
 
 router.post('/purchase', auth, purchaseController.purchaseNote);
 router.post('/checkPurchase', auth, purchaseController.checkPurchase);
