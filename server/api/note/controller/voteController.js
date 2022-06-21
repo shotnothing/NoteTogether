@@ -16,20 +16,17 @@ exports.voteNote = async (req, res) => {
             return res.status(401).json({ err: "Note already upvoted" });
           } else {
             // clear downvote
-            await clearVote(noteId, userId);
+            await clearVote(noteId, userId, increase = true);
 
             // do upvote
             const status = await upvote(noteId, userId);
-
             return res.status(200).json({ status: "Note changed to upvoted"});
           }
         } else {
           // do upvote
           const status = upvote(noteId, userId);
-
           return res.status(200).json({ status: "Note upvoted"});
         }
-
 
         break;
 
@@ -39,7 +36,7 @@ exports.voteNote = async (req, res) => {
             return res.status(401).json({ err: "Note already downvoted" });
           } else {
             // clear upvote
-            await clearVote(noteId, userId);
+            await clearVote(noteId, userId, increase = false);
 
             // do downvote
             const status = await downvote(noteId, userId);
@@ -48,7 +45,6 @@ exports.voteNote = async (req, res) => {
         } else {
           // do downvote
           const status = downvote(noteId, userId);
-
           return res.status(200).json({ status: "Note downvoted"});
         }
         break;
@@ -56,7 +52,7 @@ exports.voteNote = async (req, res) => {
       case "clear":
         if (isVoted(noteId, user)) {
           // clear vote
-          const status = await clearVote(noteId, userId)
+          const status = await clearVote(noteId, userId, increase = !isUpvote(noteId, user))
 
           return res.status(200).json({ status: status});
         } else {
@@ -122,6 +118,10 @@ async function upvote(noteId, userId) {
         voted: { id: noteId, isUpvote: true }, 
       } 
   });
+
+  // update counter on note
+  await changeNumVote(+1, noteId);
+
   return status;
 }
 
@@ -131,13 +131,36 @@ async function downvote(noteId, userId) {
         voted: { id: noteId, isUpvote: false }, 
       } 
   });
+
+  // update counter on note
+  await changeNumVote(-1, noteId);
+  
   return status;
 }
 
-async function clearVote(noteId, userId) {
+async function clearVote(noteId, userId, increase) {
   const status = await User.findByIdAndUpdate(userId, {
         $pull: {
           voted: { id: noteId },
+      },
+  })
+
+  if (increase) {
+    // update counter on note
+    await changeNumVote(1, noteId);
+  } else {
+    await changeNumVote(-1, noteId);
+  }
+
+  return status;
+}
+
+async function changeNumVote(change, noteId) {
+  console.log(" BREAKPOINT ")
+  console.log(noteId)
+  const status = await Note.findByIdAndUpdate(noteId, {
+        $inc: {
+          votes: change
       },
   })
   return status;
