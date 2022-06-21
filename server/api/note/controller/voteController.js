@@ -6,53 +6,55 @@ exports.voteNote = async (req, res) => {
     // Id of requestor
     const userId = req.userData._id;
     let user = await User.findById(userId);
+
     const noteId = req.body.noteId;
+    let note = await Note.findById(noteId);
 
     switch (req.body.action) {
 
       case "upvote":
-        if (isVoted(noteId, user)) {
-          if (isUpvote(noteId, user)) {
+        if (isVoted(note, user)) {
+          if (isUpvote(note, user)) {
             return res.status(401).json({ err: "Note already upvoted" });
           } else {
             // clear downvote
-            await clearVote(noteId, userId, increase = true);
+            await clearVote(note, user, increase = true);
 
             // do upvote
-            const status = await upvote(noteId, userId);
+            const status = await upvote(note, user);
             return res.status(200).json({ status: "Note changed to upvoted"});
           }
         } else {
           // do upvote
-          const status = upvote(noteId, userId);
+          const status = upvote(note, user);
           return res.status(200).json({ status: "Note upvoted"});
         }
 
         break;
 
       case "downvote":
-        if (isVoted(noteId, user)) {
-          if (!isUpvote(noteId, user)) {
+        if (isVoted(note, user)) {
+          if (!isUpvote(note, user)) {
             return res.status(401).json({ err: "Note already downvoted" });
           } else {
             // clear upvote
-            await clearVote(noteId, userId, increase = false);
+            await clearVote(note, user, increase = false);
 
             // do downvote
-            const status = await downvote(noteId, userId);
+            const status = await downvote(note, user);
             return res.status(200).json({ status: "Note changed to downvoted"});
           }
         } else {
           // do downvote
-          const status = downvote(noteId, userId);
+          const status = downvote(note, user);
           return res.status(200).json({ status: "Note downvoted"});
         }
         break;
 
       case "clear":
-        if (isVoted(noteId, user)) {
+        if (isVoted(note, user)) {
           // clear vote
-          const status = await clearVote(noteId, userId, increase = !isUpvote(noteId, user))
+          const status = await clearVote(note, user, increase = !isUpvote(note, user))
 
           return res.status(200).json({ status: status});
         } else {
@@ -77,8 +79,10 @@ exports.checkVoted = async (req, res) => {
     let user = await User.findById(userId);
 
     const noteId = req.body.noteId;
-    if (isVoted(noteId, user)) {
-      if (isUpvote(noteId, user)) {
+    let note = await Note.findById(noteId);
+
+    if (isVoted(note, user)) {
+      if (isUpvote(note, user)) {
         res.status(200).json({ res: 'upvote' });
       } else {
         res.status(200).json({ res: 'downvote' });
@@ -105,26 +109,34 @@ exports.getVotes = async (req, res) => {
   }
 }
 
-function isVoted(noteId, user) {
-    for (i in user.voted) {
-      if (noteId == user.voted[i].id) {
-        return true;
-      }
+function isVoted(note, user) {
+  const noteId = note._id.toString();
+
+  for (i in user.voted) {
+    if (noteId == user.voted[i].id) {
+      return true;
     }
-    return false;
+  }
+
+  return false;
 }
 
-function isUpvote(noteId, user) {
-    for (i in user.voted) {
-      if (noteId == user.voted[i].id) {
-        return user.voted[i].isUpvote;
-      }
+function isUpvote(note, user) {
+  const noteId = note._id.toString();
+
+  for (i in user.voted) {
+    if (noteId == user.voted[i].id) {
+      return user.voted[i].isUpvote;
     }
-    throw 'Cannot find note!';
-    return
+  }
+  
+  return "Cannot find vote";
 }
 
-async function upvote(noteId, userId) {
+async function upvote(note, user) {
+  const noteId = note._id.toString();
+  const userId = user._id.toString();
+
   const status = await User.findByIdAndUpdate(userId, {
       $push: {
         voted: { id: noteId, isUpvote: true }, 
@@ -134,10 +146,16 @@ async function upvote(noteId, userId) {
   // update counter on note
   await changeNumVote(+1, noteId);
 
+  // credit system
+  await addCredited(note, user, change = 1);
+
   return status;
 }
 
-async function downvote(noteId, userId) {
+async function downvote(note, user) {
+  const noteId = note._id.toString();
+  const userId = user._id.toString();
+  
   const status = await User.findByIdAndUpdate(userId, {
       $push: {
         voted: { id: noteId, isUpvote: false }, 
@@ -150,7 +168,10 @@ async function downvote(noteId, userId) {
   return status;
 }
 
-async function clearVote(noteId, userId, increase) {
+async function clearVote(note, user, increase) {
+  const noteId = note._id.toString();
+  const userId = user._id.toString();
+  
   const status = await User.findByIdAndUpdate(userId, {
         $pull: {
           voted: { id: noteId },
@@ -168,12 +189,38 @@ async function clearVote(noteId, userId, increase) {
 }
 
 async function changeNumVote(change, noteId) {
-  console.log(" BREAKPOINT ")
-  console.log(noteId)
   const status = await Note.findByIdAndUpdate(noteId, {
         $inc: {
           votes: change
       },
   })
   return status;
+}
+
+async function addCredited(note, user, credits = 0) {
+  
+  if (!(checkCredited(note, user._id))  // not credited before
+      ) {        // not your own note && user._id != note._id
+    note.credited = [user._id, ...note.credited];
+    await changeCredits(user, credits);
+  }
+  return await note.save();
+}
+
+// Used only for debugging/dev for now
+async function removeCredited(note, user) { 
+  note.credited = note.credited.filter(x => x != user._id);
+  return await note.save();
+}
+
+async function checkCredited(note, user) {
+  return note.credited.includes(user._id);
+}
+
+async function changeCredits(user, change) {
+  if (user.credits + change < 0) {
+    return "Cannot change, credits will be negative"
+  }
+  user.credits += change;
+  return await user.save();
 }

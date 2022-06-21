@@ -30,7 +30,12 @@ const ReviewSchema = mongoose.Schema({
   noteId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
-  }
+  },
+  credited: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Credited',
+    default: []
+  },
 });
 
 const Review = mongoose.model("Review", ReviewSchema);
