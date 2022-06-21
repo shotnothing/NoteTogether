@@ -1,6 +1,8 @@
 const Note = require("../model/Note");
 const User = require("../../user/model/User");
 
+CREDITS_AWARDED_AUTHOR_UPVOTE = 1;
+
 exports.voteNote = async (req, res) => {
   try {
     // Id of requestor
@@ -147,7 +149,7 @@ async function upvote(note, user) {
   await changeNumVote(+1, noteId);
 
   // credit system
-  await addCredited(note, user, change = 1);
+  await addCredited(note, user, change = CREDITS_AWARDED_AUTHOR_UPVOTE);
 
   return status;
 }
@@ -201,7 +203,7 @@ async function addCredited(note, user, credits = 0) {
   if (!(checkCredited(note, user))  // not credited before
       && user._id != note._id) {        // not your own note
 
-    note.credited = [user._id, ...note.credited];
+    note.creditedVote = [user._id, ...note.creditedVote];
 
     let authorId = note.userId;
     let author = await User.findById(authorId);
@@ -213,12 +215,12 @@ async function addCredited(note, user, credits = 0) {
 
 // Used only for debugging/dev for now
 async function removeCredited(note, user) { 
-  note.credited = note.credited.filter(x => x != user._id);
+  note.creditedVote = note.creditedVote.filter(x => x != user._id);
   return await note.save();
 }
 
 function checkCredited(note, user) {
-  return note.credited.includes(user._id);
+  return note.creditedVote.includes(user._id);
 }
 
 async function changeCredits(user, change) {

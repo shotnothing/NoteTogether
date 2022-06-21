@@ -2,6 +2,9 @@ const Review = require("../model/Review");
 const User = require("../../user/model/User");
 const Note = require("../../note/model/Note");
 
+CREDITS_AWARDED_REVIEWER = 7;
+// MIN_REVIEW_CHARS_TO_AWARD_CREDITS = 20; not used yet, need to discuss with frontend
+
 exports.createReview = async (req, res) => {
   try {
     // Id of requestor
@@ -21,6 +24,9 @@ exports.createReview = async (req, res) => {
     let note = await Note.findById(noteId);
     note.reviews = [review._id, ...note.reviews];
     await note.save();
+
+    // credit system
+    await addCredited(note, user, change = CREDITS_AWARDED_REVIEWER);
 
     res.status(200).json({ review: savedReview });
   } catch (err) {
@@ -122,4 +128,32 @@ exports.deleteReview = async (req, res) => {
     console.log(err);
     res.status(400).json({ err: err });
   }
+}
+
+async function addCredited(note, user, credits = 0) {
+  if (!(checkCredited(note, user))  // not credited before
+      && user._id != note._id) {    // not your own note
+
+    note.creditedReview = [user._id, ...note.creditedReview];
+    await changeCredits(user, credits);
+  }
+  return await note.save();
+}
+
+// Used only for debugging/dev for now
+async function removeCredited(note, user) { 
+  note.creditedReview = note.creditedReview.filter(x => x != user._id);
+  return await note.save();
+}
+
+function checkCredited(note, user) {
+  return note.creditedReview.includes(user._id);
+}
+
+async function changeCredits(user, change) {
+  if (user.credits + change < 0) {
+    return "Cannot change, credits will be negative"
+  }
+  user.credits += change;
+  return await user.save();
 }
