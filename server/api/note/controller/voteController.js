@@ -200,8 +200,13 @@ async function changeNumVote(change, noteId) {
 async function addCredited(note, user, credits = 0) {
   if (!(checkCredited(note, user))  // not credited before
       && user._id != note._id) {        // not your own note
+
     note.credited = [user._id, ...note.credited];
-    await changeCredits(user, credits);
+
+    let authorId = note.userId;
+    let author = await User.findById(authorId);
+
+    await changeCredits(author, credits);
   }
   return await note.save();
 }
