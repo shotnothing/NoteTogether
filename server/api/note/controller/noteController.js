@@ -115,9 +115,9 @@ exports.readNote = async (req, res) => {
       content: await resolveFork(note),
       raw_content: note.content,
       username: username,
-      dateLastUpdated: dateLastUpdated,
-      dateCreated: dateCreated,
-      votes: votes,
+      dateLastUpdated: note.dateLastUpdated,
+      dateCreated: note.dateCreated,
+      votes: note.votes,
       noteId: noteId
     });
   } catch (err) {
