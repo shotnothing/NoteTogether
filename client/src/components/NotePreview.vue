@@ -1,13 +1,12 @@
 <template>
-  <div class="">
-    <img src="@/assets/SampleThumbnail.png">
-    <div class="">
-      <p>
-        {{ note.name }}
-        <br/>
-        <span class="text-secondary">{{ note.username }}</span>
-      </p>
-    </div>
+  <div class="" href="">
+    <a v-bind:href="'/edit/'+note._id">
+      <img src="@/assets/SampleThumbnail.png">
+      <div class="">
+        <div class="text-dark small">{{ note.title }}</div>
+        <div class="text-secondary small">{{ note.userId.username }}</div>
+      </div>
+    </a>
   </div>
 </template>
 
