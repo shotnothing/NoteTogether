@@ -15,19 +15,19 @@ const editRoute = {
 			}
 		},
 		{
+			path: "create",
+			component: Create,
+			meta: {
+				requiresAuth: true,
+			}
+		},
+		{
 			path: ":noteId",
 			component: View,
 			meta: {
 				requiresAuth: true,
 			}
 		},
-		{
-			path: "create",
-			component: Create,
-			meta: {
-				requiresAuth: true,
-			}
-		}
 	]
 }
 
