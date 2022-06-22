@@ -35,7 +35,6 @@ export default {
           { headers: { 'Authorization': token } }
         );
         this.content = marked(response.data.content.join("<br>"));
-        // this.content = response;
         this.notes = [{
           title: response.data.title,
           userId: {
@@ -43,6 +42,7 @@ export default {
           },
           dateLastUpdated: response.data.dateLastUpdated,
           votes: response.data.votes,
+          _id: this.$route.params.noteId
         }];
       } catch (err) {
         // this.content = err;
