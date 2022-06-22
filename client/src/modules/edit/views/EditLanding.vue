@@ -1,16 +1,27 @@
 <template>
   <div class="container">
-    <h3>Published Notes</h3>
-    <div class="row">
-      <NotePreview class="col-sm" v-for="note in publishedNotes" :note="note" :key="note"></NotePreview>
-    </div>
     <h3>Created Notes</h3>
     <div class="row">
-      <NotePreview class="col-sm" v-for="note in ownedNotes" :note="note" :key="note"></NotePreview>
+      <NotePreview class="col-sm-6 col-md-2" v-for="note in ownedNotes" :note="note" :key="note"></NotePreview>
+      <div class="col-sm-6 col-md-2">
+        <a href="/edit/create" class="text-dark">
+          <img src="@/assets/SampleThumbnail.png" style="filter: brightness(0%) invert(1)">
+          <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -65%); font-size: 100px">+</span>
+          <span class="text-center" style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -25%);">Create Note</span>
+        </a>
+      </div>
     </div>
+    <br>
     <h3>Saved Notes</h3>
     <div class="row">
-      <NotePreview class="col-sm" v-for="note in savedNotes" :note="note" :key="note"></NotePreview>
+      <NotePreview class="col-sm-6 col-md-2" v-for="note in savedNotes" :note="note" :key="note"></NotePreview>
+      <div class="col-sm-6 col-md-2">
+        <a href="/discover" class="text-dark">
+          <img src="@/assets/SampleThumbnail.png" style="filter: brightness(0%) invert(1)">
+          <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -65%); font-size: 100px">+</span>
+          <span class="text-center" style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -25%);">Discover Notes</span>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -25,24 +36,9 @@ export default {
   },
   data() {
     return {
-      publishedNotes: [
-        {name:'BK Generics', username: 'Boon Keng', votes: 40},
-        {name:'BK Never Gonna Give You Up', username: 'Boon Keng', votes: 41},
-        {name:'BK All Star', username: 'Boon Keng', votes: 30},
-      ],
-      ownedNotes: [
-        {name:'Type Erasure', username: 'Boon Keng', votes: 43},
-        {name:'Type Inference', username: 'Boon Keng', votes: 44},
-        {name:'Generic Types', username: 'Boon Keng', votes: 45},
-      ],
-      savedNotes: [
-        {name:'AL Generics', username: 'Aljunied', votes: 46},
-        {name:'HS Never Gonna Give You Up', username: 'Hong Shan', votes: 47},
-        {name:'BS All Star', username: 'Bi Shan', votes: 48},
-        {name:'AL Generics', username: 'Aljunied', votes: 49},
-        {name:'HS Never Gonna Give You Up', username: 'Hong Shan', votes: 50},
-        {name:'BS All Star', username: 'Bi Shan', votes: -10},
-      ],
+      publishedNotes: [],
+      ownedNotes: [],
+      savedNotes: [],
     };
   },
   methods: {
@@ -50,10 +46,10 @@ export default {
       let token = localStorage.getItem("jwt");
       let response = await this.$http.post(
         "/note/search",
-        { searchTerm: "gen" },
+        { searchTerm: "" },
         { headers: { 'Authorization': token } }
         );
-      return response.data.searchResults;
+      this.publishedNotes = response.data.searchResults;
     },
     async getOwnedNotes() {
       let token = localStorage.getItem("jwt");
@@ -62,7 +58,7 @@ export default {
         { searchTerm: "" },
         { headers: { 'Authorization': token } }
         );
-      return response.data.searchResults;
+      this.ownedNotes = response.data.searchResults;
     },
     async getSavedNotes() {
       let token = localStorage.getItem("jwt");
@@ -71,7 +67,7 @@ export default {
         { searchTerm: "" },
         { headers: { 'Authorization': token } }
         );
-      return response.data.searchResults;
+      this.savedNotes = response.data.searchResults;
     }
   },
   created() {
