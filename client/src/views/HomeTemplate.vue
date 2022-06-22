@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue"
+import Navbar from "@/components/Navbar.vue";
 import VueJwtDecode from "vue-jwt-decode";
 
 export default {
