@@ -1,6 +1,8 @@
 const Note = require("../model/Note");
 const User = require("../../user/model/User");
 
+const purchaseController = require("../controller/purchaseController");
+
 const PER_PAGE = 5;
 const PREVIEW_LEN = 5;
 const MAX_TITLE_LENGTH = 32;
@@ -97,9 +99,10 @@ exports.readNote = async (req, res) => {
     let content = await resolveFork(note)
 
     // Must purchase note if
-    if (authorId != userId                // you dont own the note
-      && !user.purchased.includes(noteId) // you have not purchased it before
-      && content.length > PREVIEW_LEN     // no need to pay for short notes
+    if (purchaseController.getTier(note) != 'none'  // its not free 
+      && authorId != userId                         // you dont own the note
+      && !user.purchased.includes(noteId)           // you have not purchased it before
+      && content.length > PREVIEW_LEN               // no need to pay for short notes
     ) {
       return res.status(402).json({ 
         err: "Need to purchase",
