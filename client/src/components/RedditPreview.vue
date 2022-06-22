@@ -41,7 +41,7 @@ export default {
   props: ["note", "user"],
   data() {
     return {
-      timeDiff: "",
+      timeDiff: "invalid",
       voteStatus: "clear",
       numOfVotes: 0,
     }
@@ -54,13 +54,13 @@ export default {
       let minutes = Math.floor(timeDiffRaw / (1000*60));
       let seconds = Math.floor(timeDiffRaw / 1000);
       if (days > 0) {
-        this.timeDiff = String(days)+"d ago";
+        this.timeDiff = String(days)+" days ago";
       } else if (hours > 0) {
-        this.timeDiff = String(hours)+"h ago";
+        this.timeDiff = String(hours)+" hours ago";
       } else if (minutes > 0) {
-        this.timeDiff = String(minutes)+"mins ago";
+        this.timeDiff = String(minutes)+" minutes ago";
       } else {
-        this.timeDiff = String(seconds)+"s ago";
+        this.timeDiff = String(seconds)+" seconds ago";
       }
     },
     async checkVoted() {
@@ -88,7 +88,6 @@ export default {
         let token = localStorage.getItem("jwt");
         if (this.voteStatus == "upvote") {
           this.voteStatus = "clear";
-          this.numOfVotes--;
         } else {
           this.voteStatus = "upvote";
         }
