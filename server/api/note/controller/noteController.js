@@ -1,6 +1,8 @@
 const Note = require("../model/Note");
 const User = require("../../user/model/User");
 
+const purchaseController = require("./purchaseController");
+
 const PER_PAGE = 5;
 const PREVIEW_LEN = 5;
 const MAX_TITLE_LENGTH = 32;
@@ -97,10 +99,10 @@ exports.readNote = async (req, res) => {
     let content = await resolveFork(note)
 
     // Must purchase note if
-    if (getTier(note) != 'none'           // its not free 
-      && authorId != userId               // you dont own the note
-      && !user.purchased.includes(noteId) // you have not purchased it before
-      && content.length > PREVIEW_LEN     // no need to pay for short notes
+    if (purchaseController.getTier(note) != 'none'  // its not free 
+      && authorId != userId                         // you dont own the note
+      && !user.purchased.includes(noteId)           // you have not purchased it before
+      && content.length > PREVIEW_LEN               // no need to pay for short notes
     ) {
       return res.status(402).json({ 
         err: "Need to purchase",
@@ -356,21 +358,4 @@ async function resolveFork(note) {
     return unmyers(await resolveFork(parent), note.content)
   }
   return note.content;
-}
-
-async function getTier(note) {
-
-  // gt count may be slow, to replace when scaling up
-  let gt = await Note.find({ votes: {$gt: note.votes} }).count();
-  let total = await Note.count();
-  let metric = gt / total;
-
-  if (metric <= TIER_GOLD_PERCENTILE) {
-    return 'gold';
-  } else if (metric <= TIER_SILVER_PERCENTILE) {
-    return 'silver';
-  } else if (metric <= TIER_BRONZE_PERCENTILE) {
-    return 'bronze';
-  }
-  return 'none';
 }

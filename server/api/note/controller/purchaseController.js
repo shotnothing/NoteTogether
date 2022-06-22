@@ -77,8 +77,7 @@ exports.checkPurchase = async (req, res) => {
   }
 }
 
-async function getTier(note) {
-
+exports.getTier = async (note) => {
   // gt count may be slow, to replace when scaling up
   let gt = await Note.find({ votes: {$gt: note.votes} }).count();
   let total = await Note.count();
