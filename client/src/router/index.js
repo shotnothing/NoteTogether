@@ -6,6 +6,7 @@ import discoverRoute from "../modules/discover";
 import editRoute from "../modules/edit";
 import studyRoute from "../modules/study";
 import userRoute from "../modules/user";
+import purchaseRoute from "../modules/purchase";
 
 Vue.use(VueRouter);
 
@@ -24,7 +25,8 @@ const routes = [
       discoverRoute,
       studyRoute,
       editRoute,
-      collateRoute
+      collateRoute,
+      purchaseRoute,
     ]
   },
 ];
