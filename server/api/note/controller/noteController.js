@@ -1,7 +1,7 @@
 const Note = require("../model/Note");
 const User = require("../../user/model/User");
 
-const purchaseController = require("../controller/purchaseController");
+const purchaseController = require("./purchaseController");
 
 const PER_PAGE = 5;
 const PREVIEW_LEN = 5;
