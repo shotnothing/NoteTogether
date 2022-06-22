@@ -5,7 +5,7 @@ const PER_PAGE = 5;
 const PREVIEW_LEN = 5;
 const MAX_TITLE_LENGTH = 32;
 
-.createNote = async (req, res) => {
+exports.createNote = async (req, res) => {
   try {
     // Id of requestor
     const userId = req.userData._id;
