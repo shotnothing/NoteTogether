@@ -54,13 +54,13 @@ export default {
       let minutes = Math.floor(timeDiffRaw / (1000*60));
       let seconds = Math.floor(timeDiffRaw / 1000);
       if (days > 0) {
-        this.timeDiff = String(days)+" days ago";
+        this.timeDiff = String(days) + (days==1 ? " day ago" : " days ago");
       } else if (hours > 0) {
-        this.timeDiff = String(hours)+" hours ago";
+        this.timeDiff = String(hours) + (hours==1 ? " hour ago" : " hours ago");
       } else if (minutes > 0) {
-        this.timeDiff = String(minutes)+" minutes ago";
+        this.timeDiff = String(minutes) + (minutes==1 ? " minute ago" : " minutes ago");
       } else {
-        this.timeDiff = String(seconds)+" seconds ago";
+        this.timeDiff = String(seconds) + (seconds==1 ? " second ago" : " seconds ago");
       }
     },
     async checkVoted() {
