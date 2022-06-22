@@ -256,7 +256,7 @@ exports.searchNote = async (req, res) => {
       .skip(PER_PAGE*(req.body.page-1))
       .limit(PER_PAGE)
       .populate("userId", "username")
-      .select("title userId datePublished username");
+      .select("title userId dateLastUpdated username votes favourites");
 
     res.status(200).json({ searchResults: notes });
   } catch (err) {
@@ -264,7 +264,7 @@ exports.searchNote = async (req, res) => {
   }
 }
 
-function myers( o, n ) {
+function myers(o, n) {
   var ns = new Object();
   var os = new Object();
   
@@ -326,7 +326,7 @@ function myers( o, n ) {
   return diff;
 }
 
-function unmyers( n, diff ) {
+function unmyers(n, diff) {
     var o = n.slice(); //deep copy
   
     var shift = 0;
