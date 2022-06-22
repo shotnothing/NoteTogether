@@ -97,8 +97,7 @@ exports.readNote = async (req, res) => {
     let content = await resolveFork(note)
 
     // Must purchase note if
-    if (true                              // it costs credits (STUMP)
-      && authorId != userId               // you dont own the note
+    if (authorId != userId                // you dont own the note
       && !user.purchased.includes(noteId) // you have not purchased it before
       && content.length > PREVIEW_LEN     // no need to pay for short notes
     ) {
