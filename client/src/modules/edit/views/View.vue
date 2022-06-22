@@ -1,16 +1,16 @@
 <template>
   <div class="container">
-    <MarkdownEditorView></MarkdownEditorView>
+    <MarkdownEditor :content="content" :title="title" :loaded="loaded"></MarkdownEditor>
   </div>
 </template>
 
 <script>
-import MarkdownEditorView from "@/components/MarkdownEditorView.vue";
+import MarkdownEditor from "@/components/MarkdownEditor.vue";
 
 export default {
   name: "CreateView",
   components: {
-    MarkdownEditorView,
+    MarkdownEditor,
   }
 }
 </script>
