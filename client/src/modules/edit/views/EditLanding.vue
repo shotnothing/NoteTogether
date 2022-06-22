@@ -4,7 +4,7 @@
     <div class="row">
       <NotePreview class="col-sm-6 col-md-2" v-for="note in ownedNotes" :note="note" :key="note"></NotePreview>
       <div class="col-sm-6 col-md-2">
-        <a href="/edit/create" class="text-dark">
+        <a @click="createNote()" class="text-dark">
           <img src="@/assets/SampleThumbnail.png" style="filter: brightness(0%) invert(1)">
           <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -65%); font-size: 100px">+</span>
           <span class="text-center" style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -25%);">Create Note</span>
@@ -42,14 +42,14 @@ export default {
     };
   },
   methods: {
-    async getPublishedNotes() {
+    async createNote() {
       let token = localStorage.getItem("jwt");
       let response = await this.$http.post(
-        "/note/search",
-        { searchTerm: "" },
+        "/note/create",
+        { title: "hi", content: "" },
         { headers: { 'Authorization': token } }
-        );
-      this.publishedNotes = response.data.searchResults;
+      );
+      this.$router.push("/edit/"+response.data.note._id);
     },
     async getOwnedNotes() {
       let token = localStorage.getItem("jwt");
@@ -71,7 +71,6 @@ export default {
     }
   },
   created() {
-    this.getPublishedNotes();
     this.getOwnedNotes();
     this.getSavedNotes();
   }
