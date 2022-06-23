@@ -3,7 +3,8 @@ const User = require("../../user/model/User");
 const Note = require("../../note/model/Note");
 
 CREDITS_AWARDED_REVIEWER = 7;
-// MIN_REVIEW_CHARS_TO_AWARD_CREDITS = 20; not used yet, need to discuss with frontend
+// MIN_REVIEW_CHARS_TO_AWARD_CREDITS = 20; not used yet, need to
+//                                         discuss with frontend
 
 exports.createReview = async (req, res) => {
   try {

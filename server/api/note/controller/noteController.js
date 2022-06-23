@@ -20,12 +20,12 @@ exports.createNote = async (req, res) => {
     });
 
     // User is not allowed to create two notes of the same name
-    if (noteSearch.length >= 1) {
-      return res.status(409).json({
-        note: noteSearch[0],
-        err: "You have already created a note with this name!"
-      });
-    }
+    // if (noteSearch.length >= 1) {
+    //   return res.status(409).json({
+    //     note: noteSearch[0],
+    //     err: "You have already created a note with this name!"
+    //   });
+    // }
 
     // check title length
     if (req.body.title.length > MAX_TITLE_LENGTH) {
@@ -112,7 +112,7 @@ exports.readNote = async (req, res) => {
 
     res.status(200).json({
       title: note.title,
-      content: await resolveFork(note),
+      content: (await resolveFork(note)).join(),
       raw_content: note.content,
       username: username,
       dateLastUpdated: note.dateLastUpdated,
@@ -263,7 +263,7 @@ exports.searchNote = async (req, res) => {
       .skip(PER_PAGE*(req.body.page-1))
       .limit(PER_PAGE)
       .populate("userId", "username")
-      .select("title userId dateLastUpdated username votes favourites");
+      .select("_id title userId dateLastUpdated username votes favourites");
 
     res.status(200).json({ searchResults: notes });
   } catch (err) {
