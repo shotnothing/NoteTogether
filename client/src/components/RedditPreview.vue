@@ -6,7 +6,7 @@
         <span v-else class="text-dark">⬆</span>
       </a>
       <br>
-      {{ note.votes }}
+      {{ votes }}
       <br>
       <a v-on:click="downvote()">
         <span v-if="voteStatus=='downvote'" class="text-secondary">⬇</span>
@@ -14,7 +14,14 @@
       </a>
     </div>
     <div class="text-truncate py-2">
-      <button class="lead"><a v-bind:href="'/discover/'+note._id" class="text-dark">{{ note.title }}</a></button>
+      <button class="lead">
+        <a v-bind:href="'/discover/'+note._id" class="text-dark">{{ note.title }}</a>
+        <span v-if="isLocked" class="ml-2">🔒</span>
+        <a v-else class="ml-2" v-on:click="favourite()">
+          <span v-if="isFavourited" class="text-secondary">★</span>
+          <span v-else class="text-dark">☆</span>
+        </a>
+      </button>
       <div class="font-weight-light small">{{ note.userId.username }}</div>
       <div class="font-weight-light small">{{ this.timeDiff }}</div>
     </div>
@@ -31,6 +38,7 @@
       <div v-else>
         Free Tier
       </div>
+      <br>
     </div>
   </div>
 </template>
@@ -43,7 +51,9 @@ export default {
     return {
       timeDiff: "invalid",
       voteStatus: "clear",
-      numOfVotes: 0,
+      isLocked: false,
+      isFavourited: false,
+      votes: 0,
     }
   },
   methods: {
@@ -80,7 +90,82 @@ export default {
         }
         console.log(response);
       } catch (err) {
-
+        console.log(err);
+      }
+    },
+    async checkPurchased() {
+      try {
+        let token = localStorage.getItem("jwt");
+        let response = await this.$http.post(
+          "/note/checkPurchased",
+          {
+            noteId: this.note._id
+          },
+          { headers: { 'Authorization': token } }
+        );
+        if (response.data.purchased) {
+          this.isLocked = false;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async checkLocked() {
+      try {
+        let token = localStorage.getItem("jwt");
+        let response = await this.$http.post(
+          "/note/read",
+          {
+            noteId: this.note._id
+          },
+          { headers: { 'Authorization': token } }
+        );
+      } catch (err) {
+        switch (err.request.status) {
+          case 402:
+            this.isLocked = true;
+            break;
+          default:
+            return;
+        }
+      }
+    },
+    async checkFavourited() {
+      try {
+        let token = localStorage.getItem("jwt");
+        let response = await this.$http.post(
+          "/note/checkFavourited",
+          {
+            noteId: this.note._id
+          },
+          { headers: { 'Authorization': token } }
+        );
+        if (response.data.favourited) {
+          this.isFavourited = true;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getVotes() {
+      try {
+        let token = localStorage.getItem("jwt");
+        let response = await this.$http.post(
+          "/note/getVotes",
+          {
+            noteId: this.note._id,
+          },
+          { headers: { 'Authorization': token } }
+        );
+        this.votes = response.data.votes;
+      } catch (err) {
+        switch(err.request.status) {
+          case 401:
+            swal("Error", "Unauthorized or your session has expired! Please relog.", "error");
+            break;
+          default:
+            swal("Error", 'Uhh, error {{err.request.status}}', "error");
+        }  
       }
     },
     async upvote() {
@@ -99,7 +184,7 @@ export default {
           },
           { headers: { 'Authorization': token } }
         );
-        this.$forceUpdate();
+        await this.getVotes();
         console.log(response);
       } catch (err) {
         switch(err.request.status) {
@@ -127,7 +212,31 @@ export default {
           },
           { headers: { 'Authorization': token } }
         );
+        await this.getVotes();
+        console.log(response);
+      } catch (err) {
+        switch(err.request.status) {
+          case 401:
+            swal("Error", "Unauthorized or your session has expired! Please relog.", "error");
+            break;
+          default:
+            swal("Error", 'Uhh, error {{err.request.status}}', "error");
+        }  
+      }
+    },
+    async favourite() {
+      try {
+        let token = localStorage.getItem("jwt");
+        let response = await this.$http.post(
+          "/note/favourite",
+          {
+            action: "toggle",
+            noteId: this.note._id,
+          },
+          { headers: { 'Authorization': token } }
+        );
         this.$forceUpdate();
+        this.isFavourited = response.data.status == "favourited";
         console.log(response);
       } catch (err) {
         switch(err.request.status) {
@@ -143,6 +252,9 @@ export default {
   async created() {
     await this.getTimeDiff();
     await this.checkVoted();
+    await this.checkLocked();
+    await this.checkFavourited();
+    await this.getVotes();
   }
 };
 </script>
