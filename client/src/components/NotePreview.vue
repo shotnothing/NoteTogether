@@ -1,9 +1,9 @@
 <template>
   <div class="" href="">
-    <a v-bind:href="'/edit/'+note._id">
+    <a v-bind:href="'/'+address+'/'+note._id" class="bg-primary p-2" type="button">
       <img src="@/assets/SampleThumbnail.png">
-      <div class="">
-        <div class="text-dark small">{{ note.title }}</div>
+      <div>
+        <div class="text-dark small lead">{{ note.title }}</div>
         <div class="text-secondary small">{{ note.userId.username }}</div>
       </div>
     </a>
@@ -13,6 +13,6 @@
 <script>
 export default {
   name: "NotePreview",
-  props: ["note"]
+  props: ["note", "address"]
 };
 </script>
