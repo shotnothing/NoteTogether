@@ -10,6 +10,7 @@
         Through a GitHub-style version control/forking system, we also allow users to edit notes made by others. 
         Users can also collate sections from different notes to produce cheatsheets, which themselves can also be shared. 
         Surrounding all these will be a credit system which encourages the active use of the platform, keeping its content fresh and dynamic.
+        <a v-if="!user._id" href="/user/login">Please log in before using this site!</a>
       </h4>
       <br>
       <h1>Resources</h1>

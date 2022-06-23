@@ -1,7 +1,18 @@
 <template>
   <div class="bg-primary text-dark h-100">
     <Navbar :id="user._id" :username="user.username"></Navbar>
-    <router-view :user="user" style="padding-top:80px"></router-view>
+    <router-view v-if="user._id" :user="user" style="padding-top:80px"></router-view>
+    <section v-else class="text-center align-items-center flex-column m-auto" style="padding-top:80px">
+      <img src="../assets/Logo.png" class="w-25 mt-10">
+      <h4 class="lead w-50 m-auto text-center">
+        <a href="/user/login">It seems like your authentication has failed or expired. <br>Please log in to continue using this site!</a>
+      </h4>
+      <br>
+      <h1>Resources</h1>
+      <h4 class="lead w-50 m-auto text-center">
+        <a href="https://github.com/shotnothing/NoteTogether">GitHub</a>
+      </h4>
+    </section>
   </div>
 </template>
 
