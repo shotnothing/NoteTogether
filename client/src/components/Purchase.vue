@@ -58,7 +58,7 @@ export default {
   },
   methods: {
   },
-  async created() {
+  created() {
   }
 };
 </script>
