@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-view/>
+    <router-view :user="user"/>
   </div>
 </template>
 
@@ -10,7 +10,7 @@ export default {
   props: ["user"],
   data() {
     return {
-      user: "",
+      user: {},
     }
   }
 };
