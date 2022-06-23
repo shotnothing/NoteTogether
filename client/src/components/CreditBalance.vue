@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h3>Credits:</h3>
-    {{ userData }}
+    <h4 class="font-weight-bold">Credits: <span class="text-secondary">{{ userData.credits }}</span></h4>
   </div>
 </template>
 
@@ -17,11 +16,12 @@ export default {
   methods: {
     async getUserData() {
       let token = localStorage.getItem("jwt");
-      let response = await this.$http.get(
+      let response = await this.$http.post(
         "/user/me",
+        {},
         { headers: { 'Authorization': token } }
       );
-      this.userData = response.data;
+      this.userData = response.data.userData;
     }
   },
   async created() {
