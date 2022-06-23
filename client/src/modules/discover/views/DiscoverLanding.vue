@@ -13,18 +13,21 @@
       </div>
     </div>
     <div class="p-2 m-2">
+      <!-- <CreditBalance :user="user"></CreditBalance> -->
     </div>
   </div>
 </template>
 
 <script>
 import RedditPreview from "@/components/RedditPreview.vue";
+import CreditBalance from "@/components/CreditBalance.vue";
 
 export default {
   name: "EditLanding",
   props: ["user"],
   components: {
     RedditPreview,
+    // CreditBalance,
   },
   data() {
     return {
