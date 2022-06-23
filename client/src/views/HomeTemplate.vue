@@ -4,14 +4,13 @@
     <section class="text-center align-items-center flex-column m-auto" style="padding-top:60px">
       <a href="/"><img src="../assets/Logo.png" class="w-25 mt-10"></a>
     </section>
-    <router-view v-if="user._id" :user="user"></router-view>
-    <Login v-else></Login>
+    <router-view :user="user"></router-view>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar.vue";
-import Login from "@/components/Login.vue";
+// import Login from "@/components/Login.vue";
 import VueJwtDecode from "vue-jwt-decode";
 
 export default {
@@ -23,7 +22,7 @@ export default {
   },
   components: {
     Navbar,
-    Login,
+    // Login,
   },
   methods: {
     async getUserDetails() {
