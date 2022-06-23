@@ -46,7 +46,7 @@ export default {
       let token = localStorage.getItem("jwt");
       let response = await this.$http.post(
         "/note/create",
-        { title: "hi", content: "" },
+        { title: "Untitled Document", content: "" },
         { headers: { 'Authorization': token } }
       );
       this.$router.push("/edit/"+response.data.note._id);
