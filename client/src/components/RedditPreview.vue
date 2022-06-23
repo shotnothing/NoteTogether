@@ -186,8 +186,13 @@ export default {
         let token = localStorage.getItem("jwt");
         if (this.voteStatus == "upvote") {
           this.voteStatus = "clear";
+          this.votes = this.votes - 1;
+        } else if (this.voteStatus == "downvote") {
+          this.voteStatus = "upvote";
+          this.votes = this.votes + 2;
         } else {
           this.voteStatus = "upvote";
+          this.votes = this.votes + 1;
         }
         let response = await this.$http.post(
           "/note/vote",
@@ -197,7 +202,7 @@ export default {
           },
           { headers: { 'Authorization': token } }
         );
-        await this.getVotes();
+        // await this.getVotes();
         console.log(response);
       } catch (err) {
         switch(err.request.status) {
@@ -214,8 +219,13 @@ export default {
         let token = localStorage.getItem("jwt");
         if (this.voteStatus == "downvote") {
           this.voteStatus = "clear";
+          this.votes = this.votes + 1;
+        } else if (this.voteStatus == "upvote") {
+          this.voteStatus = "downvote";
+          this.votes = this.votes - 2;
         } else {
           this.voteStatus = "downvote";
+          this.votes = this.votes - 1;
         }
         let response = await this.$http.post(
           "/note/vote",
@@ -225,7 +235,7 @@ export default {
           },
           { headers: { 'Authorization': token } }
         );
-        await this.getVotes();
+        // await this.getVotes();
         console.log(response);
       } catch (err) {
         switch(err.request.status) {
@@ -248,7 +258,6 @@ export default {
           },
           { headers: { 'Authorization': token } }
         );
-        this.$forceUpdate();
         this.isFavourited = response.data.status == "favourited";
         console.log(response);
       } catch (err) {
