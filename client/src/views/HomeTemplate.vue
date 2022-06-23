@@ -1,6 +1,6 @@
 <template>
   <div class="bg-primary text-dark h-100">
-    <Navbar :id="user._id"></Navbar>
+    <Navbar :id="user._id" :username="user.username"></Navbar>
     <router-view :user="user" style="padding-top:80px"></router-view>
   </div>
 </template>
@@ -20,13 +20,16 @@ export default {
     Navbar,
   },
   methods: {
-    getUserDetails() {
+    async getUserDetails() {
       let token = localStorage.getItem("jwt");
       this.user = VueJwtDecode.decode(token);
     }
   },
-  created() {
-    this.getUserDetails();
+  async created() {
+    await this.getUserDetails();
+    if (!this.user._id) {
+      this.$router.push("/user/login");
+    }
   },
 };
 </script>
