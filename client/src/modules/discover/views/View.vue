@@ -1,11 +1,9 @@
 <template>
   <div class="container">
-    <h3>View Mode</h3>
-    <br>
+    <h3 class="ml-2">View Mode</h3>
     <div>
       <RedditPreview :user="user" v-for="note in notes" :note="note" :key="note.votes"></RedditPreview>
     </div>
-    <br>
     <div v-html="content" class="p-2"></div>
   </div>
 </template>
