@@ -157,6 +157,7 @@ exports.updateNote = async (req, res) => {
     } else {
       note.content = req.body.content;
     }
+    note.title = req.body.title;
     note.dateLastUpdated = Date.now();
     await note.save();
 
