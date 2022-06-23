@@ -70,5 +70,17 @@ exports.loginUser = async (req, res) => {
   }
 };
 exports.getUserDetails = async (req, res) => {
-  await res.json(req.userData);
+  try {// Id of the requestor
+    const userId = req.userData._id;
+    let user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ error: "User with that Id not found!" });
+    }
+    console.log(user);
+    res.status(200).json({ userData: user });
+  } catch (err) {
+    console.log(err);
+  }
 };
