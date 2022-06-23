@@ -4,7 +4,7 @@
       <div class="col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
         <form
           class="text-center border border-secondary p-5"
-          style="margin-top:70px;height:auto;padding-top:100px !important;"
+          style="height:auto;padding-top:100px !important;"
           @submit.prevent="loginUser"
         >
           <input
