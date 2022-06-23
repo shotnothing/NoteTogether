@@ -10,12 +10,13 @@
           label="Document Title"
           class="form-control rounded"
           placeholder="Insert Title Here"
-          v-model="title"/>
+          v-model="mde.title"/>
       </div>
       <br>
-      <form>
+      <form id="mde-form">
         <vue-simplemde 
-          v-model="content"
+          type="text"
+          v-model="mde.content"
           ref="noteUploadMDE"
           v-if="loaded"
         />
@@ -63,10 +64,13 @@ export default {
   name: "MarkdownEditorView",
   data() {
     return {
-      content: "",
-      title: "",
       loaded: false,
       renderedContent: "",
+      mde: {
+        content: "",
+        title: "",
+        username: "",
+      }
     };
   },
   components: {
@@ -81,8 +85,9 @@ export default {
           { noteId: this.$route.params.noteId },
           { headers: { 'Authorization': token } }
         );
-        this.content = response.data.content;
-        this.title = response.data.title;
+        this.mde.content = response.data.content;
+        this.mde.title = response.data.title;
+        this.mde.username = response.data.username;
         this.loaded = true;
       } catch (err) {
         switch(err.request.status) {
@@ -93,48 +98,71 @@ export default {
             swal("Error", "Unauthorized or your session has expired! Please relog.", "error");
             break;
           default:
-            swal("Error", 'Uhh, error {{err.request.status}}', "error");
+            swal("Error", `Uhh, error ${err.request.status}`, "error");
         }
       }
     },
     async saveNote() {
       try {
         let token = localStorage.getItem("jwt");
-        console.log(this.mde);
-        if (this.title === "") {
+        console.log(this.mde.content);
+        if (this.mde.title === "") {
           swal("Error", "Please enter a title!", "error");
           return;
         }
-        if (this.content === "") {
+        if (this.mde.content === "") {
           swal("Error", "Please enter some content!", "error");
           return;
         }
         let response = await this.$http.post(
           "/note/update",
-          { title: this.title, content: this.content, noteId: this.$route.params.noteId },
+          { title: this.mde.title, content: this.mde.content, noteId: this.$route.params.noteId },
           { headers: { 'Authorization': token } }
           );
         swal("Success", "Save Successful", "success");
         console.log(response);
       } catch (err) {
         switch(err.request.status) {
+          case 405:
+            try {
+              let response = await this.$http.post(
+                "/note/create",
+                { title: this.mde.title, content: this.mde.content, forkOf: this.$route.params.noteId },
+                { headers: { 'Authorization': token } }
+              );
+              this.$router.push("/edit/"+response.data.note._id);
+              swal("Success", "Save Successful! Created new private note!", "success");
+            } catch (err) {
+              swal("Error", `Uhh, error ${err.request.status}`, "error");
+            }
+            break;
           case 401:
-            swal("Error", "Unauthorized or your session has expired! Please relog.", "error");
+            try {
+              let response = await this.$http.post(
+                "/note/create",
+                { title: this.mde.title, content: this.mde.content, forkOf: this.$route.params.noteId },
+                { headers: { 'Authorization': token } }
+              );
+              this.$router.push("/edit/"+response.data.note._id);
+              swal("Success", "Save Successful! Created new private note!", "success");
+            } catch (err) {
+              swal("Error", `Uhh, error ${err.request.status}`, "error");
+            }
             break;
           default:
-            swal("Error", 'Uhh, error {{err.request.status}}', "error");
+            swal("Error", `Uhh, error ${err.request.status}`, "error");
         }
       }
     },
     async publishNote() {
       try {
         let token = localStorage.getItem("jwt");
-        console.log(this.mde);
-        if (this.title === "") {
+        console.log(this.mde.content);
+        if (this.mde.title === "") {
           swal("Error", "Please enter a title!", "error");
           return;
         }
-        if (this.content === "") {
+        if (this.mde.content === "") {
           swal("Error", "Please enter some content!", "error");
           return;
         }
@@ -151,16 +179,35 @@ export default {
             swal("Error", "Unauthorized or your session has expired! Please relog.", "error");
             break;
           default:
-            swal("Error", 'Uhh, error {{err.request.status}}', "error");
+            swal("Error", `Uhh, error ${err.request.status}`, "error");
         }
       }
     },
-    async renderNote() {
-      this.renderedContent = marked(this.mde.content);
+    renderNote() {
+      try {
+        this.renderedContent = this.mde.content;
+        // this.renderedContent = marked(this.mde.content);
+        // this.renderedContent = JSON.stringify(document.getElementById("mde-form"));
+        // this.renderedContent = marked(document.getElementById("mde-form")["0"]["_value"][0]);
+      } catch (err) {
+        this.mde.title = err.request.status;
+      }
     },
   },
   mounted() {
     this.getNote();
+    this.renderNote();
+    this.mde.codemirror.on('change', function() {
+      self.$emit('input', self.mde.content())
+    })
+  },
+  created() {
+    this.renderNote();
+  },
+  watch: {
+    content(newVal) {
+      this.mde.content(newVal);
+    }
   }
 };
 </script>
