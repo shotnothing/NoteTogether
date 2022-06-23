@@ -1,5 +1,5 @@
 <template>
-  <div class="m-2 bg-white d-flex">
+  <div class="m-2 bg-white d-flex border border-secondary">
     <div class="text-center flex-fixed-width-item pt-2">
       <a v-on:click="upvote()">
         <span v-if="voteStatus=='upvote'" class="text-secondary">⬆</span>
@@ -17,13 +17,26 @@
       <button class="lead">
         <a v-bind:href="'/discover/'+note._id" class="text-dark">{{ note.title }}</a>
         <span v-if="isLocked" class="ml-2">🔒</span>
-        <a v-else class="ml-2" v-on:click="favourite()">
-          <span v-if="isFavourited" class="text-secondary">★</span>
-          <span v-else class="text-dark">☆</span>
+        <a v-if="!isLocked" class="ml-2" v-on:click="favourite()">
+          <span v-if="isFavourited" class="color-gold font-weight-light">★</span>
+          <span v-else class="text-dark font-weight-light">☆</span>
         </a>
       </button>
-      <div class="font-weight-light small">{{ note.userId.username }}</div>
-      <div class="font-weight-light small">{{ this.timeDiff }}</div>
+      <div class="font-weight-light small">submitted {{ this.timeDiff }} by {{ note.userId.username }}</div>
+      <div v-if="isLocked">
+        <a class="small" v-bind:href="'/purchase/'+note._id">
+          <span class="color-dark">unlock</span>
+        </a>
+      </div>
+      <div v-else>
+        <a class="small" v-bind:href="'/discover/'+note._id">
+          <span class="color-dark">view</span>
+        </a>
+        <span></span>
+        <a class="small ml-2" v-bind:href="'/edit/'+note._id">
+          <span class="color-dark">fork</span>
+        </a>
+      </div>
     </div>
     <div class="ml-auto p-2">
       <div v-if="note.votes>100" class="color-gold">
