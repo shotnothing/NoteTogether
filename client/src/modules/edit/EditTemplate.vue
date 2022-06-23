@@ -10,6 +10,7 @@ import Login from "@/components/Login.vue";
 
 export default {
     name: "EditTemplate",
+    props: ["user"],
     components: {
         Login,
     }
