@@ -12,8 +12,9 @@
         <RedditPreview class="row" :user="user" v-for="note in searchResults" :note="note" :key="note.votes"></RedditPreview>
       </div>
     </div>
-    <div class="p-2 m-2">
-      <!-- <CreditBalance :user="user"></CreditBalance> -->
+    <div class="p-2 m-2 w-25">
+      <CreditBalance :user="user"></CreditBalance>
+      <div class="w-100">Create notes or write reviews to earn credits!</div>
     </div>
   </div>
 </template>
@@ -27,7 +28,7 @@ export default {
   props: ["user"],
   components: {
     RedditPreview,
-    // CreditBalance,
+    CreditBalance,
   },
   data() {
     return {
