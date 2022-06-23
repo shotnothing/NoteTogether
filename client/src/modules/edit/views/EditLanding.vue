@@ -1,27 +1,13 @@
 <template>
   <div class="container">
-    <h3>Created Notes</h3>
+    <h3>Created Notes (<a class="text-secondary" @click="createNote()">Create Note</a>)</h3>
     <div class="row">
-      <NotePreview class="col-sm-6 col-md-2" v-for="note in ownedNotes" :note="note" :key="note"></NotePreview>
-      <div class="col-sm-6 col-md-2">
-        <a @click="createNote()" class="text-dark">
-          <img src="@/assets/SampleThumbnail.png" style="filter: brightness(0%) invert(1)">
-          <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -65%); font-size: 100px">+</span>
-          <span class="text-center" style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -25%);">Create Note</span>
-        </a>
-      </div>
+      <NotePreview class="col-sm-6 col-md-2" v-for="note in createdNotes" :note="note" :key="note" :address="address"></NotePreview>
     </div>
     <br>
-    <h3>Saved Notes</h3>
+    <h3>Favourited Notes (<a class="text-secondary" href="discover">Discover Notes</a>)</h3>
     <div class="row">
-      <NotePreview class="col-sm-6 col-md-2" v-for="note in savedNotes" :note="note" :key="note"></NotePreview>
-      <div class="col-sm-6 col-md-2">
-        <a href="/discover" class="text-dark">
-          <img src="@/assets/SampleThumbnail.png" style="filter: brightness(0%) invert(1)">
-          <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -65%); font-size: 100px">+</span>
-          <span class="text-center" style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -25%);">Discover Notes</span>
-        </a>
-      </div>
+      <NotePreview class="col-sm-6 col-md-2" v-for="note in favouritedNotes" :note="note" :key="note" :address="address"></NotePreview>
     </div>
   </div>
 </template>
@@ -36,9 +22,9 @@ export default {
   },
   data() {
     return {
-      publishedNotes: [],
-      ownedNotes: [],
-      savedNotes: [],
+      createdNotes: [],
+      favouritedNotes: [],
+      address: "edit",
     };
   },
   methods: {
@@ -51,28 +37,28 @@ export default {
       );
       this.$router.push("/edit/"+response.data.note._id);
     },
-    async getOwnedNotes() {
+    async getCreatedNotes() {
       let token = localStorage.getItem("jwt");
       let response = await this.$http.post(
         "/note/search",
         { searchTerm: "" },
         { headers: { 'Authorization': token } }
         );
-      this.ownedNotes = response.data.searchResults;
+      this.createdNotes = response.data.searchResults;
     },
-    async getSavedNotes() {
+    async getFavouritedNotes() {
       let token = localStorage.getItem("jwt");
       let response = await this.$http.post(
         "/note/search",
         { searchTerm: "" },
         { headers: { 'Authorization': token } }
         );
-      this.savedNotes = response.data.searchResults;
+      this.favouritedNotes = response.data.searchResults;
     }
   },
   created() {
-    this.getOwnedNotes();
-    this.getSavedNotes();
+    this.getCreatedNotes();
+    this.getFavouritedNotes();
   }
 };
 </script>
