@@ -1,17 +1,23 @@
 <template>
   <div>
-    <router-view :user="user"></router-view>
+    <router-view v-if="user._id" :user="user"/>
+    <Login v-else></Login>
   </div>
 </template>
 
 <script>
+import Login from "@/components/Login.vue";
+
 export default {
-  name: "DiscoverTemplate",
+  name: "PurchaseTemplate",
   props: ["user"],
   data() {
     return {
-      user: {}
+      user: {},
     }
+  },
+  components: {
+    Login,
   }
 };
 </script>

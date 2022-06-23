@@ -1,11 +1,17 @@
 <template>
     <div>
-        <router-view></router-view>
+        <router-view v-if="user._id"></router-view>
+        <Login v-else></Login>
     </div>
 </template>
 
 <script>
+import Login from "@/components/Login.vue";
+
 export default {
     name: "StudyTemplate",
+    components: {
+        Login,
+    }
 };
 </script>

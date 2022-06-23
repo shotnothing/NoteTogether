@@ -1,10 +1,13 @@
 <template>
   <div>
-    <router-view :user="user"/>
+    <router-view v-if="user._id" :user="user"/>
+    <Login v-else></Login>
   </div>
 </template>
 
 <script>
+import Login from "@/components/Login.vue";
+
 export default {
   name: "PurchaseTemplate",
   props: ["user"],
@@ -12,6 +15,9 @@ export default {
     return {
       user: {},
     }
+  },
+  components: {
+    Login,
   }
 };
 </script>
