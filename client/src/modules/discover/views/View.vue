@@ -1,8 +1,11 @@
 <template>
   <div class="container">
+    <h3>View Mode</h3>
+    <br>
     <div>
       <RedditPreview :user="user" v-for="note in notes" :note="note" :key="note.votes"></RedditPreview>
     </div>
+    <br>
     <div v-html="content" class="p-2"></div>
   </div>
 </template>
@@ -34,7 +37,7 @@ export default {
           { noteId: this.$route.params.noteId },
           { headers: { 'Authorization': token } }
         );
-        this.content = marked(response.data.content.join("<br>"));
+        this.content = marked(response.data.content);
         this.notes = [{
           title: response.data.title,
           userId: {
@@ -49,8 +52,8 @@ export default {
       }
     }
   },
-  created() {
-    this.viewNote();
+  async created() {
+    await this.viewNote();
   }
 };
 </script>
