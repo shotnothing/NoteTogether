@@ -1,16 +1,22 @@
 <template>
   <div class="container">
     <h3 class="ml-2">View Mode</h3>
-    <div>
-      <RedditPreview :user="user" v-for="note in notes" :note="note" :key="note.votes"></RedditPreview>
+    <div class="d-flex">
+      <div class="flex-fill">
+        <RedditPreview :user="user" v-for="note in notes" :note="note" :key="note.votes"></RedditPreview>
+        <div v-html="content" class="m-2 p-2 bg-white border border-secondary"></div>
+      </div>
+      <div class="m-2">
+        <CreditBalance :user="user"></CreditBalance>
+        <div class="w-100">Create notes or write reviews to earn credits!</div>
+      </div>
     </div>
-    <div v-html="content" class="p-2"></div>
   </div>
 </template>
 
 <script>
 import RedditPreview from "@/components/RedditPreview.vue";
-import VueSimplemde from 'vue-simplemde';
+import CreditBalance from "@/components/CreditBalance.vue";
 import { marked } from 'marked';
 
 export default {
@@ -18,6 +24,7 @@ export default {
   props: ["user", "note"],
   components: {
     RedditPreview,
+    CreditBalance,
   },
   data() {
     return {
@@ -39,7 +46,7 @@ export default {
         this.notes = [{
           title: response.data.title,
           userId: {
-            username: response.data.noteCreator,
+            username: response.data.username,
           },
           dateLastUpdated: response.data.dateLastUpdated,
           votes: response.data.votes,
