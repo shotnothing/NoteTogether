@@ -21,12 +21,12 @@ const userSchema = mongoose.Schema({
   },
   purchased: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: 'Purchased',
+    ref: 'Note',
     default: []
   },  
   favourited: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: 'Favourited',
+    ref: 'Note',
     default: []
   },  
   credits: {

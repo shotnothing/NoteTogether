@@ -95,7 +95,8 @@ exports.createdNotes = async (req, res) => {
     const userId = req.userData._id;
 
     let notes = await User.findById(userId)
-                         .populate({ path: 'notes' });
+                          .select('notes')
+                          .populate({ path: 'notes' })
 
     res.status(200).json({ notes: notes });
   } catch (err) {
@@ -110,7 +111,8 @@ exports.favouritedNotes = async (req, res) => {
     const userId = req.userData._id;
 
     let notes = await User.findById(userId)
-                         .populate({ path: 'favouritedNotes' });
+                          .select('favourited')
+                          .populate({ path: 'favourited' })
 
     res.status(200).json({ notes: notes });
   } catch (err) {
@@ -125,7 +127,8 @@ exports.purchasedNotes = async (req, res) => {
     const userId = req.userData._id;
 
     let notes = await User.findById(userId)
-                         .populate({ path: 'purchasedNotes' });
+                          .select('purchased')
+                          .populate({ path: 'purchased' })
 
     res.status(200).json({ notes: notes });
   } catch (err) {
