@@ -7,4 +7,8 @@ router.post("/register", userController.registerNewUser);
 router.post("/login", userController.loginUser);
 router.post("/me", auth, userController.getUserDetails);
 
+router.post("/notes/created", auth, userController.createdNotes);
+router.post("/notes/favourited", auth, userController.favouritedNotes);
+router.post("/notes/purchased", auth, userController.purchasedNotes);
+
 module.exports = router;

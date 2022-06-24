@@ -1,4 +1,5 @@
 const User = require("../model/User");
+const Note = require("../../note/model/Note");
 
 const MAX_USERNAME_LENGTH = 16;
 const MIN_USERNAME_LENGTH = 3;
@@ -52,6 +53,7 @@ exports.registerNewUser = async (req, res) => {
     res.status(400).json({ err: err });
   }
 };
+
 exports.loginUser = async (req, res) => {
   try {
     const email = req.body.email;
@@ -69,6 +71,7 @@ exports.loginUser = async (req, res) => {
     res.status(400).json({ err: err });
   }
 };
+
 exports.getUserDetails = async (req, res) => {
   try {// Id of the requestor
     const userId = req.userData._id;
@@ -82,5 +85,54 @@ exports.getUserDetails = async (req, res) => {
     res.status(200).json({ userData: user });
   } catch (err) {
     console.log(err);
+    res.status(400).json({ err: err });
   }
 };
+
+exports.createdNotes = async (req, res) => {
+  try {
+
+    const userId = req.userData._id;
+
+    let notes = await User.findById(userId)
+                         .populate({ path: 'notes' });
+
+    res.status(200).json({ notes: notes });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: err });
+  }
+};
+
+exports.favouritedNotes = async (req, res) => {
+  try {
+
+    const userId = req.userData._id;
+
+    let notes = await User.findById(userId)
+                         .populate({ path: 'favouritedNotes' });
+
+    res.status(200).json({ notes: notes });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: err });
+  }
+};
+
+exports.purchasedNotes = async (req, res) => {
+  try {
+
+    const userId = req.userData._id;
+
+    let notes = await User.findById(userId)
+                         .populate({ path: 'purchasedNotes' });
+
+    res.status(200).json({ notes: notes });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: err });
+  }
+};
+
+// favouritedNotes
+// purchasedNotes

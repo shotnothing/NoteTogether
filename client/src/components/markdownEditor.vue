@@ -86,6 +86,8 @@ export default {
           { headers: { 'Authorization': token } }
         );
         this.mde.content = response.data.content;
+        console.log("BREAKPOINT 1=========")
+        console.log(this.mde.content)
         this.mde.title = response.data.title;
         this.mde.username = response.data.username;
         this.loaded = true;
@@ -105,7 +107,7 @@ export default {
     async saveNote() {
       try {
         let token = localStorage.getItem("jwt");
-        console.log(this.mde.content);
+        
         if (this.mde.title === "") {
           swal("Error", "Please enter a title!", "error");
           return;
@@ -114,13 +116,15 @@ export default {
           swal("Error", "Please enter some content!", "error");
           return;
         }
+
         let response = await this.$http.post(
           "/note/update",
           { title: this.mde.title, content: this.mde.content, noteId: this.$route.params.noteId },
           { headers: { 'Authorization': token } }
           );
+
         swal("Success", "Save Successful", "success");
-        console.log(response);
+
       } catch (err) {
         switch(err.request.status) {
           case 405:
@@ -185,8 +189,9 @@ export default {
     },
     renderNote() {
       try {
-        this.renderedContent = this.mde.content;
-        // this.renderedContent = marked(this.mde.content);
+        console.log(this.mde.content);
+        // this.renderedContent = this.mde.content;
+        this.renderedContent = marked(this.mde.content);
         // this.renderedContent = JSON.stringify(document.getElementById("mde-form"));
         // this.renderedContent = marked(document.getElementById("mde-form")["0"]["_value"][0]);
       } catch (err) {
