@@ -39,19 +39,24 @@
       </div>
     </div>
     <div class="ml-auto p-2">
-      <div v-if="note.votes>100" class="color-gold">
-        Gold Tier  
+      <div>
+        <span v-if="tier=='gold'" class="color-gold">
+          Gold 
+        </span>
+        <span v-else-if="tier=='silver'" class="color-silver">
+          Silver 
+        </span>
+        <span v-else-if="tier=='bronze'" class="color-bronze">
+          Bronze 
+        </span>
+        <span v-else>
+          Free 
+        </span>
+        Tier
       </div>
-      <div v-else-if="note.votes>50" class="color-silver">
-        Silver Tier
+      <div class="font-weight-light">
+        Price: {{ price }}
       </div>
-      <div v-else-if="note.votes>20" class="color-bronze">
-        Bronze Tier
-      </div>
-      <div v-else>
-        Free Tier
-      </div>
-      <br>
     </div>
   </div>
 </template>
@@ -67,6 +72,8 @@ export default {
       isLocked: false,
       isFavourited: false,
       votes: 0,
+      tier: "",
+      price: 0,
     }
   },
   methods: {
@@ -84,6 +91,20 @@ export default {
         this.timeDiff = String(minutes) + (minutes==1 ? " minute ago" : " minutes ago");
       } else {
         this.timeDiff = String(seconds) + (seconds==1 ? " second ago" : " seconds ago");
+      }
+    },
+    async getTier() {
+      try {
+        let token = localStorage.getItem("jwt");
+        let response = await this.$http.post(
+          "/note/getTier",
+          { noteId: this.$route.params.noteId },
+          { headers: { 'Authorization': token } }
+        );
+        this.tier = response.data.tier;
+        this.price = response.data.price;
+      } catch (err) {
+        swal("Error", err.response, "error");
       }
     },
     async checkVoted() {
