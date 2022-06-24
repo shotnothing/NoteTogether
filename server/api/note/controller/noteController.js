@@ -89,7 +89,8 @@ exports.readNote = async (req, res) => {
     // Id of the creator of the note
     const authorId = note.userId;
     let user = await User.findById(userId);
-    const username = user.username;
+    let author = await User.findById(authorId);
+    const username = author.username;
 
     // Can access the note if you created it, or if it's published
     if (!note.isPublished && authorId != userId) {
@@ -106,7 +107,13 @@ exports.readNote = async (req, res) => {
     ) {
       return res.status(402).json({ 
         err: "Need to purchase",
-        preview: content.slice(0, PREVIEW_LEN)
+        preview: content.slice(0, PREVIEW_LEN),
+        title: note.title,
+        username: username,
+        dateLastUpdated: note.dateLastUpdated,
+        dateCreated: note.dateCreated,
+        votes: note.votes,
+        noteId: noteId
       });
     }
 
@@ -118,7 +125,9 @@ exports.readNote = async (req, res) => {
       dateLastUpdated: note.dateLastUpdated,
       dateCreated: note.dateCreated,
       votes: note.votes,
-      noteId: noteId
+      noteId: noteId,
+      isPublished: note.isPublished,
+      isDeleted: note.isDeleted,
     });
   } catch (err) {
     console.log(err);
