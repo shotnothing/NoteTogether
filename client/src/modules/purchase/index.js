@@ -3,7 +3,7 @@ const PurchaseLanding = () => import("./views/PurchaseLanding.vue");
 const View = () => import("./views/View.vue");
 
 const purchaseRoute = {
-	path: "Purchase",
+	path: "purchase",
 	component: PurchaseTemplate,
 	children: [
 		{
