@@ -47,7 +47,7 @@ exports.purchaseNote = async (req, res) => {
     }
     
     if (user.credits < cost) {
-      return res.status(401).json({ err: "You cannot afford this purchase" });
+      return res.status(405).json({ err: "You cannot afford this purchase" });
     }
 
     // update user
