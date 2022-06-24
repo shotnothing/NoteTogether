@@ -33,13 +33,25 @@ export default {
     },
     async getStudyNotes() {
       let token = localStorage.getItem("jwt");
-      let response = await this.$http.post(
-        "/note/search",
-        { searchTerm: "" },
+      let createdResponse = await this.$http.post(
+        "/user/notes/created",
+        {},
         { headers: { 'Authorization': token } }
-        );
-      this.studyNotes = response.data.searchResults;
-    }
+      );
+      let favouritedResponse = await this.$http.post(
+        "/user/notes/favourited",
+        {},
+        { headers: { 'Authorization': token } }
+      );
+      let purchasedResponse = await this.$http.post(
+        "/user/notes/purchased",
+        {},
+        { headers: { 'Authorization': token } }
+      );
+      this.studyNotes.push(...createdResponse.data.notes.notes);
+      this.studyNotes.push(...favouritedResponse.data.notes.favourited);
+      this.studyNotes.push(...purchasedResponse.data.notes.purchased);
+    },
   },
   created() {
     this.getStudyNotes();

@@ -9,6 +9,13 @@
     <div class="row">
       <NotePreview class="col-sm-6 col-md-2" v-for="note in favouritedNotes" :note="note" :key="note" :address="address"></NotePreview>
     </div>
+    <br>
+    <div v-if="purchasedNotes.length > 0">
+      <h3>Purchased Notes</h3>
+      <div class="row">
+        <NotePreview class="col-sm-6 col-md-2" v-for="note in purchasedNotes" :note="note" :key="note" :address="address"></NotePreview>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,6 +31,7 @@ export default {
     return {
       createdNotes: [],
       favouritedNotes: [],
+      purchasedNotes: [],
       address: "edit",
     };
   },
@@ -40,25 +48,35 @@ export default {
     async getCreatedNotes() {
       let token = localStorage.getItem("jwt");
       let response = await this.$http.post(
-        "/note/search",
-        { searchTerm: "" },
+        "/user/notes/created",
+        {},
         { headers: { 'Authorization': token } }
         );
-      this.createdNotes = response.data.searchResults;
+      this.createdNotes = response.data.notes.notes;
     },
     async getFavouritedNotes() {
       let token = localStorage.getItem("jwt");
       let response = await this.$http.post(
-        "/note/search",
-        { searchTerm: "" },
+        "/user/notes/favourited",
+        {},
         { headers: { 'Authorization': token } }
         );
-      this.favouritedNotes = response.data.searchResults;
+      this.favouritedNotes = response.data.notes.favourited;
+    },
+    async getPurchasedNotes() {
+      let token = localStorage.getItem("jwt");
+      let response = await this.$http.post(
+        "/user/notes/purchased",
+        {},
+        { headers: { 'Authorization': token } }
+        );
+      this.purchasedNotes = response.data.notes.purchased;
     }
   },
   created() {
     this.getCreatedNotes();
     this.getFavouritedNotes();
+    this.getPurchasedNotes();
   }
 };
 </script>
