@@ -269,7 +269,7 @@ exports.searchNote = async (req, res) => {
         isPublished: true,
         isDeleted: false
       })
-      .sort({ datePublished: -1 })
+      .sort({ votes: -1 })
       .skip(PER_PAGE*(req.body.page-1))
       .limit(PER_PAGE)
       .populate("userId", "username")

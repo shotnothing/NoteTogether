@@ -96,7 +96,14 @@ exports.createdNotes = async (req, res) => {
 
     let notes = await User.findById(userId)
                           .select('notes')
-                          .populate({ path: 'notes' })
+                          .populate({
+                            path: 'notes',
+                            populate: {
+                              path: 'userId',
+                              select: 'username',
+                              model: 'User'
+                            }
+                          });
 
     res.status(200).json({ notes: notes });
   } catch (err) {
@@ -112,7 +119,14 @@ exports.favouritedNotes = async (req, res) => {
 
     let notes = await User.findById(userId)
                           .select('favourited')
-                          .populate({ path: 'favourited' })
+                          .populate({
+                            path: 'favourited',
+                            populate: {
+                              path: 'userId',
+                              select: 'username',
+                              model: 'User'
+                            }
+                          });
 
     res.status(200).json({ notes: notes });
   } catch (err) {
@@ -128,7 +142,14 @@ exports.purchasedNotes = async (req, res) => {
 
     let notes = await User.findById(userId)
                           .select('purchased')
-                          .populate({ path: 'purchased' })
+                          // .populate({
+                          //   path: 'purchased',
+                          //   populate: {
+                          //     path: 'userId',
+                          //     select: 'username',
+                          //     model: 'User'
+                          //   }
+                          // });
 
     res.status(200).json({ notes: notes });
   } catch (err) {
