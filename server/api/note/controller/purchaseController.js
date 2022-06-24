@@ -77,6 +77,25 @@ exports.checkPurchase = async (req, res) => {
   }
 }
 
+exports.getTierAPI = async (req, res) => {
+  try {
+    console.log(req.body);
+    const tier = await this.getTier(await Note.findById(req.body.noteId));
+    let price = 0;
+    if (tier == "gold") {
+      price = TIER_GOLD_COST;
+    } else if (tier == "silver") {
+      price = TIER_SILVER_COST;
+    } else if (tier == "bronze") {
+      price = TIER_BRONZE_COST;
+    }
+    res.status(200).json({ tier: tier, price: price });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: err });
+  }
+}
+
 exports.getTier = async (note) => {
   // gt count may be slow, to replace when scaling up
   let gt = await Note.find({ votes: {$gt: note.votes} }).count();
