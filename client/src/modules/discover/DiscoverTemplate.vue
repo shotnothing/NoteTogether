@@ -1,13 +1,10 @@
 <template>
   <div>
-    <router-view v-if="user._id" :user="user"/>
-    <Login v-else></Login>
+    <router-view :user="user"/>
   </div>
 </template>
 
 <script>
-import Login from "@/components/Login.vue";
-
 export default {
   name: "PurchaseTemplate",
   props: ["user"],
@@ -16,8 +13,22 @@ export default {
       user: {},
     }
   },
-  components: {
-    Login,
+  methods: {
+    async checkValidToken() {
+      try {
+        let token = localStorage.getItem("jwt");
+        let response = await this.$http.post(
+          "/user/me",
+          {},
+          { headers: { 'Authorization': token } }
+        );
+      } catch (err) {
+        this.$router.push("/user/login");
+      }
+    }
+  },
+  created() {
+    this.checkValidToken();
   }
 };
 </script>
