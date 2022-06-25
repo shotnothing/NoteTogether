@@ -1,6 +1,9 @@
 {
   "name": "article",
   "version": "1.0.0",
+    "engines": {
+    "node": "16.13.1"
+  },
   "description": "article",
   "main": "index.js",
   "scripts": {
