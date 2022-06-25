@@ -98,7 +98,7 @@ export default {
         let token = localStorage.getItem("jwt");
         let response = await this.$http.post(
           "/note/getTier",
-          { noteId: this.$route.params.noteId },
+          { noteId: this.note._id },
           { headers: { 'Authorization': token } }
         );
         this.tier = response.data.tier;
@@ -298,6 +298,7 @@ export default {
     await this.checkLocked();
     await this.checkFavourited();
     await this.getVotes();
+    await this.getTier();
   }
 };
 </script>
