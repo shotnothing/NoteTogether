@@ -62,6 +62,8 @@
 </template>
 
 <script>
+import swal from "sweetalert";
+
 export default {
   name: "NotePreview",
   props: ["note", "user"],

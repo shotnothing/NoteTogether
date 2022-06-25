@@ -9,6 +9,7 @@
 
 <script>
 import NotePreview from "@/components/NotePreview.vue";
+import swal from "sweetalert";
 
 export default {
   name: "StudyLanding",
