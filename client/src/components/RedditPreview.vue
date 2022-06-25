@@ -38,8 +38,8 @@
         </a>
       </div>
     </div>
-    <div class="ml-auto p-2">
-      <div>
+    <div class="ml-auto p-2 w-25">
+      <div class="ml-auto w-75">
         <span v-if="tier=='gold'" class="color-gold">
           Gold 
         </span>
@@ -54,8 +54,8 @@
         </span>
         Tier
       </div>
-      <div class="font-weight-light">
-        Price: {{ price }}
+      <div class="ml-auto w-75 font-weight-light">
+        Cost to Unlock: {{ price }}
       </div>
     </div>
   </div>
