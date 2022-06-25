@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "npm run build",
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
