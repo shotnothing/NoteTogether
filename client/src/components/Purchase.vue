@@ -12,7 +12,7 @@
       </div>
     </div>
     <button
-      class="float-right btn btn-secondary btn-block w-25 m-2"
+      class="btn btn-secondary btn-block w-25 m-2"
       type="button"
       v-on:click="purchaseNote()"
     >
