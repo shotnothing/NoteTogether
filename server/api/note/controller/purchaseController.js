@@ -36,7 +36,7 @@ exports.purchaseNote = async (req, res) => {
     // Fetch price
     let cost = 0;
 
-    switch(await getTier(note)) {
+    switch(await this.getTier(note)) {
       case 'gold': 
         cost = TIER_GOLD_COST;
         break;
