@@ -53,7 +53,13 @@ export default {
           _id: this.$route.params.noteId
         }];
       } catch (err) {
-        // this.content = err;
+        switch (err.request.status) {
+          case 402:
+            this.$router.push("/purchase/"+this.$route.params.noteId);
+            break;
+          default:
+            swal("Error", "Something went wrong", "error");
+        }
       }
     }
   },

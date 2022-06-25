@@ -1,13 +1,15 @@
 <template>
-  <div class="container d-flex">
-    <div class="flex-fill">
-      <RedditPreview v-for="note in notes" :note="note" :key="note"></RedditPreview>
-      <h3>Preview:</h3>
-      <div class="m-2 p-2 bg-white border border-secondary">{{ preview }}</div>
-    </div>
-    <div class="m-2">
-      <CreditBalance :user="user"></CreditBalance>
-      <div class="w-100">Create notes or write reviews to earn credits!</div>
+  <div class="container">
+    <div class="d-flex">
+      <div class="flex-fill">
+        <RedditPreview v-for="note in notes" :note="note" :key="note"></RedditPreview>
+        <h3>Preview:</h3>
+        <div class="m-2 p-2 bg-white border border-secondary" v-html="preview"></div>
+      </div>
+      <div class="m-2">
+        <CreditBalance :user="user"></CreditBalance>
+        <div class="w-100">Create notes or write reviews to earn credits!</div>
+      </div>
     </div>
     <button
       class="float-right btn btn-secondary btn-block w-25 m-2"
@@ -22,6 +24,7 @@
 <script>
 import CreditBalance from "@/components/CreditBalance";
 import RedditPreview from "@/components/RedditPreview";
+import { marked } from 'marked';
 
 export default {
   name: "Purchase",
@@ -67,14 +70,14 @@ export default {
       } catch (err) {
         switch (err.response.status) {
           case 402:
-            this.preview = response.data.preview;
+            this.preview = marked(err.response.data.preview);
             this.notes = [{
-              title: response.data.title,
+              title: err.response.data.title,
               userId: {
-                username: response.data.username,
+                username: err.response.data.username,
               },
-              dateLastUpdated: response.data.dateLastUpdated,
-              votes: response.data.votes,
+              dateLastUpdated: err.response.data.dateLastUpdated,
+              votes: err.response.data.votes,
               _id: this.$route.params.noteId
             }];
             break;

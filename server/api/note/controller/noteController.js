@@ -107,7 +107,7 @@ exports.readNote = async (req, res) => {
     ) {
       return res.status(402).json({ 
         err: "Need to purchase",
-        preview: content.slice(0, PREVIEW_LEN),
+        preview: content.slice(0, PREVIEW_LEN).join(),
         title: note.title,
         username: username,
         dateLastUpdated: note.dateLastUpdated,
