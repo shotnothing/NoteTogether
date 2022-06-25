@@ -25,6 +25,7 @@
 import CreditBalance from "@/components/CreditBalance";
 import RedditPreview from "@/components/RedditPreview";
 import { marked } from 'marked';
+import swal from "sweetalert";
 
 export default {
   name: "Purchase",
@@ -90,7 +91,6 @@ export default {
     async purchaseNote() {
       try {
         let token = localStorage.getItem("jwt");
-        console.log(this.mde.content);
         let response = await this.$http.post(
           "/note/purchase",
           { noteId: this.$route.params.noteId },

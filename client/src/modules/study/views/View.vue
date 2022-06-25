@@ -20,6 +20,7 @@
 <script>
 import RedditPreview from "@/components/RedditPreview.vue";
 import { marked } from 'marked';
+import swal from "sweetalert";
 
 export default {
   name: "StudyView",

@@ -30,12 +30,10 @@
               <a class="nav-link text-dark btn bg-primary w-100" href="/collate">Collate</a>
             </li>
             <li class="nav-item col">
-              <a class="nav-link text-dark btn bg-primary w-100" v-if="id" v-bind:href="'/user/'+id+'/profile'">Profile</a>
-              <a class="nav-link text-dark btn bg-primary w-100" v-else href="/user/login">Log In</a>
-            </li>
-            <li class="nav-item col">
               <a class="nav-link text-dark btn bg-primary w-100" v-if="id" @click="logUserOut">Log Out</a>
-              <a class="nav-link text-dark btn bg-primary w-100" v-else href="/user/register">Register</a>
+              <a class="nav-link text-dark btn bg-primary w-100" v-else href="/user/login">Log In</a>
+              <!-- <a class="nav-link text-dark btn bg-primary w-100" v-if="id" v-bind:href="'/user/'+id+'/profile'">Profile</a> -->
+              <!-- <a class="nav-link text-dark btn bg-primary w-100" v-else href="/user/register">Register</a> -->
             </li>
           </ul>
         </div>

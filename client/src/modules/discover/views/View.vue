@@ -18,6 +18,7 @@
 import RedditPreview from "@/components/RedditPreview.vue";
 import CreditBalance from "@/components/CreditBalance.vue";
 import { marked } from 'marked';
+import swal from "sweetalert";
 
 export default {
   name: "DiscoverView",
