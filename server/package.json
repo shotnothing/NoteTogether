@@ -1,13 +1,12 @@
 {
-  "name": "article",
+  "name": "NoteTogether-Server",
   "version": "1.0.0",
     "engines": {
     "node": "16.13.1"
   },
-  "description": "article",
+  "description": "NoteTogether Server",
   "main": "index.js",
   "scripts": {
-    "postinstall": "npm run build",
     "start": "node index.js"
   },
   "dependencies": {
