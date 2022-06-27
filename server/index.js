@@ -5,8 +5,15 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const config = require("./config/db");
+const fs = require('fs')
 
 const app = express();
+
+if (fs.existsSync("./config/db")) {
+    let database = config.database;
+  } else {
+    let database = process.env.DB_URI;
+  }
 
 //configure database and mongoose
 mongoose.set("useCreateIndex", true);
