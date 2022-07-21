@@ -11,4 +11,6 @@ router.post("/notes/created", auth, userController.createdNotes);
 router.post("/notes/favourited", auth, userController.favouritedNotes);
 router.post("/notes/purchased", auth, userController.purchasedNotes);
 
+router.post("/best", auth, userController.bestUsers);
+
 module.exports = router;
