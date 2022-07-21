@@ -158,5 +158,22 @@ exports.purchasedNotes = async (req, res) => {
   }
 };
 
+exports.bestUsers = async (req, res) => {
+  try {
+    const userId = req.userData._id;
+
+    let users = await User
+      .find()
+      .sort({points: -1})
+      .select("username points")
+      .limit(5);
+
+    res.status(200).json({ users: users });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: err });
+  }
+}
+
 // favouritedNotes
 // purchasedNotes
