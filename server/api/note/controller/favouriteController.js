@@ -70,7 +70,7 @@ exports.checkFavourited = async (req, res) => {
 async function addFavourite(noteId, user) {
   user.favourited = [noteId, ...user.favourited];
   const note = await Note.findById(noteId);
-  note.creditedVote = [user._id, ...note.creditedVote];
+  note.creditedVFavourite = [user._id, ...note.creditedFavourite];
   await note.save();
   const status = await user.save();
   return status;
