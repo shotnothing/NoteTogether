@@ -14,11 +14,12 @@ router.post('/publish', auth, noteController.publishNote);
 router.post('/search', auth, noteController.searchNote);
 
 router.post('/vote', auth, voteController.voteNote);
+router.post('/upvote', auth, voteController.upvoteNote);
+router.post('/downvote', auth, voteController.downvoteNote);
 router.post('/checkVoted', auth, voteController.checkVoted);
 router.post('/getVotes', auth, voteController.getVotes);
 
 router.post('/purchase', auth, purchaseController.purchaseNote);
-router.post('/getTier', auth, purchaseController.getTierAPI);
 router.post('/checkPurchase', auth, purchaseController.checkPurchase);
 
 router.post('/favourite', auth, favouriteController.favourite);
