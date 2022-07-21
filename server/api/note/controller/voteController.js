@@ -74,6 +74,40 @@ exports.voteNote = async (req, res) => {
   }
 }
 
+exports.upvoteNote = async (req, res) => {
+  try {
+    // Id of requestor
+    const userId = req.userData._id;
+    let user = await User.findById(userId);
+
+    const noteId = req.body.noteId;
+    let note = await Note.findById(noteId);
+
+    const status = upvote(note, user);
+    return res.status(200).json({ status: "Note upvoted"});
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: err });
+  }
+}
+
+exports.downvoteNote = async (req, res) => {
+  try {
+    // Id of requestor
+    const userId = req.userData._id;
+    let user = await User.findById(userId);
+
+    const noteId = req.body.noteId;
+    let note = await Note.findById(noteId);
+
+    const status = downvote(note, user);
+    return res.status(200).json({ status: "Note downvoted"});
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: err });
+  }
+}
+
 exports.checkVoted = async (req, res) => {
   try {
     // Id of requestor
