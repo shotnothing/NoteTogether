@@ -31,19 +31,16 @@ exports.purchaseNote = async (req, res) => {
 
     // Fetch price
     let cost = 0;
+    let metric = note.votes + 2*(note.favourites);
 
-    switch(await this.getTier(note)) {
-      case 'gold': 
-        cost = TIER_GOLD_COST;
-        break;
-      case 'silver':
-        cost = TIER_SILVER_COST;
-        break;
-      case 'bronze':
-        cost = TIER_BRONZE_COST;
-        break;
-      default:
-        break;
+    if (metric < TIER_BRONZE_FIXED) {
+      cost = 0;
+    } else if (metric < TIER_SILVER_FIXED) {
+      cost = TIER_BRONZE_COST;
+    } else if (metric < TIER_GOLD_FIXED) {
+      cost = TIER_SILVER_COST;
+    } else {
+      cost = TIER_GOLD_COST;
     }
     
     if (user.credits < cost) {
