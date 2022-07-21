@@ -12,6 +12,10 @@ const noteSchema = mongoose.Schema({
     ref: 'User',
     required: true
   },
+  length: {
+    type: Number,
+    required: true
+  },
   dateCreated: {
     type: Date,
     required: true,
@@ -35,6 +39,11 @@ const noteSchema = mongoose.Schema({
     required: true,
     default: false,
   },
+  isCheatsheet: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   forkOf: {
     type: mongoose.Schema.Types.ObjectId,
     required: false
@@ -49,9 +58,18 @@ const noteSchema = mongoose.Schema({
     ref: 'Review',
     default: []
   },
+  reviewCount: {
+    type: Number,
+    default: 0
+  },
   creditedVote: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Credited Vote',
+    default: []
+  },
+  creditedFavourite: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Credited Favourite',
     default: []
   },
   creditedReview: {
