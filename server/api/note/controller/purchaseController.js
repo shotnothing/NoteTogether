@@ -1,10 +1,6 @@
 const Note = require("../model/Note");
 const User = require("../../user/model/User");
 
-TIER_BRONZE_PERCENTILE = 0.3;
-TIER_SILVER_PERCENTILE = 0.2;
-TIER_GOLD_PERCENTILE = 0.1;
-
 TIER_BRONZE_FIXED = 20;
 TIER_SILVER_FIXED = 50;
 TIER_GOLD_FIXED = 100;
@@ -79,52 +75,4 @@ exports.checkPurchase = async (req, res) => {
     console.log(err);
     res.status(400).json({ err: err });
   }
-}
-
-exports.getTierAPI = async (req, res) => {
-  try {
-    console.log(req.body.noteId);
-    const note = await Note.findById(req.body.noteId);
-    console.log(note);
-    const tier = await this.getTier(note);
-    console.log(tier);
-    let price = 0;
-    if (tier == "gold") {
-      price = TIER_GOLD_COST;
-    } else if (tier == "silver") {
-      price = TIER_SILVER_COST;
-    } else if (tier == "bronze") {
-      price = TIER_BRONZE_COST;
-    }
-    res.status(200).json({ tier: tier, price: price });
-  } catch (err) {
-    console.log(err);
-    res.status(400).json({ err: err });
-  }
-}
-
-exports.getTier = async (note) => {
-  // gt count may be slow, to replace when scaling up
-  // let gt = await Note.find({ votes: {$gt: note.votes} }).count();
-  // let total = await Note.count();
-  // let metric = gt / total;
-
-  // if (metric <= TIER_GOLD_PERCENTILE) {
-  //   return 'gold';
-  // } else if (metric <= TIER_SILVER_PERCENTILE) {
-  //   return 'silver';
-  // } else if (metric <= TIER_BRONZE_PERCENTILE) {
-  //   return 'bronze';
-  // }
-
-  let metric = note.votes;
-
-  if (metric >= TIER_GOLD_FIXED) {
-    return 'gold';
-  } else if (metric >= TIER_SILVER_FIXED) {
-    return 'silver';
-  } else if (metric >= TIER_BRONZE_FIXED) {
-    return 'bronze';
-  }
-  return 'none';
 }
