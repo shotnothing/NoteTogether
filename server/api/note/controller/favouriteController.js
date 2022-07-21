@@ -32,7 +32,7 @@ exports.favourite = async (req, res) => {
         status = "unfavourited";
         break;
 
-      case "toggle":
+      default:
         if (user.favourited.includes(noteId)) { // if favourited, unfavourite
           await removeFavourite(noteId, user);
           status = "unfavourited";
@@ -69,6 +69,9 @@ exports.checkFavourited = async (req, res) => {
 
 async function addFavourite(noteId, user) {
   user.favourited = [noteId, ...user.favourited];
+  const note = await Note.findById(noteId);
+  note.creditedVote = [user._id, ...note.creditedVote];
+  await note.save();
   const status = await user.save();
   return status;
 }
