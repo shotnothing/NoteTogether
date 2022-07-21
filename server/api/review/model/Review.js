@@ -22,16 +22,15 @@ const ReviewSchema = mongoose.Schema({
     required: true,
     default: Date.now,
   },
-  isDeleted: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
   noteId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
-  credited: {
+  votes: {
+    type: Number,
+    default: 0,
+  },
+  creditedVote: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Credited',
     default: []
