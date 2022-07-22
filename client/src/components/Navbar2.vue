@@ -35,10 +35,8 @@
             </li>
             <li class="nav-item col my-auto">
               <a class="nav-link text-dark btn bg-primary w-100" v-if="id" @click="logUserOut">Logout</a>
-              
               <a class="nav-link text-dark btn bg-primary w-100" v-else href="/user/login">Login</a>
-              <!-- <a class="nav-link text-dark btn bg-primary w-100" v-if="id" v-bind:href="'/user/'+id+'/profile'">Profile</a> -->
-              <!-- <a class="nav-link text-dark btn bg-primary w-100" v-else href="/user/register">Register</a> -->
+
             </li>
           </ul>
         </div>

@@ -9,7 +9,7 @@
         <h2 class="p-2">Search Results</h2>
       </div>
       <div class="">
-        <RedditPreview class="row" :user="user" v-for="note in searchResults" :note="note" :key="note.votes"></RedditPreview>
+        <RedditPreview class="row" :user="user" v-for="note in searchResults" :note="note"></RedditPreview>
       </div>
     </div>
     <div class="p-2 m-2 w-25">
@@ -38,15 +38,6 @@ export default {
     };
   },
   methods: {
-    async getNotes() {
-      let token = localStorage.getItem("jwt");
-      let response = await this.$http.post(
-        "/note/search",
-        { searchTerm: "" },
-        { headers: { 'Authorization': token } }
-        );
-      this.searchResults = response.data.searchResults;
-    },
     async searchNotes() {
       let token = localStorage.getItem("jwt");
       let response = await this.$http.post(
@@ -55,10 +46,11 @@ export default {
         { headers: { 'Authorization': token } }
       );
       this.searchResults = response.data.searchResults;
+      console.log(response.data.searchResults)
     }
   },
   created() {
-    this.getNotes();
+    this.searchNotes();
   }
 };
 </script>
