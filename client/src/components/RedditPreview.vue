@@ -6,7 +6,7 @@
         <span v-else class="text-dark">⬆</span>
       </a>
       <br>
-      {{ votes }}
+      {{ note.votes }}
       <br>
       <a v-on:click="downvote()">
         <span v-if="voteStatus=='downvote'" class="text-secondary">⬇</span>
@@ -40,13 +40,13 @@
     </div>
     <div class="ml-auto p-2 w-25">
       <div class="ml-auto w-75">
-        <span v-if="tier=='gold'" class="color-gold">
+        <span v-if="note.tier=='gold'" class="color-gold">
           Gold 
         </span>
-        <span v-else-if="tier=='silver'" class="color-silver">
+        <span v-else-if="note.tier=='silver'" class="color-silver">
           Silver 
         </span>
-        <span v-else-if="tier=='bronze'" class="color-bronze">
+        <span v-else-if="note.tier=='bronze'" class="color-bronze">
           Bronze 
         </span>
         <span v-else>
@@ -55,7 +55,7 @@
         Tier
       </div>
       <div class="ml-auto w-75 font-weight-light">
-        Cost to Unlock: {{ price }}
+        Cost to Unlock: {{ note.price }}
       </div>
     </div>
   </div>
@@ -184,6 +184,7 @@ export default {
       }
     },
     async getVotes() {
+      // depreciated
       try {
         let token = localStorage.getItem("jwt");
         let response = await this.$http.post(
@@ -297,10 +298,10 @@ export default {
   async created() {
     await this.getTimeDiff();
     await this.checkVoted();
-    await this.checkLocked();
-    await this.checkFavourited();
-    await this.getVotes();
-    await this.getTier();
+    //await this.checkLocked();
+    //await this.checkFavourited();
+    //await this.getVotes();
+    //await this.getTier();
   }
 };
 </script>

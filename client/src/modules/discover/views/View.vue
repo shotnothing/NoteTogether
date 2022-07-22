@@ -1,9 +1,10 @@
 <template>
   <div class="container">
+
     <h3 class="ml-2">View Mode</h3>
     <div class="d-flex">
       <div class="flex-fill">
-        <RedditPreview :user="user" v-for="note in notes" :note="note" :key="note.votes"></RedditPreview>
+        <RedditPreview :user="user" v-for="note in notes" :note="note"></RedditPreview>
         <div v-html="content" class="m-2 p-2 bg-white border border-secondary"></div>
       </div>
       <div class="m-2">
@@ -51,6 +52,11 @@ export default {
           },
           dateLastUpdated: response.data.dateLastUpdated,
           votes: response.data.votes,
+          tier: response.data.tier,
+          isFavourited: response.data.isFavourited,
+          isLocked: response.data.isLocked, 
+          price: response.data.price, 
+          voteStatus: response.data.voteStatus, 
           _id: this.$route.params.noteId
         }];
       } catch (err) {

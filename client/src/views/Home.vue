@@ -1,21 +1,54 @@
 <template>
   <div class="container-fluid" style="height:100%">
-    <section class="text-center align-items-center flex-column m-auto" style="height:100%">
-      <h4 class="lead w-50 m-auto text-center">
-        <span v-if="validToken">Welcome to NoteTogether, {{ user.username }}!</span> NoteTogether is a note-sharing platform where users can interact with notes in various ways.
-        In essence, after registering on our application, users can create notes and either choose to publish them or keep them private. 
-        Through the use of search terms and tags, users can <a href="/discover">discover new notes</a> published by others, which could be added to their collection. 
-        Users can then study the notes that they have saved, leaving reviews by commenting or simply up/downvoting the notes. 
-        Through a GitHub-style version control/forking system, we also allow users to <a href="/edit">edit notes</a> made by others. 
-        Users can also collate sections from different notes to produce cheatsheets, which themselves can also be shared. 
-        Surrounding all these will be a credit system which encourages the active use of the platform, keeping its content fresh and dynamic.
-        <a v-if="!validToken" href="/user/login">Please log in before using this site!</a>
-      </h4>
-      <br>
-      <h1>Resources</h1>
-      <h4 class="lead w-50 m-auto text-center">
-        <a href="https://github.com/shotnothing/NoteTogether">GitHub</a>
-      </h4>
+    <section class="text-center align-items-center flex-column m-auto">
+    <h1 style="
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 300;
+      font-size: 80px;
+      line-height: 150px;
+      text-align: center;
+      color: #000000;
+      padding-top:200px; padding-bottom:0px;
+    "><b>Need Study Notes?</b></h1>
+  </section>
+  <section class="text-center align-items-center flex-column m-auto">
+    <h1 style="
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 110px;
+      line-height: 80px;
+      text-align: center;
+      color: #CE9999;
+      padding-top:0px; padding-bottom:100px;
+    "><b>We gotchu.</b></h1>
+  </section>
+    <section class="text-center align-items-center flex-column m-auto" style="
+      padding-top:80px; padding-bottom:30px;
+    ">
+      <a class="btn btn-link" v-bind:href="landingButtons[validToken ? 0 : 1].link" style="
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 100px;
+        background-color: #CE9999;
+        border: none;
+        color: black;
+        padding: 30px 120px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        color: #9D3333;
+        border-radius: 100px;
+      "> <h2><b>{{landingButtons[validToken ? 0 : 1].text}}</b></h2></a>
+
+    </section>
+
+    <section class="text-center align-items-center flex-column m-auto">
+      Also, check us out on <a href="https://github.com/shotnothing/NoteTogether">GitHub</a>
     </section>
   </div>
 </template>
@@ -27,6 +60,10 @@ export default {
   data() {
     return {
       validToken: true,
+      landingButtons: [
+        {text: "Discover Notes", link: "/user/discover"},
+        {text: "Sign Up Now", link: "/user/register"},
+      ]
     }
   },
   methods: {

@@ -1,5 +1,9 @@
 <template>
   <div>
+    <section class="text-center align-items-center flex-column m-auto" style="padding-top:120px; padding-bottom:30px">
+      <h1>Discover Notes</h1>
+    </section>
+
     <router-view :user="user"/>
   </div>
 </template>

@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <h3>Study Notes</h3>
+    <section class="text-center align-items-center flex-column m-auto">
+    <h1>Study Notes</h1>
+
+    </section>
     <div class="row">
       <NotePreview class="col-sm-6 col-md-2" v-for="note in studyNotes" :note="note" :key="note" :address="address"></NotePreview>
     </div>

@@ -1,15 +1,15 @@
 <template>
   <div class="bg-primary text-dark h-100">
     <Navbar :id="user._id" :username="user.username"></Navbar>
-    <section class="text-center align-items-center flex-column m-auto" style="padding-top:60px">
+<!--     <section class="text-center align-items-center flex-column m-auto" style="padding-top:60px">
       <a href="/"><img src="../assets/Logo.png" class="w-25 mt-10"></a>
-    </section>
+    </section> -->
     <router-view :user="user"></router-view>
   </div>
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
+import Navbar from "@/components/Navbar2.vue";
 // import Login from "@/components/Login.vue";
 import VueJwtDecode from "vue-jwt-decode";
 

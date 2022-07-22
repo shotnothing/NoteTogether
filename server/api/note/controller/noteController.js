@@ -3,7 +3,6 @@ const User = require("../../user/model/User");
 const Review = require("../../review/model/Review");
 
 const purchaseController = require("./purchaseController");
-const { rewriteDefault } = require("@vue/compiler-sfc");
 
 const PER_PAGE = 10;
 const PREVIEW_LEN = 5;
