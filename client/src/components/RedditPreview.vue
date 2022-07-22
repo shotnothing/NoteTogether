@@ -16,14 +16,14 @@
     <div class="text-truncate py-2">
       <button class="lead">
         <a v-bind:href="'/discover/'+note._id" class="text-dark">{{ note.title }}</a>
-        <span v-if="isLocked" class="ml-2">🔒</span>
-        <a v-if="!isLocked" class="ml-2" v-on:click="favourite()">
+        <span v-if="note.isLocked && note.tier!='free'" class="ml-2">🔒</span>
+        <a v-else class="ml-2" v-on:click="favourite()">
           <span v-if="isFavourited" class="color-gold font-weight-light">★</span>
           <span v-else class="text-dark font-weight-light">☆</span>
         </a>
       </button>
       <div class="font-weight-light small">submitted {{ this.timeDiff }} by {{ note.userId.username }}</div>
-      <div v-if="isLocked">
+      <div v-if="note.isLocked && note.tier!='free'">
         <a class="small" v-bind:href="'/purchase/'+note._id">
           <span class="color-dark">unlock</span>
         </a>
@@ -96,6 +96,7 @@ export default {
       }
     },
     async getTier() {
+      // depreciated
       try {
         let token = localStorage.getItem("jwt");
         let response = await this.$http.post(
@@ -147,6 +148,7 @@ export default {
       }
     },
     async checkLocked() {
+      // depreciated
       try {
         let token = localStorage.getItem("jwt");
         let response = await this.$http.post(
@@ -226,8 +228,7 @@ export default {
           },
           { headers: { 'Authorization': token } }
         );
-        // await this.getVotes();
-        console.log(response);
+        note.title = "poo"
       } catch (err) {
         switch(err.request.status) {
           case 401:
@@ -298,9 +299,9 @@ export default {
   async created() {
     await this.getTimeDiff();
     await this.checkVoted();
-    //await this.checkLocked();
-    //await this.checkFavourited();
-    //await this.getVotes();
+    // await this.checkLocked();
+    await this.checkFavourited();
+    await this.getVotes();
     //await this.getTier();
   }
 };

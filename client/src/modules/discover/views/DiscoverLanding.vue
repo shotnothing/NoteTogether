@@ -46,7 +46,7 @@ export default {
         { headers: { 'Authorization': token } }
       );
       this.searchResults = response.data.searchResults;
-      console.log(response.data.searchResults)
+      console.log(response)
     }
   },
   created() {

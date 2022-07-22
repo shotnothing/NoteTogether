@@ -355,8 +355,8 @@ async function isLocked(noteId, userId) {
   // The note is locked if
   return tier != "free"                      // its not free 
     && note.userId != userId                      // you dont own the note
-    && !user.purchased.includes(noteId)           // you have not purchased it before
-    && note.content.length > PREVIEW_LEN;         // the note is short enough
+    && !user.purchased.includes(noteId);           // you have not purchased it before
+    // && note.content.length > PREVIEW_LEN;         // the note is short enough
 }
 
 async function getBaseNoteInformation(note) {
