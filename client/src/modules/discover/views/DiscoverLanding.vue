@@ -9,7 +9,7 @@
         <h2 class="p-2">Search Results</h2>
       </div>
       <div class="">
-        <RedditPreview class="row" :user="user" v-for="note in searchResults" :note="note"></RedditPreview>
+        <SearchResultList class="row" :user="user" v-for="note in searchResults" :note="note"></SearchResultList>
       </div>
     </div>
     <div class="p-2 m-2 w-25">
@@ -20,14 +20,14 @@
 </template>
 
 <script>
-import RedditPreview from "@/components/RedditPreview.vue";
+import SearchResultList from "@/components/SearchResultList.vue";
 import CreditBalance from "@/components/CreditBalance.vue";
 
 export default {
   name: "EditLanding",
   props: ["user"],
   components: {
-    RedditPreview,
+    SearchResultList,
     CreditBalance,
   },
   data() {

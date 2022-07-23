@@ -34,6 +34,7 @@ export default {
     await this.getUserDetails();
     if (!this.user._id) {
       this.$router.push("/user/login");
+      this.user = {}; // clears id from navbar, untested
     }
   },
 };

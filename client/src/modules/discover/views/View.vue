@@ -4,7 +4,7 @@
     <h3 class="ml-2">View Mode</h3>
     <div class="d-flex">
       <div class="flex-fill">
-        <RedditPreview :user="user" v-for="note in notes" :note="note"></RedditPreview>
+        <SearchResultList :user="user" v-for="note in notes" :note="note"></SearchResultList>
         <div v-html="content" class="m-2 p-2 bg-white border border-secondary"></div>
       </div>
       <div class="m-2">
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import RedditPreview from "@/components/RedditPreview.vue";
+import SearchResultList from "@/components/SearchResultList.vue";
 import CreditBalance from "@/components/CreditBalance.vue";
 import { marked } from 'marked';
 import swal from "sweetalert";
@@ -25,7 +25,7 @@ export default {
   name: "DiscoverView",
   props: ["user", "note"],
   components: {
-    RedditPreview,
+    SearchResultList,
     CreditBalance,
   },
   data() {

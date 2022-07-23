@@ -2,28 +2,28 @@
   <div class="m-2 bg-white d-flex border border-secondary">
     <div class="text-center flex-fixed-width-item pt-2">
       <a v-on:click="upvote()">
-        <span v-if="voteStatus=='upvote'" class="text-secondary">⬆</span>
+        <span v-if="this.voteStatus=='upvote'" class="text-secondary">⬆</span>
         <span v-else class="text-dark">⬆</span>
       </a>
       <br>
-      {{ note.votes }}
+      {{ this.votes }}
       <br>
       <a v-on:click="downvote()">
-        <span v-if="voteStatus=='downvote'" class="text-secondary">⬇</span>
+        <span v-if="this.voteStatus=='downvote'" class="text-secondary">⬇</span>
         <span v-else class="text-dark">⬇</span>
       </a>
     </div>
     <div class="text-truncate py-2">
       <button class="lead">
         <a v-bind:href="'/discover/'+note._id" class="text-dark">{{ note.title }}</a>
-        <span v-if="note.isLocked && note.tier!='free'" class="ml-2">🔒</span>
+        <span v-if="this.isLocked && this.tier!='free'" class="ml-2">🔒</span>
         <a v-else class="ml-2" v-on:click="favourite()">
           <span v-if="isFavourited" class="color-gold font-weight-light">★</span>
           <span v-else class="text-dark font-weight-light">☆</span>
         </a>
       </button>
       <div class="font-weight-light small">submitted {{ this.timeDiff }} by {{ note.userId.username }}</div>
-      <div v-if="note.isLocked && note.tier!='free'">
+      <div v-if="this.isLocked && this.tier!='free'">
         <a class="small" v-bind:href="'/purchase/'+note._id">
           <span class="color-dark">unlock</span>
         </a>
@@ -40,13 +40,13 @@
     </div>
     <div class="ml-auto p-2 w-25">
       <div class="ml-auto w-75">
-        <span v-if="note.tier=='gold'" class="color-gold">
+        <span v-if="this.tier=='gold'" class="color-gold">
           Gold 
         </span>
-        <span v-else-if="note.tier=='silver'" class="color-silver">
+        <span v-else-if="this.tier=='silver'" class="color-silver">
           Silver 
         </span>
-        <span v-else-if="note.tier=='bronze'" class="color-bronze">
+        <span v-else-if="this.tier=='bronze'" class="color-bronze">
           Bronze 
         </span>
         <span v-else>
@@ -55,7 +55,7 @@
         Tier
       </div>
       <div class="ml-auto w-75 font-weight-light">
-        Cost to Unlock: {{ note.price }}
+        Cost to Unlock: {{ this.price }}
       </div>
     </div>
   </div>
@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       timeDiff: "invalid",
-      voteStatus: "clear",
+      voteStatus: "no vote",
       isLocked: false,
       isFavourited: false,
       votes: 0,
@@ -95,118 +95,6 @@ export default {
         this.timeDiff = String(seconds) + (seconds==1 ? " second ago" : " seconds ago");
       }
     },
-    async getTier() {
-      // depreciated
-      try {
-        let token = localStorage.getItem("jwt");
-        let response = await this.$http.post(
-          "/note/getTier",
-          { noteId: this.note._id },
-          { headers: { 'Authorization': token } }
-        );
-        this.tier = response.data.tier;
-        this.price = response.data.price;
-      } catch (err) {
-        swal("Error", err.response, "error");
-      }
-    },
-    async checkVoted() {
-      try {
-        let token = localStorage.getItem("jwt");
-        let response = await this.$http.post(
-          "/note/checkVoted",
-          {
-            noteId: this.note._id,
-          },
-          { headers: { 'Authorization': token } }
-        );
-        if (response.data.res == "no vote") {
-          this.voteStatus = "clear";
-        } else {
-          this.voteStatus = response.data.res;
-        }
-        console.log(response);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    async checkPurchased() {
-      try {
-        let token = localStorage.getItem("jwt");
-        let response = await this.$http.post(
-          "/note/checkPurchased",
-          {
-            noteId: this.note._id
-          },
-          { headers: { 'Authorization': token } }
-        );
-        if (response.data.purchased) {
-          this.isLocked = false;
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    async checkLocked() {
-      // depreciated
-      try {
-        let token = localStorage.getItem("jwt");
-        let response = await this.$http.post(
-          "/note/read",
-          {
-            noteId: this.note._id
-          },
-          { headers: { 'Authorization': token } }
-        );
-      } catch (err) {
-        switch (err.request.status) {
-          case 402:
-            this.isLocked = true;
-            break;
-          default:
-            return;
-        }
-      }
-    },
-    async checkFavourited() {
-      try {
-        let token = localStorage.getItem("jwt");
-        let response = await this.$http.post(
-          "/note/checkFavourited",
-          {
-            noteId: this.note._id
-          },
-          { headers: { 'Authorization': token } }
-        );
-        if (response.data.favourited) {
-          this.isFavourited = true;
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    async getVotes() {
-      // depreciated
-      try {
-        let token = localStorage.getItem("jwt");
-        let response = await this.$http.post(
-          "/note/getVotes",
-          {
-            noteId: this.note._id,
-          },
-          { headers: { 'Authorization': token } }
-        );
-        this.votes = response.data.votes;
-      } catch (err) {
-        switch(err.request.status) {
-          case 401:
-            swal("Error", "Unauthorized or your session has expired! Please relog.", "error");
-            break;
-          default:
-            swal("Error", 'Uhh, error {{err.request.status}}', "error");
-        }  
-      }
-    },
     async upvote() {
       try {
         let token = localStorage.getItem("jwt");
@@ -228,7 +116,6 @@ export default {
           },
           { headers: { 'Authorization': token } }
         );
-        note.title = "poo"
       } catch (err) {
         switch(err.request.status) {
           case 401:
@@ -236,6 +123,7 @@ export default {
             break;
           default:
             swal("Error", 'Uhh, error {{err.request.status}}', "error");
+            console.log(err.request);
         }  
       }
     },
@@ -260,8 +148,6 @@ export default {
           },
           { headers: { 'Authorization': token } }
         );
-        // await this.getVotes();
-        console.log(response);
       } catch (err) {
         switch(err.request.status) {
           case 401:
@@ -269,6 +155,7 @@ export default {
             break;
           default:
             swal("Error", 'Uhh, error {{err.request.status}}', "error");
+            console.log(err.request);
         }  
       }
     },
@@ -292,17 +179,19 @@ export default {
             break;
           default:
             swal("Error", 'Uhh, error {{err.request.status}}', "error");
+            console.log(err.request);
         }  
       }
     },
   },
   async created() {
+    this.voteStatus = this.note.voteStatus;
+    this.isLocked = this.note.isLocked;
+    this.isFavourited = this.note.isFavourited;
+    this.votes = this.note.votes;
+    this.tier = this.note.tier;
+    this.price = this.note.price;
     await this.getTimeDiff();
-    await this.checkVoted();
-    // await this.checkLocked();
-    await this.checkFavourited();
-    await this.getVotes();
-    //await this.getTier();
   }
 };
 </script>

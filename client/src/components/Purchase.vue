@@ -2,7 +2,7 @@
   <div class="container">
     <div class="d-flex">
       <div class="flex-fill">
-        <RedditPreview v-for="note in notes" :note="note" :key="note"></RedditPreview>
+        <SearchResultList v-for="note in notes" :note="note" :key="note"></SearchResultList>
         <h3>Preview:</h3>
         <div class="m-2 p-2 bg-white border border-secondary" v-html="preview"></div>
       </div>
@@ -23,7 +23,7 @@
 
 <script>
 import CreditBalance from "@/components/CreditBalance";
-import RedditPreview from "@/components/RedditPreview";
+import SearchResultList from "@/components/SearchResultList.vue";
 import { marked } from 'marked';
 import swal from "sweetalert";
 
@@ -41,7 +41,7 @@ export default {
   },
   components: {
     CreditBalance,
-    RedditPreview
+    SearchResultList
   },
   methods: {
     async getTier() {

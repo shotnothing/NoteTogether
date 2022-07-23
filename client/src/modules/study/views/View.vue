@@ -4,7 +4,7 @@
     <div class="d-flex">
       <div class="flex-fill">
         <div>
-          <RedditPreview :user="user" v-for="note in notes" :note="note" :key="note.votes"></RedditPreview>
+          <SearchResultList :user="user" v-for="note in notes" :note="note" :key="note.votes"></SearchResultList>
         </div>
         <div v-html="content" class="m-2 p-2 bg-white border border-secondary"></div>
       </div>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import RedditPreview from "@/components/RedditPreview.vue";
+import SearchResultList from "@/components/SearchResultList.vue";
 import { marked } from 'marked';
 import swal from "sweetalert";
 
