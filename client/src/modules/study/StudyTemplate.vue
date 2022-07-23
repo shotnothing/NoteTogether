@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="text-center align-items-center flex-column m-auto" style="padding-top:120px; padding-bottom:30px">
+    <section class="text-center align-items-center flex-column m-auto" style="padding-top:80px; padding-bottom:0px">
       <h1></h1>
     </section>
     <router-view></router-view>
