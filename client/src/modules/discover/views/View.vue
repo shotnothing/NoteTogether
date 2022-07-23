@@ -1,18 +1,32 @@
 <template>
-  <div class="container">
-
-    <h3 class="ml-2">View Mode</h3>
-    <div class="d-flex">
-      <div class="flex-fill">
-        <SearchResultList :user="user" v-for="note in notes" :note="note"></SearchResultList>
-        <div v-html="content" class="m-2 p-2 bg-white border border-secondary"></div>
-      </div>
-      <div class="m-2">
-        <CreditBalance :user="user"></CreditBalance>
-        <div class="w-100">Create notes or write reviews to earn credits!</div>
-      </div>
+    <div class="container">
+        <div class="d-flex">
+            <div class="flex-fill">
+                <v-tabs v-model="tabs" background-color="bg-primary" color="bg-secondary">
+                    <v-tabs-slider color="bg-secondary"></v-tabs-slider>
+                    <v-tab>View</v-tab>
+                    <v-tab>Reviews</v-tab>
+                </v-tabs>
+                <v-tabs-items v-model="tabs">
+                    <v-tab-item>
+                        <div>
+                            <SearchResultList :user="user" v-for="note in notes" :note="note"></SearchResultList>
+                        </div>
+                        <div v-html="content" class="m-2 p-2 bg-white border border-secondary">
+                        </div>
+                    </v-tab-item>
+                    <v-tab-item>
+                      asd
+                    </v-tab-item>
+                </v-tabs-items>
+            </div>
+            <div class="m-5 mw-25">
+                <div><span class="font-weight-bold">Title:</span> <span class="text-light">{{ title }}</span></div>
+                <div><span class="font-weight-bold">Contributors:</span> <span class="text-light">{{ username }}</span></div>
+                <div><span class="font-weight-bold">Privacy:</span> <span class="text-light">{{ privacy }}</span></div>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -33,6 +47,7 @@ export default {
       user: {},
       content: "",
       notes: [],
+      tabs: null,
     };
   },
   methods: {

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="d-flex">
       <div class="flex-fill">
-        <SearchResultList v-for="note in notes" :note="note" :key="note"></SearchResultList>
+        <SearchResultList :user="user" v-for="note in notes" :note="note"></SearchResultList>
         <h3>Preview:</h3>
         <div class="m-2 p-2 bg-white border border-secondary" v-html="preview"></div>
       </div>
@@ -44,20 +44,6 @@ export default {
     SearchResultList
   },
   methods: {
-    async getTier() {
-      try {
-        let token = localStorage.getItem("jwt");
-        let response = await this.$http.post(
-          "/note/getTier",
-          { noteId: this.$route.params.noteId },
-          { headers: { 'Authorization': token } }
-        );
-        this.tier = response.data.tier;
-        this.price = response.data.price;
-      } catch (err) {
-        swal("Error", err.response, "error");
-      }
-    },
     async viewNote(){
       try {
         let token = localStorage.getItem("jwt");
@@ -114,13 +100,12 @@ export default {
             swal("Error", "Unauthorized or your session has expired! Please relog.", "error");
             break;
           default:
-            swal("Error", `Uhh, error ${err.request.status}`, "error");
+            swal("Error", `Uhh, error {{err.request.status}}`, "error");
         }
       }
     }
   },
   async created() {
-    await this.getTier();
     await this.viewNote();
   }
 };
