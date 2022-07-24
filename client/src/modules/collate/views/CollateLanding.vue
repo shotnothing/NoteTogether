@@ -107,6 +107,7 @@
         color="#CE9999"
         @click="download(outputNotes);"
     >
+        <a href="" id="a"></a>
         Download
     </v-btn>
   </div>
@@ -122,13 +123,6 @@
     Drag to discard from output!
     </draggable> 
   </div>
-
-  <a 
-    id="download"
-    href="data:application/xml;charset=utf-8,your code here" 
-    download="filename.html">Save
-  </a>
-
   </div>
 </template>
 
@@ -205,8 +199,12 @@ export default {
           out = out.concat(notes[i].content[j]) + "\n"
         }
       }
-      console.log(out);
-      window.location=document.getElementById('download').href;
+
+      var a = document.getElementById("a");
+      var file = new Blob([out], {type: 'text'});
+      a.href = URL.createObjectURL(file);
+      a.download = "collate.md";
+      a.click();
     }
   },
   created() {
