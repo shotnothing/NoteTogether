@@ -18,7 +18,7 @@
         <a v-bind:href="'/discover/'+note._id" class="text-dark">{{ note.title }}</a>
         <span v-if="this.isLocked && this.tier!='free'" class="ml-2">🔒</span>
         <a v-else class="ml-2" v-on:click="favourite()">
-          <span v-if="isFavourited" class="color-gold font-weight-light">★</span>
+          <span v-if="this.isFavourited" class="color-gold font-weight-light">★</span>
           <span v-else class="text-dark font-weight-light">☆</span>
         </a>
       </button>
@@ -84,6 +84,17 @@ import swal from "sweetalert";
 export default {
   name: "NotePreview",
   props: ["note", "user"],
+  data() {
+    return {
+      timeDiff: "invalid",
+      voteStatus: "no vote",
+      isLocked: false,
+      isFavourited: false,
+      votes: 0,
+      tier: "",
+      price: 0,
+    }
+  },
   watch: {
     note: function(src, dst) {
       this.voteStatus = this.note.voteStatus;
@@ -188,7 +199,8 @@ export default {
           { headers: { 'Authorization': token } }
         );
         this.isFavourited = response.data.status == "favourited";
-        console.log(response);
+        console.log(this.isFavourited)
+        console.log(this.note.isFavourited)
       } catch (err) {
         switch(err.request.status) {
           case 401:

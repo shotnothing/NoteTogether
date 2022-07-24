@@ -4,6 +4,7 @@
       <h1></h1>
     </section>
     <router-view></router-view>
+    <br><br>
   </div>
 </template>
 

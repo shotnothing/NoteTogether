@@ -4,6 +4,7 @@
       <h1>Edit Notes</h1>
     </section>
     <router-view></router-view>
+    <br><br>
   </div>
 </template>
 
