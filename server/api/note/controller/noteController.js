@@ -9,9 +9,9 @@ const PREVIEW_LEN = 5;
 const MAX_TITLE_LENGTH = 50;
 const CREDITS_AWARDED_AUTHOR_PUBLISH = 1;
 
-const GOLD_TIER = 500;
-const SILVER_TIER = 200;
-const BRONZE_TIER = 100;
+const GOLD_TIER = 750;
+const SILVER_TIER = 400;
+const BRONZE_TIER = 200;
 
 const GOLD_PRICE = 4;
 const SILVER_PRICE = 2;
