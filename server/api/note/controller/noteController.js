@@ -5,7 +5,8 @@ const Review = require("../../review/model/Review");
 const purchaseController = require("./purchaseController");
 
 const PER_PAGE = 10;
-const PREVIEW_LEN = 5;
+const PREVIEW_LEN_FRAC = 0.7;
+const MAX_PREVIEW_LEN = 25;
 const MAX_TITLE_LENGTH = 50;
 const CREDITS_AWARDED_AUTHOR_PUBLISH = 1;
 
@@ -545,5 +546,5 @@ function getTier(note) {
 }
 
 function getPreviewContent(content) {
-  return content.slice(0, content.length**0.7);
+  return content.slice(0, Math.min(content.length ** PREVIEW_LEN_FRAC, MAX_PREVIEW_LEN));
 }
