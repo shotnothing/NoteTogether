@@ -32,7 +32,7 @@ exports.createReview = async (req, res) => {
     res.status(200).json({ review: savedReview });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Create Review Failed" });
   }
 }
 
@@ -54,7 +54,7 @@ exports.readReview = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Read Review Failed" });
   }
 }
 
@@ -91,7 +91,7 @@ exports.updateReview = async (req, res) => {
     res.status(200).json({ Review: review });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Update Review Failed" });
   }
 }
 
@@ -126,7 +126,7 @@ exports.deleteReview = async (req, res) => {
     res.status(200).json({ Review: savedReview });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Delete Review Failed" });
   }
 }
 

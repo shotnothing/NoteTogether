@@ -70,7 +70,7 @@ exports.voteReview = async (req, res) => {
 
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Vote Review Failed" });
   }
 }
 
@@ -87,7 +87,7 @@ exports.upvoteReview = async (req, res) => {
     return res.status(200).json({ status: "Review upvoted"});
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Upvote Review Failed" });
   }
 }
 
@@ -104,7 +104,7 @@ exports.downvoteReview = async (req, res) => {
     return res.status(200).json({ status: "Review downvoted"});
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Downvote Review Failed" });
   }
 }
 
@@ -129,7 +129,7 @@ exports.checkVoted = async (req, res) => {
 
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Check Voted Failed" });
   }
 }
 
@@ -141,7 +141,7 @@ exports.getVotes = async (req, res) => {
     res.status(200).json({ votes: review.votes });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Get Review Votes Failed" });
   }
 }
 
