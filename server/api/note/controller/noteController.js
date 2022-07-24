@@ -394,7 +394,7 @@ async function getAdditionalInformation(note, user) {
   let additionalInformation = {};
   const noteId = note._id.toString();
   additionalInformation["isFavourited"] = user.favourited.includes(note._id);
-  additionalInformation["isLocked"] = await isLocked(noteId, user._id);
+  additionalInformation["isLocked"] = await isLocked(noteId, user._id.toString());
   additionalInformation["voteStatus"] = await getVoteInformation(note, user);
 
   return additionalInformation;
