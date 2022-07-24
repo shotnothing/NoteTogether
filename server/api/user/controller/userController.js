@@ -142,14 +142,14 @@ exports.purchasedNotes = async (req, res) => {
 
     let notes = await User.findById(userId)
                           .select('purchased')
-                          // .populate({
-                          //   path: 'purchased',
-                          //   populate: {
-                          //     path: 'userId',
-                          //     select: 'username',
-                          //     model: 'User'
-                          //   }
-                          // });
+                          .populate({
+                            path: 'purchased',
+                            populate: {
+                              path: 'userId',
+                              select: 'username',
+                              model: 'User'
+                            }
+                          });
 
     res.status(200).json({ notes: notes });
   } catch (err) {
