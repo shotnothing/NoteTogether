@@ -61,7 +61,11 @@ import VueSimplemde from 'vue-simplemde'
 import { marked } from 'marked';
 import swal from "sweetalert";
 export default {
+<<<<<<< HEAD
   name: "MarkdownEditorView",
+=======
+  name: "MarkdownEditor",
+>>>>>>> 4a0fd2acab2f058efa2ddf242d0d8281bb9da024
   data() {
     return {
       loaded: false,
@@ -219,4 +223,8 @@ export default {
 
 <style scoped>
   @import '~simplemde/dist/simplemde.min.css';
+<<<<<<< HEAD
 </style>
+=======
+</style>
+>>>>>>> 4a0fd2acab2f058efa2ddf242d0d8281bb9da024
