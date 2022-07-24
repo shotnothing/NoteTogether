@@ -103,7 +103,7 @@ exports.readNote = async (req, res) => {
     }
 
     let content = await resolveFork(note);
-    console.log(note.favourites)//DEBUG
+    
     let baseNoteInformation = await getBaseNoteInformation(note);
     let additionalInformation = await getAdditionalInformation(note, user);
     baseNoteInformation["isFavourited"] = additionalInformation.isFavourited;
