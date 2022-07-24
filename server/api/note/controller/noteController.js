@@ -103,7 +103,7 @@ exports.readNote = async (req, res) => {
     }
 
     let content = await resolveFork(note);
-
+    console.log(note.favourites)//DEBUG
     let baseNoteInformation = await getBaseNoteInformation(note);
     let additionalInformation = await getAdditionalInformation(note, user);
     baseNoteInformation["isFavourited"] = additionalInformation.isFavourited;
@@ -511,22 +511,26 @@ function getTier(note) {
   if (metric < BRONZE_TIER) {
     return {
       tier: "free",
-      price: 0
+      price: 0,
+      metric: metric
     };
   } else if (metric < SILVER_TIER) {
     return {
       tier: "bronze",
-      price: BRONZE_PRICE
+      price: BRONZE_PRICE,
+      metric: metric
     };
   } else if (metric < GOLD_TIER) {
     return {
       tier: "silver",
-      price: SILVER_PRICE
+      price: SILVER_PRICE,
+      metric: metric
     };
   } else {
     return {
       tier: "gold",
-      price: GOLD_PRICE
+      price: GOLD_PRICE,
+      metric: metric
     };
   }
 }
