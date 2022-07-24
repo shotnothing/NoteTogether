@@ -9,7 +9,6 @@
                 </a>
                 <br>
                 {{ votes }}
-                {{ voteStatus }}
                 <br>
                 <a v-on:click="downvote()">
                     <span v-if="this.voteStatus=='downvote'" class="text-secondary">⬇</span>
