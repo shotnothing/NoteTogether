@@ -123,7 +123,7 @@ exports.readNote = async (req, res) => {
     // Must purchase note if locked
     if (additionalInformation.isLocked) {
       baseNoteInformation["err"] = "Need to purchase";
-      baseNoteInformation["preview"] = content.slice(0, PREVIEW_LEN).join("\n");
+      baseNoteInformation["preview"] = getPreviewContent(content).join("\n");
       for ([key, val] of Object.entries(additionalInformation)) {
         baseNoteInformation[key] = val;
       }
@@ -504,7 +504,7 @@ exports.resolveFork = resolveFork;
 
 function getTier(note) {
   const metric = note.votes + (2*note.favourites);
-  if (metric < BRONZE_TIER || note.length < PREVIEW_LEN) {
+  if (metric < BRONZE_TIER) {
     return {
       tier: "free",
       price: 0
@@ -525,4 +525,8 @@ function getTier(note) {
       price: GOLD_PRICE
     };
   }
+}
+
+function getPreviewContent(content) {
+  return content.slice(0, content.length**0.7);
 }
