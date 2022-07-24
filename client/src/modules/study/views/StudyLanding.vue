@@ -2,11 +2,25 @@
   <div class="container">
     <section class="text-center align-items-center flex-column m-auto">
     <h1>Study Notes</h1>
-
     </section>
+
+    <h3>Created Notes</h3>
     <div class="row">
-      <NotePreview class="col-sm-6 col-md-2" v-for="note in studyNotes" :note="note" :key="note" :address="address"></NotePreview>
+      <NotePreview class="col-sm-6 col-md-2" v-for="note in createdNotes" :note="note" :key="note" :address="address"></NotePreview>
     </div>
+    <br>
+    <h3>Favourited Notes</h3>
+    <div class="row">
+      <NotePreview class="col-sm-6 col-md-2" v-for="note in favouritedNotes" :note="note" :key="note" :address="address"></NotePreview>
+    </div>
+    <br>
+    <div v-if="purchasedNotes.length > 0">
+      <h3>Purchased Notes</h3>
+      <div class="row">
+        <NotePreview class="col-sm-6 col-md-2" v-for="note in purchasedNotes" :note="note" :key="note" :address="address"></NotePreview>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -21,7 +35,9 @@ export default {
   },
   data() {
     return {
-      studyNotes: [],
+      createdNotes: [],
+      favouritedNotes: [],
+      purchasedNotes: [],
       address: "study",
     };
   },
@@ -52,9 +68,9 @@ export default {
         {},
         { headers: { 'Authorization': token } }
       );
-      this.studyNotes.push(...createdResponse.data.notes.notes);
-      this.studyNotes.push(...favouritedResponse.data.notes.favourited);
-      this.studyNotes.push(...purchasedResponse.data.notes.purchased);
+      this.createdNotes.push(...createdResponse.data.notes.notes);
+      this.favouritedNotes.push(...favouritedResponse.data.notes.favourited);
+      this.purchasedNotes.push(...purchasedResponse.data.notes.purchased);
     },
   },
   created() {
