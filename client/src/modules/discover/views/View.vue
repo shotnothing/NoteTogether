@@ -107,7 +107,7 @@ export default {
             try {
                 let token = localStorage.getItem("jwt");
                 let response = await this.$http.post(
-                    "/note/read", 
+                    "/reviews/create", 
                     { 
                         noteId: this.$route.params.noteId,
                         title: "nondescript", // PLACEHOLDER
@@ -115,7 +115,7 @@ export default {
                     }, 
                     { headers: { 'Authorization': token } }
                 );
-                swal("Review Posted!", value, "success");
+                swal("Review Posted!", "Thank you for leaving a review!", "success");
             } catch (err) {
                 swal("Error", "Something went wrong\n" + err, "error");
                 console.log(err)
