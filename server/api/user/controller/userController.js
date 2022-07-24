@@ -52,7 +52,7 @@ exports.registerNewUser = async (req, res) => {
     res.status(201).json({ data, token });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Registration Failed" });
   }
 };
 
@@ -70,7 +70,7 @@ exports.loginUser = async (req, res) => {
     res.status(201).json({ user, token });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Login Failed" });
   }
 };
 
@@ -87,7 +87,7 @@ exports.getUserDetails = async (req, res) => {
     res.status(200).json({ userData: user });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "User Details Retrieval Failed" });
   }
 };
 
@@ -117,7 +117,7 @@ exports.createdNotes = async (req, res) => {
     res.status(200).json({ notes: notes });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Get User Created Notes Failed" });
   }
 };
 
@@ -147,7 +147,7 @@ exports.favouritedNotes = async (req, res) => {
     res.status(200).json({ notes: notes });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Get User Favourited Notes Failed" });
   }
 };
 
@@ -177,7 +177,7 @@ exports.purchasedNotes = async (req, res) => {
     res.status(200).json({ notes: notes });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Get User Purchased Notes Failed" });
   }
 };
 
@@ -194,7 +194,7 @@ exports.bestUsers = async (req, res) => {
     res.status(200).json({ users: users });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Get Best Users Failed" });
   }
 }
 
