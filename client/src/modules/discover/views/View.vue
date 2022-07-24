@@ -30,7 +30,6 @@
                                 :disabled="!textReview"
                                 elevation=0
                                 color="#CE9999"
-                                text-color="bg-white"
                                 @click="postReview(textReview); $refs.formReview.reset();"
                             >
                                 Post
