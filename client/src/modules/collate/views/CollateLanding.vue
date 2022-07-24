@@ -15,10 +15,9 @@
           <draggable
             :list="createdNotes"
             class="list-group"
-            :move="checkMove"
             @start="dragging = true"
             @end="dragging = false"
-            group="main"
+            :group="{ name: 'main', pull: 'clone', put: false }"
           >
             <div
               class="list-group-item"
@@ -38,10 +37,9 @@
           <draggable
             :list="favouritedNotes"
             class="list-group"
-            :move="checkMove"
             @start="dragging = true"
             @end="dragging = false"
-            group="main"
+            :group="{ name: 'main', pull: 'clone', put: false}"
           >
             <div
               class="list-group-item"
@@ -61,10 +59,9 @@
           <draggable
             :list="purchasedNotes"
             class="list-group"
-            :move="checkMove"
             @start="dragging = true"
             @end="dragging = false"
-            group="main"
+            :group="{ name: 'main', pull: 'clone', put: false }"
           >
             <div
               class="list-group-item"
@@ -83,7 +80,7 @@
 
   </div>
 
-  <div class="col-2">
+  <div class="col-1">
   </div>
 
   <div class="col-3">
@@ -91,10 +88,9 @@
     <draggable
       :list="outputNotes"
       class="list-group"
-      :move="checkMove"
       @start="dragging = true"
       @end="dragging = false"
-      group="main"
+      :group="{ name: 'main', pull: true, revertClone: true }"
     >
       <div
         class="list-group-item"
@@ -113,7 +109,18 @@
     >
         Download
     </v-btn>
+  </div>
 
+  <div class="col-1 text-center">
+    <draggable
+      class="list-group"
+      @start="dragging = true"
+      @end="dragging = false"
+      :group="{ name: 'main', pull: true, revertClone: true }"
+    >
+    <h1>🗑</h1>
+    Drag to discard from output!
+    </draggable> 
   </div>
 
   </div>
@@ -178,8 +185,12 @@ export default {
     replace: function() {
       this.list = [{ name: "Edgard", id: id++ }];
     },
-    checkMove: function(e) {
-      window.console.log("Future index: " + e.draggedContext.futureIndex);
+    clone: function(e) {
+      console.log("poo");
+    },
+    discard: function(e) {
+      console.log(e);
+      return true;
     },
     download: function(notes) {
       let out = [];
