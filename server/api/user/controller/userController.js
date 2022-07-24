@@ -154,10 +154,6 @@ exports.purchasedNotes = async (req, res) => {
                               path: 'userId',
                               select: 'username',
                               model: 'User'
-                            },
-                            select: {
-                              'title': 1,
-                              'username': 1
                             }
                           });
     
