@@ -500,6 +500,8 @@ async function resolveFork(note) {
   return note.content;
 }
 
+exports.resolveFork = resolveFork;
+
 function getTier(note) {
   const metric = note.votes + (2*note.favourites);
   if (metric < BRONZE_TIER || note.length < PREVIEW_LEN) {
