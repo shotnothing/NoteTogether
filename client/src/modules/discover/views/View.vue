@@ -87,9 +87,10 @@ export default {
                     dateLastUpdated: response.data.dateLastUpdated,
                     votes: response.data.votes,
                     tier: response.data.tier,
+                    username: response.data.username,
+                    price: response.data.price,
                     isFavourited: response.data.isFavourited,
                     isLocked: response.data.isLocked,
-                    price: response.data.price,
                     voteStatus: response.data.voteStatus,
                     reviews: response.data.reviews,
                     _id: this.$route.params.noteId

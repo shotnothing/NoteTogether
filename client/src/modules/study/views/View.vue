@@ -58,6 +58,9 @@ export default {
           },
           dateLastUpdated: response.data.dateLastUpdated,
           votes: response.data.votes,
+          tier: response.data.tier,
+          username: response.data.username,
+          price: response.data.price,
           _id: this.$route.params.noteId
         }];
       } catch (err) {
