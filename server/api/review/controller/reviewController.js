@@ -14,7 +14,6 @@ exports.createReview = async (req, res) => {
 
     // Create Review (assume first that its not a fork)
     var review = new Review({
-      title: req.body.title,
       content: req.body.content,
       userId: userId,
       noteId: noteId
@@ -25,6 +24,7 @@ exports.createReview = async (req, res) => {
     let note = await Note.findById(noteId);
     note.reviews = [review._id, ...note.reviews];
     await note.save();
+    let user = await User.findById(userId);
 
     // credit system
     await addCredited(note, user, change = CREDITS_AWARDED_REVIEWER);
@@ -49,7 +49,6 @@ exports.readReview = async (req, res) => {
     let author = await User.findById(review.userId);
 
     res.status(200).json({
-      title: review.title,
       content: review.content,
       author: author.username
     });
