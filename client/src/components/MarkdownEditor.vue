@@ -86,8 +86,6 @@ export default {
           { headers: { 'Authorization': token } }
         );
         this.mde.content = response.data.content;
-        console.log("BREAKPOINT 1=========")
-        console.log(this.mde.content)
         this.mde.title = response.data.title;
         this.mde.username = response.data.username;
         this.loaded = true;
