@@ -5,28 +5,28 @@
     </section>
 
     <h3>Created Notes</h3>
-    <div>
+    <div class=row>
       <NotePreview class="col-sm-6 col-md-2" v-for="note in createdNotes" :note="note" :key="note" :address="address"></NotePreview>
-      <div v-if="createdNotes.length==0">
+    </div>
+    <div v-if="createdNotes.length==0">
         Nothing to show here! 
         <br><br></div>
-    </div>
     <br>
     <h3>Favourited Notes</h3>
-    <div>
+    <div class=row>
       <NotePreview class="col-sm-6 col-md-2" v-for="note in favouritedNotes" :note="note" :key="note" :address="address"></NotePreview>
-      <div v-if="favouritedNotes==0">
-        Nothing to show here! 
-        <br><br></div>
     </div>
+    <div v-if="favouritedNotes==0">
+      Nothing to show here! 
+      <br><br></div>
     <br>
     <h3>Purchased Notes</h3>
-    <div>
+    <div class=row>
       <NotePreview class="col-sm-6 col-md-2" v-for="note in purchasedNotes" :note="note" :key="note" :address="address"></NotePreview>
-      <div v-if="purchasedNotes==0">
-        Nothing to show here! 
-        <br><br></div>
     </div>
+    <div v-if="purchasedNotes==0">
+      Nothing to show here! 
+      <br><br></div>
 
   </div>
 </template>
