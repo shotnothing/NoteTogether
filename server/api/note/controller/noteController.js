@@ -276,6 +276,7 @@ exports.publishNote = async (req, res) => {
       title: newTitle,
       userId: noteCreatorId,
       content: note.content,
+      length: note.content.length,
     });
 
     // Adds new note to user's collection
@@ -293,6 +294,7 @@ exports.publishNote = async (req, res) => {
 
     res.status(201).json({ note: savedNote });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ err: "Note Publish Failed" });
   }
 }
