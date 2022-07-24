@@ -340,6 +340,7 @@ exports.searchNote = async (req, res) => {
       const additionalInformation = await getAdditionalInformation(note, user);
       note["tier"] = tierPrice.tier;
       note["price"] = tierPrice.price;
+      note["metric"] = tierPrice.metric;
       note["username"] = await getUsernameChain(note);
       note["isFavourited"] = additionalInformation.isFavourited;
       note["isLocked"] = additionalInformation.isLocked;

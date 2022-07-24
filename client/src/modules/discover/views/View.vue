@@ -87,6 +87,7 @@ export default {
                     dateLastUpdated: response.data.dateLastUpdated,
                     votes: response.data.votes,
                     tier: response.data.tier,
+                    metric: response.data.metric,
                     username: response.data.username,
                     price: response.data.price,
                     isFavourited: response.data.isFavourited,

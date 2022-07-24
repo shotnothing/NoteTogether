@@ -69,7 +69,7 @@
       Based on upvotes and number of users that favourited this note.
       <br>Favourite Count: {{this.note.favourites}}
       <br>Vote Balance: {{this.note.votes}}
-      <br>Metric: 
+      <br>Metric (like a score): {{this.note.metric}}
       </span>
     </v-tooltip>
 
