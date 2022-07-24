@@ -19,7 +19,7 @@
       ></v-pagination>
 
       <div class="">
-        <SearchResultList class="row" :user="user" v-for="note in searchResults" :note="note"></SearchResultList>
+        <SearchResultList class="row" :user="user" v-for="note in searchResults" :note.sync="note"></SearchResultList>
       </div>
 
       <v-pagination

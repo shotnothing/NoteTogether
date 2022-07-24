@@ -68,15 +68,15 @@ import swal from "sweetalert";
 export default {
   name: "NotePreview",
   props: ["note", "user"],
-  data() {
-    return {
-      timeDiff: "invalid",
-      voteStatus: "no vote",
-      isLocked: false,
-      isFavourited: false,
-      votes: 0,
-      tier: "",
-      price: 0,
+  watch: {
+    note: function(src, dst) {
+      this.voteStatus = this.note.voteStatus;
+      this.isLocked = this.note.isLocked;
+      this.isFavourited = this.note.isFavourited;
+      this.votes = this.note.votes;
+      this.tier = this.note.tier;
+      this.price = this.note.price;
+      this.getTimeDiff();
     }
   },
   methods: {
@@ -192,7 +192,7 @@ export default {
     this.votes = this.note.votes;
     this.tier = this.note.tier;
     this.price = this.note.price;
-    await this.getTimeDiff();
+    this.getTimeDiff();
   }
 };
 </script>
