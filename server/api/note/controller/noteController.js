@@ -318,6 +318,14 @@ exports.searchNote = async (req, res) => {
       .populate("userId", "username")
       .select("_id title userId dateLastUpdated username votes favourites reviewCount forkOf length isCheatsheet")
       .lean();
+
+    const notesCount = await Note.count({
+        title: { $regex: new RegExp(req.body.searchTerm, "i") },
+        isPublished: true,
+        isDeleted: false
+      })
+    
+    const pageCount = Math.ceil(notesCount / PER_PAGE);
     
     const hasNextPage = notes.length > PER_PAGE;
     if (hasNextPage) {
@@ -340,7 +348,8 @@ exports.searchNote = async (req, res) => {
     res.status(200).json({
       hasPreviousPage: hasPreviousPage,
       hasNextPage: hasNextPage,
-      searchResults: notes
+      searchResults: notes,
+      pageCount: pageCount
     });
   } catch (err) {
     console.log(err);

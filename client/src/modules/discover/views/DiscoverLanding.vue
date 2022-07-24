@@ -8,9 +8,32 @@
       <div class="">
         <h2 class="p-2">Search Results</h2>
       </div>
+
+      <v-pagination
+        v-model="page"
+        :length=pageCount
+        :total-visible="7"
+        circle
+        color="bg-secondary"
+        @next="searchNotes()"
+        @previous="searchNotes()"
+      ></v-pagination>
+
       <div class="">
         <SearchResultList class="row" :user="user" v-for="note in searchResults" :note="note"></SearchResultList>
       </div>
+
+     <v-pagination
+        v-model="page"
+        :length=pageCount
+        :total-visible="7"
+        circle
+        color="bg-secondary"
+        @next="searchNotes()"
+        @previous="searchNotes()"
+      ></v-pagination>
+      <br>
+
     </div>
     <div class="p-2 m-2 w-25">
       <CreditBalance :user="user"></CreditBalance>
@@ -35,6 +58,7 @@ export default {
       user: {},
       searchTerm: "",
       searchResults: [],
+      page: 1,
     };
   },
   methods: {
@@ -42,10 +66,11 @@ export default {
       let token = localStorage.getItem("jwt");
       let response = await this.$http.post(
         "/note/search",
-        { searchTerm: this.searchTerm },
+        { searchTerm: this.searchTerm, page: this.page },
         { headers: { 'Authorization': token } }
       );
       this.searchResults = response.data.searchResults;
+      this.pageCount = response.data.pageCount;
       console.log(response)
     }
   },
