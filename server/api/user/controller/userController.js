@@ -199,7 +199,8 @@ exports.bestUsers = async (req, res) => {
 }
 
 async function resolveAllForks(notes) {
-  for (note of notes) {
+  for (let i = 0; i < notes.length; i++) {
+    let note = notes[i];
     if (!!note.forkOf){
       note.content = await noteController.resolveFork(note);
     }
