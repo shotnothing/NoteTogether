@@ -38,22 +38,38 @@
         </a>
       </div>
     </div>
+
+
     <div class="ml-auto p-2 w-25">
-      <div class="ml-auto w-75">
-        <span v-if="note.tier=='gold'" class="color-gold">
-          Gold 
+
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <span
+          v-bind="attrs"
+          v-on="on"
+        >
+        <div class="ml-auto w-75">
+          <span v-if="note.tier=='gold'" class="color-gold">
+            Gold 
+          </span>
+          <span v-else-if="note.tier=='silver'" class="color-silver">
+            Silver 
+          </span>
+          <span v-else-if="note.tier=='bronze'" class="color-bronze">
+            Bronze 
+          </span>
+          <span v-else>
+            Free 
+          </span>
+          Tier
+        </div>
         </span>
-        <span v-else-if="note.tier=='silver'" class="color-silver">
-          Silver 
-        </span>
-        <span v-else-if="note.tier=='bronze'" class="color-bronze">
-          Bronze 
-        </span>
-        <span v-else>
-          Free 
-        </span>
-        Tier
-      </div>
+      </template>
+      <span>
+      Based on upvotes and number of users that favourited this note.
+      </span>
+    </v-tooltip>
+
       <div class="ml-auto w-75 font-weight-light">
         Cost to Unlock: {{ note.price }}
       </div>
