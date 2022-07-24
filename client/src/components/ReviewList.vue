@@ -9,7 +9,6 @@
                 </a>
                 <br>
                 {{ votes }}
-                {{ voteStatus }}
                 <br>
                 <a v-on:click="downvote()">
                     <span v-if="this.voteStatus=='downvote'" class="text-secondary">⬇</span>
@@ -116,7 +115,6 @@ export default {
         }
     },
     async created() {
-        console.log(this.review)
         this.voteStatus = this.review.voteStatus;
         this.votes = this.review.votes;
         await this.getTimeDiff();
