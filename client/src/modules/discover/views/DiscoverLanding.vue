@@ -18,12 +18,12 @@
         @next="searchNotes()"
         @previous="searchNotes()"
       ></v-pagination>
-
+      
       <div class="">
         <SearchResultList class="row" :user="user" v-for="note in searchResults" :note="note"></SearchResultList>
       </div>
 
-     <v-pagination
+      <v-pagination
         v-model="page"
         :length=pageCount
         :total-visible="7"
@@ -32,12 +32,22 @@
         @next="searchNotes()"
         @previous="searchNotes()"
       ></v-pagination>
+
       <br>
 
     </div>
     <div class="p-2 m-2 w-25">
       <CreditBalance :user="user"></CreditBalance>
       <div class="w-100">Create notes or write reviews to earn credits!</div>
+
+      <div class="text-center">
+        <v-progress-circular
+          indeterminate
+          color="#CE9999"
+          v-if="loading"
+        ></v-progress-circular>
+      </div>
+
     </div>
   </div>
 </template>
@@ -59,10 +69,12 @@ export default {
       searchTerm: "",
       searchResults: [],
       page: 1,
+      loading: false,
     };
   },
   methods: {
     async searchNotes() {
+      this.loading = true;
       let token = localStorage.getItem("jwt");
       let response = await this.$http.post(
         "/note/search",
@@ -72,6 +84,7 @@ export default {
       this.searchResults = response.data.searchResults;
       this.pageCount = response.data.pageCount;
       console.log(response)
+      this.loading = false;
     }
   },
   created() {
