@@ -123,6 +123,12 @@
     </draggable> 
   </div>
 
+  <a 
+    id="download"
+    href="data:application/xml;charset=utf-8,your code here" 
+    download="filename.html">Save
+  </a>
+
   </div>
 </template>
 
@@ -193,12 +199,14 @@ export default {
       return true;
     },
     download: function(notes) {
-      let out = [];
+      let out = "";
       for (let i in notes) {
-        out.push("# " + notes[i].title)
-        out.push(notes[i].content)
+        for (let j in notes[i].content) {
+          out = out.concat(notes[i].content[j]) + "\n"
+        }
       }
-      console.log(notes[0]);
+      console.log(out);
+      window.location=document.getElementById('download').href;
     }
   },
   created() {

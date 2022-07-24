@@ -39,10 +39,12 @@
                         <div v-for="review in notes[0].reviews">
                             <ReviewList :user="user" :review="review"></ReviewList>
                         </div>
+                        <br>
                     </v-tab-item>
                 </v-tabs-items>
             </div>
         </div>
+        <br>
     </div>
 </template>
 <script>
