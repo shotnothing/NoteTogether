@@ -402,8 +402,8 @@ async function getAdditionalInformation(note, user) {
 
 async function getVoteInformation(item, user) {
   let voteStatus = "no vote"
-  for (let vote of user.voted) {
-    if (vote.id == item._id) {
+  for (vote of user.voted) {
+    if (vote.id == item._id.toString()) {
       voteStatus = vote.isUpvoted ? "upvote" : "downvote";
       break;
     }
