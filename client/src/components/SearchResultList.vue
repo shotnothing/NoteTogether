@@ -40,13 +40,13 @@
     </div>
     <div class="ml-auto p-2 w-25">
       <div class="ml-auto w-75">
-        <span v-if="this.tier=='gold'" class="color-gold">
+        <span v-if="note.tier=='gold'" class="color-gold">
           Gold 
         </span>
-        <span v-else-if="this.tier=='silver'" class="color-silver">
+        <span v-else-if="note.tier=='silver'" class="color-silver">
           Silver 
         </span>
-        <span v-else-if="this.tier=='bronze'" class="color-bronze">
+        <span v-else-if="note.tier=='bronze'" class="color-bronze">
           Bronze 
         </span>
         <span v-else>
@@ -55,9 +55,10 @@
         Tier
       </div>
       <div class="ml-auto w-75 font-weight-light">
-        Cost to Unlock: {{ this.price }}
+        Cost to Unlock: {{ note.price }}
       </div>
     </div>
+
   </div>
 </template>
 

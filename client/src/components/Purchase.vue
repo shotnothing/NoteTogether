@@ -121,6 +121,8 @@ export default {
               dateLastUpdated: err.response.data.dateLastUpdated,
               votes: err.response.data.votes,
               reviews: err.response.data.reviews,
+              price: err.response.data.price,
+              tier: err.response.data.tier,
               _id: this.$route.params.noteId
             }];
             this.reviews = err.response.data.reviews;
