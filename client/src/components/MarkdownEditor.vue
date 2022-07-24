@@ -61,7 +61,7 @@ import VueSimplemde from 'vue-simplemde'
 import { marked } from 'marked';
 import swal from "sweetalert";
 export default {
-  name: "MarkdownEditorView",
+  name: "MarkdownEditor",
   data() {
     return {
       loaded: false,
