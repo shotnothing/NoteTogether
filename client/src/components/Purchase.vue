@@ -4,26 +4,77 @@
       <div class="flex-fill">
         <SearchResultList :user="user" v-for="note in notes" :note="note"></SearchResultList>
         <h3>Preview:</h3>
-        <div class="m-2 p-2 bg-white border border-secondary" v-html="preview"></div>
+        
       </div>
       <div class="m-2">
         <CreditBalance :user="user"></CreditBalance>
         <div class="w-100">Create notes or write reviews to earn credits!</div>
       </div>
     </div>
-    <button
-      class="btn btn-secondary btn-block w-25 m-2"
-      type="button"
-      v-on:click="purchaseNote()"
-    >
-      Purchase
-    </button>
+
+
+      <v-tabs v-model="tabs" background-color="transparent" color="bg-secondary">
+          <v-tabs-slider color="bg-secondary"></v-tabs-slider>
+          <v-tab>Preview</v-tab>
+          <v-tab>Reviews</v-tab>
+      </v-tabs>
+      <v-tabs-items v-model="tabs">
+          <v-tab-item>
+
+              <div>
+                  <div class="m-2 p-2 bg-white border border-secondary" v-html="preview"></div>
+              </div>
+              
+              <div style="text-align: center;"><b> Purchase to unlock the rest of the note!</b></div>
+              <br>
+
+          </v-tab-item>
+          <v-tab-item>
+              <v-form ref="formReview" class="pa-6 pt-6">
+                  <v-textarea
+                      v-model="textReview"
+                      outlined
+                      auto-grow
+                      color="#CE9999"
+                      counter="320" 
+                      rows="4"
+                      label="Write Review"
+                  ></v-textarea>
+                  <v-btn
+                      :disabled="!textReview"
+                      elevation=0
+                      color="#CE9999"
+                      @click="postReview(textReview); $refs.formReview.reset();"
+                  >
+                      Post
+                  </v-btn>
+              </v-form>
+              
+              <div v-for="review in reviews">
+                  <ReviewList :user="user" :review="review"></ReviewList>
+              </div>
+
+              <br>
+          </v-tab-item>
+      </v-tabs-items>
+
+      <br>
+      <button
+        class="btn btn-secondary btn-block w-25 m-2"
+        type="button"
+        v-on:click="purchaseNote()"
+      >
+        Purchase
+      </button>
+      <br><br>
+
   </div>
 </template>
 
 <script>
 import CreditBalance from "@/components/CreditBalance";
 import SearchResultList from "@/components/SearchResultList.vue";
+import ReviewList from "@/components/ReviewList.vue";
 import { marked } from 'marked';
 import swal from "sweetalert";
 
@@ -37,11 +88,15 @@ export default {
       data: {},
       notes: [],
       preview: "",
+      reviews: [],
+      tabs: null,
+      textReview: "",
     }
   },
   components: {
     CreditBalance,
-    SearchResultList
+    SearchResultList,
+    ReviewList,
   },
   methods: {
     async viewNote(){
@@ -65,8 +120,10 @@ export default {
               },
               dateLastUpdated: err.response.data.dateLastUpdated,
               votes: err.response.data.votes,
+              reviews: err.response.data.reviews,
               _id: this.$route.params.noteId
             }];
+            this.reviews = err.response.data.reviews;
             break;
           default:
             swal("Error", err.response, "error");
@@ -89,8 +146,7 @@ export default {
           { headers: { 'Authorization': token } }
         );
         this.$router.push("/study/"+this.$route.params.noteId);
-        console.log(response);
-        console.log(favouriteResponse);
+
       } catch (err) {
         switch(err.request.status) {
           case 405:
@@ -103,7 +159,24 @@ export default {
             swal("Error", `Uhh, error {{err.request.status}}`, "error");
         }
       }
-    }
+    },
+    async postReview(value) {
+        try {
+            let token = localStorage.getItem("jwt");
+            let response = await this.$http.post(
+                "/review/create", 
+                { 
+                    noteId: this.$route.params.noteId,
+                    content: value,
+                }, 
+                { headers: { 'Authorization': token } }
+            );
+            swal("Review Posted!", "Thank you for leaving a review!", "success");
+        } catch (err) {
+            swal("Error", "Something went wrong\n" + err, "error");
+            console.log(err)
+        }
+      },
   },
   async created() {
     await this.viewNote();

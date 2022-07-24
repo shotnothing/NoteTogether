@@ -108,10 +108,9 @@ export default {
             try {
                 let token = localStorage.getItem("jwt");
                 let response = await this.$http.post(
-                    "/reviews/create", 
+                    "/review/create", 
                     { 
                         noteId: this.$route.params.noteId,
-                        title: "nondescript", // PLACEHOLDER
                         content: value,
                     }, 
                     { headers: { 'Authorization': token } }
