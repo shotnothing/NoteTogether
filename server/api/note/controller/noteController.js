@@ -165,7 +165,7 @@ exports.updateNote = async (req, res) => {
     const noteCreatorId = note.userId;
     // Cannot update a note that does not belong to you
     if (noteCreatorId != userId) {
-      return res.status(401).json({ err: "Not authorised!" });
+      return res.status(405).json({ err: "Not authorised!" });
     }
     
     // Cannot update a published or deleted note
@@ -204,7 +204,7 @@ exports.deleteNote = async (req, res) => {
 
     // Cannot update a note that does not belong to you
     if (note.userId != req.userData._id) {
-      return res.status(401).json({ err: "Not authorised!" });
+      return res.status(405).json({ err: "Not authorised!" });
     }
 
     // Cannot delete a deleted note
@@ -246,7 +246,7 @@ exports.publishNote = async (req, res) => {
 
     // Cannot publish note that does not belong to you
     if (noteCreatorId != userId) {
-      return res.status(401).json({ err: "Not authorised!" });
+      return res.status(405).json({ err: "Not authorised!" });
     }
 
     // Cannot published note that has already been published
@@ -277,6 +277,7 @@ exports.publishNote = async (req, res) => {
       userId: noteCreatorId,
       content: note.content,
       length: note.content.length,
+      forkOf: note._id.toString()
     });
 
     // Adds new note to user's collection
@@ -407,7 +408,7 @@ async function getVoteInformation(item, user) {
   let voteStatus = "no vote"
   for (vote of user.voted) {
     if (vote.id == item._id.toString()) {
-      voteStatus = vote.isUpvoted ? "upvote" : "downvote";
+      voteStatus = vote.isUpvote ? "upvote" : "downvote";
       break;
     }
   }
