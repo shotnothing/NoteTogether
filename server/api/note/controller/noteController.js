@@ -321,25 +321,23 @@ exports.searchNote = async (req, res) => {
       notes.pop();
     };
     const hasPreviousPage = req.body.page > 1;
-    
-    let newNotes = [];
-    for (let note of notes) {
+
+    for (let i = 0; i < notes.length; i++) {
+      let note = notes[i];
       const tierPrice = getTier(note);
-      let newNote = note;
       const additionalInformation = await getAdditionalInformation(note, user);
-      newNote["tier"] = tierPrice.tier;
-      newNote["price"] = tierPrice.price;
-      newNote["username"] = await getUsernameChain(note);
-      newNote["isFavourited"] = additionalInformation.isFavourited;
-      newNote["isLocked"] = additionalInformation.isLocked;
-      newNote["voteStatus"] = additionalInformation.voteStatus;
-      newNotes.push(newNote);
+      note["tier"] = tierPrice.tier;
+      note["price"] = tierPrice.price;
+      note["username"] = await getUsernameChain(note);
+      note["isFavourited"] = additionalInformation.isFavourited;
+      note["isLocked"] = additionalInformation.isLocked;
+      note["voteStatus"] = additionalInformation.voteStatus;
     }
 
     res.status(200).json({
       hasPreviousPage: hasPreviousPage,
       hasNextPage: hasNextPage,
-      searchResults: newNotes
+      searchResults: notes
     });
   } catch (err) {
     console.log(err);
@@ -389,6 +387,8 @@ async function getUsernameChain(note) {
   }
   return username;
 }
+
+exports.getUsernameChain = getUsernameChain;
 
 async function getAdditionalInformation(note, user) {
   let additionalInformation = {};
