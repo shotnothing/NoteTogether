@@ -15,10 +15,9 @@
         :total-visible="7"
         circle
         color="bg-secondary"
-        @next="searchNotes()"
-        @previous="searchNotes()"
+        @input="searchNotes()"
       ></v-pagination>
-      
+
       <div class="">
         <SearchResultList class="row" :user="user" v-for="note in searchResults" :note="note"></SearchResultList>
       </div>
@@ -29,8 +28,7 @@
         :total-visible="7"
         circle
         color="bg-secondary"
-        @next="searchNotes()"
-        @previous="searchNotes()"
+        @input="searchNotes()"
       ></v-pagination>
 
       <br>
