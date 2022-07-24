@@ -34,9 +34,9 @@
       <br>
 
     </div>
-    <div class="p-2 m-2 w-25">
+    <div class="pl-5">
       <CreditBalance :user="user"></CreditBalance>
-      <div class="w-100">Create notes or write reviews to earn credits!</div>
+      <div class="w-75">Create notes or write reviews to earn credits!</div>
 
       <div class="text-center">
         <v-progress-circular
