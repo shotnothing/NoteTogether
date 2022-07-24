@@ -4,7 +4,7 @@
       <img src="@/assets/SampleThumbnail.png">
       <div>
         <div class="text-dark small lead">{{ note.title }}</div>
-        <div class="text-secondary small">{{ note.userId.username }}</div>
+        <div class="text-secondary small">{{ note.username }}</div>
       </div>
     </a>
   </div>

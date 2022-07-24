@@ -22,7 +22,7 @@
           <span v-else class="text-dark font-weight-light">☆</span>
         </a>
       </button>
-      <div class="font-weight-light small">submitted {{ this.timeDiff }} by {{ note.userId.username }}</div>
+      <div class="font-weight-light small">submitted {{ this.timeDiff }} by {{ note.username }}</div>
       <div v-if="this.isLocked && this.tier!='free'">
         <a class="small" v-bind:href="'/purchase/'+note._id">
           <span class="color-dark">unlock</span>
