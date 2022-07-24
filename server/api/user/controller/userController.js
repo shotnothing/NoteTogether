@@ -121,6 +121,32 @@ exports.createdNotes = async (req, res) => {
   }
 };
 
+exports.publishedNotes = async (req, res) => {
+  try {
+    const userId = req.userData._id;
+
+    const notes = await Note
+      .find({
+        userId: userId,
+        isPublished: true,
+        isDeleted: false
+      })
+      .sort({ datePublished: -1 })
+      .select("_id title userId");
+
+    for (let i = 0; i < notes.length; i++) {
+      let note = notes[i];
+      note["username"] = await noteController.getUsernameChain(note);
+      notes[i] = note;
+    }
+
+    res.status(200).json({ notes: notes });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: "Get User Published Notes Failed" });
+  }
+};
+
 exports.favouritedNotes = async (req, res) => {
   try {
 
