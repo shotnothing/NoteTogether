@@ -61,7 +61,16 @@ export default {
           _id: this.$route.params.noteId
         }];
       } catch (err) {
-        // this.content = err;
+        switch(err.request.status) {
+          case 402:
+            this.$router.push("/purchase/"+this.$route.params.noteId);
+            break;
+          case 401:
+            swal("Error", "Unauthorized or your session has expired! Please relog.", "error");
+            break;
+          default:
+            swal("Error", `Uhh, error ${err.request.status}`, "error");
+        }
       }
     }
   },
