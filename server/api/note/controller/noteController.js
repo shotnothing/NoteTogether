@@ -103,7 +103,7 @@ exports.readNote = async (req, res) => {
     }
 
     let content = await resolveFork(note);
-    
+
     let baseNoteInformation = await getBaseNoteInformation(note);
     let additionalInformation = await getAdditionalInformation(note, user);
     baseNoteInformation["isFavourited"] = additionalInformation.isFavourited;
@@ -380,11 +380,11 @@ async function getBaseNoteInformation(note) {
     favourites: note.favourites,
     tier: tierPrice.tier,
     price: tierPrice.price,
+    metric: tierPrice.metric,
     reviewCount: note.reviewCount,
     isCheatsheet: note.isCheatsheet
   };
   toReturn["username"] = await getUsernameChain(note);
-  toReturn["metric"] = note.votes + 2*note.favourites;
 
   return toReturn;
 }
