@@ -115,7 +115,6 @@ export default {
         }
     },
     async created() {
-        console.log(this.review)
         this.voteStatus = this.review.voteStatus;
         this.votes = this.review.votes;
         await this.getTimeDiff();
