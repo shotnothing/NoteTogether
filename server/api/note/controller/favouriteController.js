@@ -46,7 +46,7 @@ exports.favourite = async (req, res) => {
     res.status(200).json({ status: status });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Favourite Operation Failed" });
   }
 }
 
@@ -63,7 +63,7 @@ exports.checkFavourited = async (req, res) => {
     res.status(200).json({ favourited: user.favourited.includes(noteId) });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Check Favourite Failed" });
   }
 }
 

@@ -80,7 +80,7 @@ exports.createNote = async (req, res) => {
     res.status(201).json({ note: savedNote });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Note Creation Failed" });
   }
 }
 
@@ -149,7 +149,7 @@ exports.readNote = async (req, res) => {
     return res.status(200).json(baseNoteInformation);
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Note Read Failed" });
   }
 }
 
@@ -192,7 +192,7 @@ exports.updateNote = async (req, res) => {
     res.status(200).json({ note: note });
   } catch (err) {
     console.log(err)
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Note Update Failed" });
   }
 }
 
@@ -228,7 +228,7 @@ exports.deleteNote = async (req, res) => {
 
     res.status(200).json({ note: savedNote });
   } catch (err) {
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Note Delete Failed" });
   }
 }
 
@@ -293,7 +293,7 @@ exports.publishNote = async (req, res) => {
 
     res.status(201).json({ note: savedNote });
   } catch (err) {
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Note Publish Failed" });
   }
 }
 
@@ -341,7 +341,7 @@ exports.searchNote = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Note Search Failed" });
   }
 }
 

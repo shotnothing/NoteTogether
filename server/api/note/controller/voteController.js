@@ -70,7 +70,7 @@ exports.voteNote = async (req, res) => {
 
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Vote Failed" });
   }
 }
 
@@ -101,7 +101,7 @@ exports.upvoteNote = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Upvote Failed" });
   }
 }
 
@@ -132,7 +132,7 @@ exports.downvoteNote = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Downvote Failed" });
   }
 }
 
@@ -157,7 +157,7 @@ exports.checkVoted = async (req, res) => {
 
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Check Voted Failed" });
   }
 }
 
@@ -169,7 +169,7 @@ exports.getVotes = async (req, res) => {
     res.status(200).json({ votes: note.votes });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: "Get Votes Failed" });
   }
 }
 
