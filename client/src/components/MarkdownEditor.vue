@@ -70,7 +70,8 @@ export default {
         content: "",
         title: "",
         username: "",
-      }
+      },
+      isPublished: false,
     };
   },
   components: {
@@ -88,6 +89,7 @@ export default {
         this.mde.content = response.data.content;
         this.mde.title = response.data.title;
         this.mde.username = response.data.username;
+        this.isPublished = response.data.isPublished;
         this.loaded = true;
       } catch (err) {
         switch(err.request.status) {
@@ -115,45 +117,32 @@ export default {
           return;
         }
 
-        let response = await this.$http.post(
-          "/note/update",
-          { title: this.mde.title, content: this.mde.content, noteId: this.$route.params.noteId },
-          { headers: { 'Authorization': token } }
+        if (!this.isPublished) {
+          let response = await this.$http.post(
+            "/note/update",
+            { title: this.mde.title, content: this.mde.content, noteId: this.$route.params.noteId },
+            { headers: { 'Authorization': token } }
           );
-
-        swal("Success", "Save Successful", "success");
+          console.log(response.data);
+          swal("Success", "Save Successful", "success");
+        } else {
+          try {
+            let response = await this.$http.post(
+              "/note/create",
+              { title: this.mde.title, content: this.mde.content, forkOf: this.$route.params.noteId },
+              { headers: { 'Authorization': token } }
+            );
+            this.mde.title = response.data.note.title;
+            this.$router.push("/edit/"+response.data.note._id);
+            swal("Success", "Save Successful! Created new private note!", "success");
+          } catch (err) {
+            console.log(err);
+            swal("Error", `Uhh, error ${err.request.status}`, "error");
+          }
+        }
 
       } catch (err) {
-        switch(err.request.status) {
-          case 405:
-            try {
-              let response = await this.$http.post(
-                "/note/create",
-                { title: this.mde.title, content: this.mde.content, forkOf: this.$route.params.noteId },
-                { headers: { 'Authorization': token } }
-              );
-              this.$router.push("/edit/"+response.data.note._id);
-              swal("Success", "Save Successful! Created new private note!", "success");
-            } catch (err) {
-              swal("Error", `Uhh, error ${err.request.status}`, "error");
-            }
-            break;
-          case 401:
-            try {
-              let response = await this.$http.post(
-                "/note/create",
-                { title: this.mde.title, content: this.mde.content, forkOf: this.$route.params.noteId },
-                { headers: { 'Authorization': token } }
-              );
-              this.$router.push("/edit/"+response.data.note._id);
-              swal("Success", "Save Successful! Created new private note!", "success");
-            } catch (err) {
-              swal("Error", `Uhh, error ${err.request.status}`, "error");
-            }
-            break;
-          default:
-            swal("Error", `Uhh, error ${err.request.status}`, "error");
-        }
+        console.log(err);
       }
     },
     async publishNote() {
@@ -173,6 +162,7 @@ export default {
           { noteId: this.$route.params.noteId },
           { headers: { 'Authorization': token } }
           );
+        this.$router.push("/edit/"+response.data.note._id);
         swal("Success", "Publish Successful", "success");
         console.log(response);
       } catch (err) {
@@ -188,10 +178,7 @@ export default {
     renderNote() {
       try {
         console.log(this.mde.content);
-        // this.renderedContent = this.mde.content;
         this.renderedContent = marked(this.mde.content);
-        // this.renderedContent = JSON.stringify(document.getElementById("mde-form"));
-        // this.renderedContent = marked(document.getElementById("mde-form")["0"]["_value"][0]);
       } catch (err) {
         this.mde.title = err.request.status;
       }
