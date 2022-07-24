@@ -1,6 +1,8 @@
 const User = require("../model/User");
 const Note = require("../../note/model/Note");
 
+const noteController = require("../../note/controller/noteController");
+
 const MAX_USERNAME_LENGTH = 16;
 const MIN_USERNAME_LENGTH = 3;
 const MAX_PASSWORD_LENGTH = 16;
@@ -105,6 +107,8 @@ exports.createdNotes = async (req, res) => {
                             }
                           });
 
+    await resolveAllForks(notes.notes);
+
     res.status(200).json({ notes: notes });
   } catch (err) {
     console.log(err);
@@ -128,6 +132,8 @@ exports.favouritedNotes = async (req, res) => {
                             }
                           });
 
+    await resolveAllForks(notes.favourited);
+
     res.status(200).json({ notes: notes });
   } catch (err) {
     console.log(err);
@@ -148,8 +154,14 @@ exports.purchasedNotes = async (req, res) => {
                               path: 'userId',
                               select: 'username',
                               model: 'User'
+                            },
+                            select: {
+                              'title': 1,
+                              'username': 1
                             }
                           });
+    
+    await resolveAllForks(notes.purchased);
 
     res.status(200).json({ notes: notes });
   } catch (err) {
@@ -172,6 +184,14 @@ exports.bestUsers = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400).json({ err: err });
+  }
+}
+
+async function resolveAllForks(notes) {
+  for (note of notes) {
+    if (!!note.forkOf){
+      note.content = await noteController.resolveFork(note);
+    }
   }
 }
 
