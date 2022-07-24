@@ -518,7 +518,13 @@ async function resolveFork(note) {
 exports.resolveFork = resolveFork;
 
 function getTier(note) {
-  const metric = note.votes + (2*note.favourites);
+
+  // If null, set to 0 -> graceful failure
+  const votes = note.votes != null ? note.votes : 0; 
+  const favourites = note.favourites != null ? note.favourites : 0;
+
+  const metric = votes + (2 * favourites);
+  
   if (metric < BRONZE_TIER) {
     return {
       tier: "free",
