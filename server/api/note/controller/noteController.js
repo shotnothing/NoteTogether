@@ -332,6 +332,7 @@ exports.searchNote = async (req, res) => {
       note["isFavourited"] = additionalInformation.isFavourited;
       note["isLocked"] = additionalInformation.isLocked;
       note["voteStatus"] = additionalInformation.voteStatus;
+      note["metric"] = note.votes + 2*note.favourites;
     }
 
     res.status(200).json({
