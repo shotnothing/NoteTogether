@@ -104,6 +104,11 @@ exports.createdNotes = async (req, res) => {
                               path: 'userId',
                               select: 'username',
                               model: 'User'
+                            },
+                            select: {
+                              creditedVote: 0,
+                              creditedReview: 0,
+                              creditedFavourite: 0,
                             }
                           });
 
@@ -129,6 +134,11 @@ exports.favouritedNotes = async (req, res) => {
                               path: 'userId',
                               select: 'username',
                               model: 'User'
+                            },
+                            select: {
+                              creditedVote: 0,
+                              creditedReview: 0,
+                              creditedFavourite: 0,
                             }
                           });
 
@@ -154,6 +164,11 @@ exports.purchasedNotes = async (req, res) => {
                               path: 'userId',
                               select: 'username',
                               model: 'User'
+                            },
+                            select: {
+                              creditedVote: 0,
+                              creditedReview: 0,
+                              creditedFavourite: 0,
                             }
                           });
     
