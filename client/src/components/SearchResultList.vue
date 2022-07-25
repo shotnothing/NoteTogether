@@ -236,6 +236,7 @@ export default {
     this.isLocked = this.note.isLocked;
     this.isFavourited = this.note.isFavourited;
     this.votes = this.note.votes;
+    this.favourites = this.note.favourites;
     this.tier = this.note.tier;
     this.price = this.note.price;
     this.getTimeDiff();
