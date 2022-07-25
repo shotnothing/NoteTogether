@@ -1,6 +1,7 @@
 $primary: #EFEAD8;
 $secondary: #CE9999;
 $light: #888888;
+$info: #F9F7F0;
 
 $dark: #000000;
 $link-primary: #000000;
@@ -15,6 +16,10 @@ $link-primary: #000000;
 
 .color-bronze {
   color: #B08D57
+}
+
+.off-back {
+  background-color: #F9F7F0;
 }
 
 .flex-fixed-width-item {
