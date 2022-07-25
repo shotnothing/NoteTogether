@@ -124,7 +124,7 @@ exports.createdNotes = async (req, res) => {
       }
     }
 
-    // await resolveAllForks(notes.notes);
+    await resolveAllForks(notes.notes);
 
     res.status(200).json({ published: publishedNotes, unpublished: unpublishedNotes });
   } catch (err) {
@@ -154,7 +154,7 @@ exports.favouritedNotes = async (req, res) => {
                             }
                           });
     
-    // await resolveAllForks(notes.favourited);
+    await resolveAllForks(notes.favourited);
 
     res.status(200).json(notes);
   } catch (err) {
@@ -187,7 +187,7 @@ exports.purchasedNotes = async (req, res) => {
                             }
                           });
     
-    // await resolveAllForks(notes.purchased);
+    await resolveAllForks(notes.purchased);
 
     res.status(200).json(notes);
   } catch (err) {
