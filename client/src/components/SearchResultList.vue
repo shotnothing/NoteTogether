@@ -67,18 +67,18 @@
       </template>
       <span>
       Based on upvotes and number of users that favourited this note.
-      <br>Favourite Count: {{this.note.favourites}}
-      <br>Vote Balance: {{this.note.votes}}
+      <br>Favourite Count: {{this.favourites}}
+      <br>Vote Balance: {{this.votes}}
       <br>Metric (like a score): {{this.note.metric}}
       </span>
     </v-tooltip>
 
       <div class="ml-auto w-75 font-weight-light">
-        Cost to Unlock: {{ note.price }}
+        Cost to Unlock: {{ price }}
       </div>
       <div class="ml-auto w-75 font-weight-light">
         <div class="w-50 float-left">
-          <span class="w-50">★ {{ note.favourites }}</span>
+          <span class="w-50">★ {{ favourites }}</span>
         </div>
         <div class="w-50 float-left">
           <span class="w-50">🗨 {{ note.reviewCount }}</span>
@@ -101,6 +101,7 @@ export default {
       voteStatus: "no vote",
       isLocked: false,
       isFavourited: false,
+      favourites: 0,
       votes: 0,
       tier: "",
       price: 0,
@@ -112,6 +113,7 @@ export default {
       this.isLocked = this.note.isLocked;
       this.isFavourited = this.note.isFavourited;
       this.votes = this.note.votes;
+      this.favourites = this.note.favourites;
       this.tier = this.note.tier;
       this.price = this.note.price;
       this.getTimeDiff();
@@ -210,6 +212,11 @@ export default {
           { headers: { 'Authorization': token } }
         );
         this.isFavourited = response.data.status == "favourited";
+        if (this.isFavourited) {
+          this.favourites++;
+        } else {
+          this.favourites--;
+        }
         console.log(this.isFavourited)
         console.log(this.note.isFavourited)
       } catch (err) {
