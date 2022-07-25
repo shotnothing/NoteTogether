@@ -96,7 +96,7 @@ exports.readNote = async (req, res) => {
     let user = await User.findById(userId);
 
     // Id of the author
-    const authorId = note.userId;
+    const authorId = note.userId._id;
 
     // Can access the note if you created it, or if it's published
     if ((!note.isPublished || note.isDeleted) && authorId != userId) {
