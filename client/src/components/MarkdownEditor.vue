@@ -152,16 +152,25 @@ export default {
         if (this.mde.title === "") {
           swal("Error", "Please enter a title!", "error");
           return;
+        } else if (this.mde.title === "Untitled Document") {
+          swal("Error", "Please change the title to something more meaningful!", "error");
+          return;
         }
         if (this.mde.content === "") {
           swal("Error", "Please enter some content!", "error");
           return;
         }
         let response = await this.$http.post(
+          "/note/update",
+          { title: this.mde.title, content: this.mde.content, noteId: this.$route.params.noteId },
+          { headers: { 'Authorization': token } }
+        );
+
+        response = await this.$http.post(
           "/note/publish",
           { noteId: this.$route.params.noteId },
           { headers: { 'Authorization': token } }
-          );
+        );
         this.$router.push("/edit/"+response.data.note._id);
         swal("Success", "Publish Successful", "success");
         console.log(response);
