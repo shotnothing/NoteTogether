@@ -5,7 +5,8 @@
       <h4>Input</h4>
       <v-tabs v-model="tabs" background-color="transparent" color="bg-secondary">
           <v-tabs-slider color="bg-secondary"></v-tabs-slider>
-          <v-tab>Created</v-tab>
+          <v-tab>Published</v-tab>
+          <v-tab>Private</v-tab>
           <v-tab>Favourited</v-tab>
           <v-tab>Purchased</v-tab>
       </v-tabs>
@@ -13,7 +14,7 @@
 
         <v-tab-item>
           <draggable
-            :list="createdNotes"
+            :list="publishedNotes"
             class="list-group"
             @start="dragging = true"
             @end="dragging = false"
@@ -21,13 +22,35 @@
           >
             <div
               class="list-group-item"
-              v-for="element in createdNotes"
+              v-for="element in publishedNotes"
             >
               {{ element.title }}
             </div>
           </draggable>
 
-          <div v-if="!createdNotes.length" style="background-color: #EFEAD8;"> 
+          <div v-if="!publishedNotes.length" style="background-color: #EFEAD8;"> 
+            <br> Nothing to display :(
+          </div>   
+
+        </v-tab-item>
+
+        <v-tab-item>
+          <draggable
+            :list="unpublishedNotes"
+            class="list-group"
+            @start="dragging = true"
+            @end="dragging = false"
+            :group="{ name: 'main', pull: 'clone', put: false }"
+          >
+            <div
+              class="list-group-item"
+              v-for="element in unpublishedNotes"
+            >
+              {{ element.title }}
+            </div>
+          </draggable>
+
+          <div v-if="!unpublishedNotes.length" style="background-color: #EFEAD8;"> 
             <br> Nothing to display :(
           </div>   
 
@@ -139,7 +162,8 @@ export default {
   },
   data() {
     return {
-      createdNotes: [],
+      publishedNotes: [],
+      unpublishedNotes: [],
       favouritedNotes: [],
       purchasedNotes: [],
       outputNotes: [],
@@ -175,9 +199,10 @@ export default {
         {},
         { headers: { 'Authorization': token } }
       );
-      this.createdNotes.push(...createdResponse.data.notes.notes);
-      this.favouritedNotes.push(...favouritedResponse.data.notes.favourited);
-      this.purchasedNotes.push(...purchasedResponse.data.notes.purchased);
+      this.publishedNotes.push(...createdResponse.data.published);
+      this.unpublishedNotes.push(...createdResponse.data.unpublished);
+      this.favouritedNotes.push(...favouritedResponse.data.favourited);
+      this.purchasedNotes.push(...purchasedResponse.data.purchased);
     },
     add: function() {
       this.list.push({ name: "Juan " + id, id: id++ });
