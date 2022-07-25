@@ -112,38 +112,24 @@ exports.createdNotes = async (req, res) => {
                             }
                           });
 
-    await resolveAllForks(notes.notes);
 
-    res.status(200).json({ notes: notes });
+    let publishedNotes = [];
+    let unpublishedNotes = [];
+    for (let i = 0; i < notes.notes.length; i++) {
+      let note = notes.notes[i];
+      if (note.isPublished) {
+        publishedNotes.push(note);
+      } else {
+        unpublishedNotes.push(note);
+      }
+    }
+
+    // await resolveAllForks(notes.notes);
+
+    res.status(200).json({ published: publishedNotes, unpublished: unpublishedNotes });
   } catch (err) {
     console.log(err);
     res.status(400).json({ err: "Get User Created Notes Failed" });
-  }
-};
-
-exports.publishedNotes = async (req, res) => {
-  try {
-    const userId = req.userData._id;
-
-    const notes = await Note
-      .find({
-        userId: userId,
-        isPublished: true,
-        isDeleted: false
-      })
-      .sort({ datePublished: -1 })
-      .select("_id title userId");
-
-    for (let i = 0; i < notes.length; i++) {
-      let note = notes[i];
-      note["username"] = await noteController.getUsernameChain(note);
-      notes[i] = note;
-    }
-
-    res.status(200).json({ notes: notes });
-  } catch (err) {
-    console.log(err);
-    res.status(400).json({ err: "Get User Published Notes Failed" });
   }
 };
 
@@ -167,10 +153,10 @@ exports.favouritedNotes = async (req, res) => {
                               creditedFavourite: 0,
                             }
                           });
+    
+    // await resolveAllForks(notes.favourited);
 
-    await resolveAllForks(notes.favourited);
-
-    res.status(200).json({ notes: notes });
+    res.status(200).json(notes);
   } catch (err) {
     console.log(err);
     res.status(400).json({ err: "Get User Favourited Notes Failed" });
@@ -195,12 +181,15 @@ exports.purchasedNotes = async (req, res) => {
                               creditedVote: 0,
                               creditedReview: 0,
                               creditedFavourite: 0,
+                            },
+                            match: {
+                              "userId": { $ne: userId.toString() }
                             }
                           });
     
-    await resolveAllForks(notes.purchased);
+    // await resolveAllForks(notes.purchased);
 
-    res.status(200).json({ notes: notes });
+    res.status(200).json(notes);
   } catch (err) {
     console.log(err);
     res.status(400).json({ err: "Get User Purchased Notes Failed" });

@@ -8,7 +8,6 @@ router.post("/login", userController.loginUser);
 router.post("/me", auth, userController.getUserDetails);
 
 router.post("/notes/created", auth, userController.createdNotes);
-router.post("/notes/published", auth, userController.publishedNotes);
 router.post("/notes/favourited", auth, userController.favouritedNotes);
 router.post("/notes/purchased", auth, userController.purchasedNotes);
 
