@@ -6,8 +6,8 @@ import "./styles/_custom.scss";
 import vuetify from './plugins/vuetify'
 
 const base = axios.create({
-  baseURL: "https://notetogether-server.herokuapp.com"
-  //baseURL: "http://localhost:4000"
+  //baseURL: "https://notetogether-server.herokuapp.com"
+  baseURL: "http://localhost:4000"
 });
 
 Vue.prototype.$http = base;
