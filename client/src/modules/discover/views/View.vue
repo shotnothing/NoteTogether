@@ -79,6 +79,7 @@ export default {
                     "/note/read", { noteId: this.$route.params.noteId }, { headers: { 'Authorization': token } }
                 );
                 this.content = marked(response.data.content);
+                console.log(response.data);
                 this.notes = [{
                     title: response.data.title,
                     userId: {
@@ -86,6 +87,7 @@ export default {
                     },
                     dateLastUpdated: response.data.dateLastUpdated,
                     votes: response.data.votes,
+                    favourites: response.data.favourites,
                     tier: response.data.tier,
                     metric: response.data.metric,
                     username: response.data.username,
@@ -94,6 +96,7 @@ export default {
                     isLocked: response.data.isLocked,
                     voteStatus: response.data.voteStatus,
                     reviews: response.data.reviews,
+                    reviewCount: response.data.reviewCount,
                     _id: this.$route.params.noteId
                 }];
             } catch (err) {

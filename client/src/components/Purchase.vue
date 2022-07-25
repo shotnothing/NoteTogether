@@ -118,9 +118,15 @@ export default {
               userId: {
                 username: err.response.data.username,
               },
+              username: err.response.data.username,
               dateLastUpdated: err.response.data.dateLastUpdated,
               votes: err.response.data.votes,
+              favourites: err.response.data.favourites,
               reviews: err.response.data.reviews,
+              reviewCount: err.response.data.reviewCount,
+              isFavourited: err.response.data.isFavourited,
+              isLocked: err.response.data.isLocked,
+              voteStatus: err.response.data.voteStatus,
               price: err.response.data.price,
               tier: err.response.data.tier,
               _id: this.$route.params.noteId
