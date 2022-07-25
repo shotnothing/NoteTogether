@@ -6,7 +6,7 @@
       <v-tabs v-model="tabs" background-color="transparent" color="bg-secondary">
           <v-tabs-slider color="bg-secondary"></v-tabs-slider>
           <v-tab>Published</v-tab>
-          <v-tab>Private</v-tab>
+          <v-tab>Unpublished</v-tab>
           <v-tab>Favourited</v-tab>
           <v-tab>Purchased</v-tab>
       </v-tabs>
@@ -204,17 +204,7 @@ export default {
       this.favouritedNotes.push(...favouritedResponse.data.favourited);
       this.purchasedNotes.push(...purchasedResponse.data.purchased);
     },
-    add: function() {
-      this.list.push({ name: "Juan " + id, id: id++ });
-    },
-    replace: function() {
-      this.list = [{ name: "Edgard", id: id++ }];
-    },
-    clone: function(e) {
-      console.log("poo");
-    },
     discard: function(e) {
-      console.log(e);
       return true;
     },
     download: function(notes) {
