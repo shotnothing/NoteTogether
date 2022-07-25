@@ -76,6 +76,14 @@
       <div class="ml-auto w-75 font-weight-light">
         Cost to Unlock: {{ note.price }}
       </div>
+      <div class="ml-auto w-75 font-weight-light">
+        <div class="w-50 float-left">
+          <span class="w-50">★ {{ note.favourites }}</span>
+        </div>
+        <div class="w-50 float-left">
+          <span class="w-50">🗨 {{ note.reviewCount }}</span>
+        </div>
+      </div>
     </div>
 
   </div>
