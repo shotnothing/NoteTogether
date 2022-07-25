@@ -34,6 +34,12 @@
                             >
                                 Post
                             </v-btn>
+                            <v-progress-circular
+                              indeterminate
+                              color="#CE9999"
+                              v-if="loading"
+                            ></v-progress-circular>
+
                         </v-form>
 
                         <div v-for="review in notes[0].reviews">
@@ -69,6 +75,7 @@ export default {
             notes: [],
             tabs: null,
             textReview: "",
+            loading: false,
         };
     },
     methods: {
@@ -111,6 +118,7 @@ export default {
         },
         async postReview(value) {
             try {
+                this.loading = true;
                 let token = localStorage.getItem("jwt");
                 let response = await this.$http.post(
                     "/review/create", 
@@ -121,6 +129,7 @@ export default {
                     { headers: { 'Authorization': token } }
                 );
                 swal("Review Posted!", "Thank you for leaving a review!", "success");
+                this.loading = false;
             } catch (err) {
                 swal("Error", "Something went wrong\n" + err, "error");
                 console.log(err)
