@@ -89,7 +89,7 @@ exports.readNote = async (req, res) => {
   try {
     // Note to be read
     const noteId = req.body.noteId;
-    let note = await Note.findById(noteId);
+    let note = await Note.findById(noteId).populate("userId", "username");
 
     // Id of the requestor
     const userId = req.userData._id;
@@ -106,6 +106,7 @@ exports.readNote = async (req, res) => {
     let content = await resolveFork(note);
 
     let baseNoteInformation = await getBaseNoteInformation(note);
+    baseNoteInformation["username"] = note.userId.username;
     let additionalInformation = await getAdditionalInformation(note, user);
     baseNoteInformation["isFavourited"] = additionalInformation.isFavourited;
     baseNoteInformation["isLocked"] = additionalInformation.isLocked;
