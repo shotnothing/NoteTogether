@@ -1,6 +1,6 @@
 <template>
   <div class="container bg-primary">
-    <h3>Published Notes</h3>
+    <h3>My Published Notes</h3>
     <div class=row>
       <NotePreview class="col-sm-6 col-md-2" v-for="note in publishedNotes" :note="note" :key="note" :address="address" :userId="userId"></NotePreview>
     </div>
@@ -8,7 +8,7 @@
         Nothing to show here! 
         <br><br></div>
     <br>
-    <h3>Unpublished Notes</h3>
+    <h3>My Unpublished Notes</h3>
     <div class=row>
       <NotePreview class="col-sm-6 col-md-2" v-for="note in unpublishedNotes" :note="note" :key="note" :address="address" :userId="userId"></NotePreview>
     </div>
