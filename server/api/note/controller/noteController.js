@@ -335,12 +335,12 @@ exports.searchNote = async (req, res) => {
     const hasPreviousPage = req.body.page > 1;
 
     for (let i = 0; i < notes.length; i++) {
-      console.log("start: " + new Date().getTime());
+      // console.log("start: " + new Date().getTime());
       let note = notes[i];
       const tierPrice = getTier(note);
-      console.log("getTier: " + new Date().getTime());
+      // console.log("getTier: " + new Date().getTime());
       const additionalInformation = await getAdditionalInformation(note, user);
-      console.log("getAdditional: " + new Date().getTime());
+      // console.log("getAdditional: " + new Date().getTime());
       note["tier"] = tierPrice.tier;
       note["price"] = tierPrice.price;
       note["metric"] = tierPrice.metric;
