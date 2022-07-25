@@ -71,7 +71,7 @@ async function addFavourite(noteId, user) {
   user.favourited = [noteId, ...user.favourited];
   const note = await Note.findById(noteId);
   note.creditedFavourite = [user._id, ...note.creditedFavourite];
-  await changeNumVote(1, noteId);
+  await changeNumFavourite(1, noteId);
   await note.save();
   const status = await user.save();
   return status;
@@ -79,12 +79,12 @@ async function addFavourite(noteId, user) {
 
 async function removeFavourite(noteId, user) {
   user.favourited = user.favourited.filter(x => x != noteId);
-  await changeNumVote(-1, noteId);
+  await changeNumFavourite(-1, noteId);
   const status = await user.save();
   return status;
 }
 
-async function changeNumVote(change, noteId) {
+async function changeNumFavourite(change, noteId) {
   const status = await Note.findByIdAndUpdate(noteId, {
     $inc: {
       favourites: change
