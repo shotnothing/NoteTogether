@@ -1,20 +1,24 @@
 <template>
-  <div class="container">
-    <section class="text-center align-items-center flex-column m-auto">
-    <h1>Study Notes</h1>
-    </section>
-
-    <h3>Created Notes</h3>
+  <div class="container bg-primary">
+    <h3>Published Notes</h3>
     <div class=row>
-      <NotePreview class="col-sm-6 col-md-2" v-for="note in createdNotes" :note="note" :key="note" :address="address"></NotePreview>
+      <NotePreview class="col-sm-6 col-md-2" v-for="note in publishedNotes" :note="note" :key="note" :address="address" :userId="userId"></NotePreview>
     </div>
-    <div v-if="createdNotes.length==0">
+    <div v-if="publishedNotes.length==0">
+        Nothing to show here! 
+        <br><br></div>
+    <br>
+    <h3>Private Notes</h3>
+    <div class=row>
+      <NotePreview class="col-sm-6 col-md-2" v-for="note in unpublishedNotes" :note="note" :key="note" :address="address" :userId="userId"></NotePreview>
+    </div>
+    <div v-if="unpublishedNotes.length==0">
         Nothing to show here! 
         <br><br></div>
     <br>
     <h3>Favourited Notes</h3>
     <div class=row>
-      <NotePreview class="col-sm-6 col-md-2" v-for="note in favouritedNotes" :note="note" :key="note" :address="address"></NotePreview>
+      <NotePreview class="col-sm-6 col-md-2" v-for="note in favouritedNotes" :note="note" :key="note" :address="address" :userId="userId"></NotePreview>
     </div>
     <div v-if="favouritedNotes.length==0">
       Nothing to show here! 
@@ -22,7 +26,7 @@
     <br>
     <h3>Purchased Notes</h3>
     <div class=row>
-      <NotePreview class="col-sm-6 col-md-2" v-for="note in purchasedNotes" :note="note" :key="note" :address="address"></NotePreview>
+      <NotePreview class="col-sm-6 col-md-2" v-for="note in purchasedNotes" :note="note" :key="note" :address="address" :userId="userId"></NotePreview>
     </div>
     <div v-if="purchasedNotes.length==0">
       Nothing to show here! 
@@ -42,22 +46,15 @@ export default {
   },
   data() {
     return {
-      createdNotes: [],
+      publishedNotes: [],
+      unpublishedNotes: [],
       favouritedNotes: [],
       purchasedNotes: [],
       address: "study",
+      userId: "",
     };
   },
   methods: {
-    async createNote() {
-      let token = localStorage.getItem("jwt");
-      let response = await this.$http.post(
-        "/note/create",
-        { title: "Untitled Document", content: "" },
-        { headers: { 'Authorization': token } }
-      );
-      this.$router.push("/edit/"+response.data.note._id);
-    },
     async getStudyNotes() {
       let token = localStorage.getItem("jwt");
       let createdResponse = await this.$http.post(
@@ -75,9 +72,11 @@ export default {
         {},
         { headers: { 'Authorization': token } }
       );
-      this.createdNotes.push(...createdResponse.data.notes.notes);
-      this.favouritedNotes.push(...favouritedResponse.data.notes.favourited);
-      this.purchasedNotes.push(...purchasedResponse.data.notes.purchased);
+      this.userId = favouritedResponse.data._id;
+      this.publishedNotes.push(...createdResponse.data.published);
+      this.unpublishedNotes.push(...createdResponse.data.unpublished);
+      this.favouritedNotes.push(...favouritedResponse.data.favourited);
+      this.purchasedNotes.push(...purchasedResponse.data.purchased);
     },
   },
   created() {
