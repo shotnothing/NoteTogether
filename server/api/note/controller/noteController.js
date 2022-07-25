@@ -335,13 +335,17 @@ exports.searchNote = async (req, res) => {
     const hasPreviousPage = req.body.page > 1;
 
     for (let i = 0; i < notes.length; i++) {
+      console.log("start: " + new Date().getTime());
       let note = notes[i];
       const tierPrice = getTier(note);
+      console.log("getTier: " + new Date().getTime());
       const additionalInformation = await getAdditionalInformation(note, user);
+      console.log("getAdditional: " + new Date().getTime());
       note["tier"] = tierPrice.tier;
       note["price"] = tierPrice.price;
       note["metric"] = tierPrice.metric;
       note["username"] = await getUsernameChain(note);
+      console.log("usernameChain: " + new Date().getTime());
       note["isFavourited"] = additionalInformation.isFavourited;
       note["isLocked"] = additionalInformation.isLocked;
       note["voteStatus"] = additionalInformation.voteStatus;
@@ -392,15 +396,16 @@ async function getBaseNoteInformation(note) {
 }
 
 async function getUsernameChain(note) {
-  let currUser = await User.findById(note.userId);
-  let username = currUser.username;
-  let currNote = note;
-  while (!!currNote.forkOf) {
-    currNote = await Note.findById(currNote.forkOf);
-    currUser = await User.findById(currNote.userId);
-    username += ", " + currUser.username;
-  }
-  return username;
+  // let currUser = await User.findById(note.userId);
+  // let username = currUser.username;
+  // let currNote = note;
+  // while (!!currNote.forkOf) {
+  //   currNote = await Note.findById(currNote.forkOf);
+  //   currUser = await User.findById(currNote.userId);
+  //   username += ", " + currUser.username;
+  // }
+  // return username;
+  return note.userId.username;
 }
 
 exports.getUsernameChain = getUsernameChain;
